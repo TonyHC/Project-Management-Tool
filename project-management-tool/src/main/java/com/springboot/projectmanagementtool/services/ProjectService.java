@@ -7,6 +7,8 @@ import com.springboot.projectmanagementtool.exceptions.ProjectNotFoundException;
 import com.springboot.projectmanagementtool.repositories.ProjectRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProjectService {
     private ProjectRepository projectRepository;
@@ -32,5 +34,9 @@ public class ProjectService {
         }
 
         return project;
+    }
+
+    public List<Project> findAllProjects() {
+        return projectRepository.findAllBy();
     }
 } 
