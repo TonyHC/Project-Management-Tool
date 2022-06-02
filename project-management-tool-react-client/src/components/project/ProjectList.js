@@ -22,7 +22,7 @@ const ProjectList = () => {
       {projects &&
         projects.map((project) => (
           <ProjectItem
-            key={project.projectIdentifier}
+            key={project.id}
             name={project.projectName}
             identifier={project.projectIdentifier}
             description={project.projectDescription}

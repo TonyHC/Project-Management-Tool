@@ -1,32 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import classNames from "classnames";
 
 import { createProject } from "../../store/project-actions";
+import { getProjectById } from "../../store/project-actions";
 
 const initialInputState = {
   projectName: "",
   projectIdentifier: "",
   projectDescription: "",
   startDate: "",
-  endDate: "",
+  endDate: ""
 };
 
 const ProjectForm = () => {
   const [inputState, setInputState] = useState(initialInputState);
+  const [editMode, setEditMode] = useState(false);
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const { errors } = useSelector((state) => state.project);
+  const params = useParams();
+  const { errors, project } = useSelector((state) => state.project);
+  const { projectId } = params;
+
+  useEffect(() => {
+    if (projectId) {
+      dispatch(getProjectById({ projectId: projectId, history: history }));
+      setEditMode(true);
+    }
+  }, [dispatch, projectId, history]);
+
+  useEffect(() => {
+    let timer;
+
+    if (Object.keys(project).length > 0 && editMode) {
+      timer = setTimeout(() => {
+        setInputState({
+          projectName: project.projectName,
+          projectIdentifier: project.projectIdentifier,
+          projectDescription: project.projectDescription,
+          startDate: project.startDate,
+          endDate: project.endDate
+        });
+      }, 200);
+    }
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [project, editMode]);
 
   const userInputHandler = (event) => {
     const { name, value } = event.target;
-
     setInputState((prevInputState) => {
       return {
         ...prevInputState,
-        [name]: value,
+        [name]: value
       };
     });
   };
@@ -35,22 +67,26 @@ const ProjectForm = () => {
     event.preventDefault();
 
     if (!errors) {
-      setInputState({
-        projectName: "",
-        projectIdentifier: "",
-        projectDescription: "",
-        startDate: "",
-        endDate: "",
-      });
+      setInputState(initialInputState);
+      setEditMode(false);
     }
 
-    console.log(inputState);
-    dispatch(createProject({ project: inputState, history: history }));
+    if (editMode) {
+      const updatedProject = {
+        id: project.id,
+        ...inputState
+      };
+      dispatch(createProject({ project: updatedProject, history: history }));
+    } else {
+      dispatch(createProject({ project: inputState, history: history }));
+    }
   };
 
   return (
     <section className="col-md-8 m-auto">
-      <h6 className="display-6 text-center">Create / Edit Project Form</h6>
+      <h6 className="display-6 text-center">
+        {editMode ? "Edit" : "Create"} Project Form
+      </h6>
       <form onSubmit={submitHandler}>
         <div className="mb-3">
           <label htmlFor="projectName" className="form-label">

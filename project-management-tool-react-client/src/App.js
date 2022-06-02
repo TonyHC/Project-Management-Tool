@@ -12,7 +12,10 @@ const App = () => {
       <Route path="/dashboard" exact>
         <Dashboard />
       </Route>
-      <Route path="/project-form">
+      <Route path="/project-form" exact>
+        <ProjectForm />
+      </Route>
+      <Route path="/project-form/:projectId" exact>
         <ProjectForm />
       </Route>
       </Switch>

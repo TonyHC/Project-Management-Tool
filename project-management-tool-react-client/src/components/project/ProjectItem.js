@@ -20,7 +20,7 @@ const ProjectItem = (props) => {
                 Project Board
               </li>
             </Link>
-            <Link to="#">
+            <Link to={`/project-form/${props.identifier}`}>
               <li className="list-group-item list-group-item-action">
                 <i className="fa fa-edit me-2"></i>
                 Update Project Info
