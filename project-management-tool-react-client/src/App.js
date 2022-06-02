@@ -1,8 +1,13 @@
-function App() {
+import React from "react";
+
+import Dashboard from "./components/Dashboard";
+import Layout from "./ui/Layout";
+
+const App = () => {
   return (
-    <div>
-      Starting Code
-    </div>
+    <Layout>
+      <Dashboard />
+    </Layout>
   );
 }
 

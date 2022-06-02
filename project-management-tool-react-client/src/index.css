@@ -11,3 +11,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+a {
+  text-decoration: none;
+}
+
+.fa-flag-checkered {
+  color: green;
+}
+ 
+.fa-edit {
+  color: blue;
+}
+
+.fa-minus-circle {
+  color: red;
+}
+
+.list-group-item {
+  font-weight: 600;
+}
+
+.navbar {
+  background-color: rgb(96, 124, 235);
+}
