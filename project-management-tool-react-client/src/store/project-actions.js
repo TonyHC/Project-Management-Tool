@@ -15,3 +15,11 @@ export const createProject = createAsyncThunk(
     }
   }
 );
+
+export const getProjects = createAsyncThunk(
+  "projects/getProjects",
+  async () => {
+    const res = await axios.get(PROJECTS_API);
+    return res.data;
+  }
+);

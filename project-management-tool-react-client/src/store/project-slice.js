@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { createProject } from "./project-actions";
+import { createProject, getProjects } from "./project-actions";
 
 const projectSlice = createSlice({
   name: "project",
@@ -22,6 +22,18 @@ const projectSlice = createSlice({
     [createProject.rejected]: (state, action) => {
       state.status = "failed";
       state.errors = action.payload;
+    },
+    [getProjects.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [getProjects.fulfilled]: (state, action) => {
+      state.status = "success";
+      console.log(action);
+      state.projects = action.payload;
+    },
+    [getProjects.rejected]: (state, action) => {
+      state.status = "failed";
+      state.errors = action.error;
     },
   },
 });
