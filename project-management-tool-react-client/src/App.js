@@ -1,12 +1,21 @@
 import React from "react";
+import { Route, Switch } from "react-router-dom";
 
 import Dashboard from "./components/Dashboard";
+import ProjectForm from "./components/project/ProjectForm";
 import Layout from "./ui/Layout";
 
 const App = () => {
   return (
     <Layout>
-      <Dashboard />
+      <Switch>
+      <Route path="/dashboard" exact>
+        <Dashboard />
+      </Route>
+      <Route path="/project-form">
+        <ProjectForm />
+      </Route>
+      </Switch>
     </Layout>
   );
 }

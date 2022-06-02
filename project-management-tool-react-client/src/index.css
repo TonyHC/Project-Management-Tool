@@ -35,3 +35,7 @@ a {
 .navbar {
   background-color: rgb(96, 124, 235);
 }
+
+.li .active {
+  color: white
+}

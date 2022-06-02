@@ -1,12 +1,13 @@
 import React from "react";
+import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark mb-4">
       <div className="container">
-        <a className="navbar-brand" href="#">
+        <Link className="navbar-brand" to="/">
           Project Management Tool
-        </a>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -21,25 +22,26 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="navbarText">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a
-                className="nav-link active"
-                href="#"
+              <NavLink
+                activeClassName="active"
+                className="nav-link"
+                to="/dashboard"
               >
                 Dashboard
-              </a>
+              </NavLink>
             </li>
           </ul>
 
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink activeClassName="active" className="nav-link" to="#">
                 Sign Up
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink activeClassName="active" className="nav-link" to="#">
                 Login
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>
