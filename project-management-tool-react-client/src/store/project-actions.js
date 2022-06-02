@@ -23,3 +23,18 @@ export const getProjects = createAsyncThunk(
     return res.data;
   }
 );
+
+export const getProjectById = createAsyncThunk(
+  "projects/getProjectById",
+  async (data, { rejectWithValue }) => {
+    const { projectId, history } = data;
+
+    try {
+      const res = await axios.get(`${PROJECTS_API}/${projectId}`);
+      return res.data;
+    } catch (err) {
+      history.push("/dashboard");
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
