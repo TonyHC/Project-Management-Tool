@@ -1,15 +1,24 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import classNames from "classnames";
+
+import { createProject } from "../../store/project-actions";
 
 const initialInputState = {
   projectName: "",
   projectIdentifier: "",
   projectDescription: "",
-  start_date: "",
-  end_date: "",
+  startDate: "",
+  endDate: "",
 };
 
 const ProjectForm = () => {
   const [inputState, setInputState] = useState(initialInputState);
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { errors } = useSelector((state) => state.project);
 
   const userInputHandler = (event) => {
     const { name, value } = event.target;
@@ -24,14 +33,19 @@ const ProjectForm = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    setInputState({
-      projectName: "",
-      projectIdentifier: "",
-      projectDescription: "",
-      start_date: "",
-      end_date: "",
-    });
+
+    if (!errors) {
+      setInputState({
+        projectName: "",
+        projectIdentifier: "",
+        projectDescription: "",
+        startDate: "",
+        endDate: "",
+      });
+    }
+
     console.log(inputState);
+    dispatch(createProject({ project: inputState, history: history }));
   };
 
   return (
@@ -44,13 +58,18 @@ const ProjectForm = () => {
           </label>
           <input
             type="text"
-            className="form-control"
+            className={classNames("form-control", {
+              "is-invalid": errors.projectName,
+            })}
             placeholder="Project Name"
             name="projectName"
             id="projectName"
             value={inputState.projectName}
             onChange={userInputHandler}
           />
+          {errors.projectName && (
+            <div className="invalid-feedback">{errors.projectName}</div>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="projectIdentifier" className="form-label">
@@ -58,20 +77,27 @@ const ProjectForm = () => {
           </label>
           <input
             type="text"
-            className="form-control"
+            className={classNames("form-control", {
+              "is-invalid": errors.projectIdentifier,
+            })}
             placeholder="Unique Project ID"
             name="projectIdentifier"
             id="projectIdentifier"
             value={inputState.projectIdentifier}
             onChange={userInputHandler}
           />
+          {errors.projectIdentifier && (
+            <div className="invalid-feedback">{errors.projectIdentifier}</div>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="projectDescription" className="form-label">
             Project Description
           </label>
           <textarea
-            className="form-control"
+            className={classNames("form-control", {
+              "is-invalid": errors.projectDescription,
+            })}
             placeholder="Project Description"
             rows="3"
             name="projectDescription"
@@ -79,30 +105,33 @@ const ProjectForm = () => {
             value={inputState.projectDescription}
             onChange={userInputHandler}
           ></textarea>
+          {errors.projectDescription && (
+            <div className="invalid-feedback">{errors.projectDescription}</div>
+          )}
         </div>
         <div className="mb-3">
-          <label htmlFor="start_date" className="form-label">
+          <label htmlFor="startDate" className="form-label">
             Start Date
           </label>
           <input
             type="date"
             className="form-control"
-            name="start_date"
-            id="start_date"
-            value={inputState.start_date}
+            name="startDate"
+            id="startDate"
+            value={inputState.startDate}
             onChange={userInputHandler}
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="end_date" className="form-label">
+          <label htmlFor="endDate" className="form-label">
             End Date
           </label>
           <input
             type="date"
             className="form-control"
-            name="end_date"
-            id="end_date"
-            value={inputState.end_date}
+            name="endDate"
+            id="endDate"
+            value={inputState.endDate}
             onChange={userInputHandler}
           />
         </div>
