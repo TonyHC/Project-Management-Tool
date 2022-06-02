@@ -1,16 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ProjectItem = () => {
+const ProjectItem = (props) => {
   return (
     <div className="card card-body bg-light mb-3">
       <div className="row">
         <div className="col-md-2">
-          <span className="mx-auto">REACT</span>
+          <span className="mx-auto">{props.identifier}</span>
         </div>
         <div className="col-md-6">
-          <h3>Spring / React Project</h3>
-          <p>Project to create a Kanban Board with Spring Boot and React</p>
+          <h3>{props.name}</h3>
+          <p>{props.description}</p>
         </div>
         <div className="col-md-4">
           <ul className="list-group">
