@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { createProject, getProjects, getProjectById } from "./project-actions";
+import {
+  createProject,
+  getProjects,
+  getProjectById,
+  deleteProjectById,
+} from "./project-actions";
 
 const projectSlice = createSlice({
   name: "project",
@@ -8,7 +13,7 @@ const projectSlice = createSlice({
     projects: [],
     project: {},
     status: null,
-    errors: {}
+    errors: {},
   },
   reducers: {},
   extraReducers: {
@@ -44,6 +49,22 @@ const projectSlice = createSlice({
       state.project = action.payload;
     },
     [getProjectById.rejected]: (state, action) => {
+      state.status = "failed";
+      state.errors = action.error;
+    },
+    [deleteProjectById.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [deleteProjectById.fulfilled]: (state, action) => {
+      state.status = "success";
+      if (action.payload !== "Cancel") {
+        state.projects = state.projects.filter(
+          (project) => project.projectIdentifier !== action.meta.arg
+        );
+      }
+      state.errors = {};
+    },
+    [deleteProjectById.rejected]: (state, action) => {
       state.status = "failed";
       state.errors = action.error;
     },

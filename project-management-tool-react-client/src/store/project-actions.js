@@ -38,3 +38,14 @@ export const getProjectById = createAsyncThunk(
     }
   }
 );
+
+export const deleteProjectById = createAsyncThunk(
+  "projects/deleteProjectById",
+  async (projectId) => {
+    if (window.confirm("Do you really want to delete this proejct?")) {
+      await axios.delete(`${PROJECTS_API}/${projectId}`);
+    } else {
+      return "Cancel";
+    }
+  }
+);
