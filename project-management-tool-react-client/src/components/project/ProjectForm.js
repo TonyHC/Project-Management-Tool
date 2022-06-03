@@ -121,6 +121,7 @@ const ProjectForm = () => {
             id="projectIdentifier"
             value={inputState.projectIdentifier}
             onChange={userInputHandler}
+            disabled={editMode}
           />
           {errors.projectIdentifier && (
             <div className="invalid-feedback">{errors.projectIdentifier}</div>

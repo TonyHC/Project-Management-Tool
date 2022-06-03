@@ -1,7 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { deleteProjectById } from "../../store/project-actions";
 
 const ProjectItem = (props) => {
+  const dispatch = useDispatch();
+
+  const deleteProjectHandler = () => {
+    dispatch(deleteProjectById(props.identifier));
+  };
+
   return (
     <div className="card card-body bg-light mb-3">
       <div className="row">
@@ -26,12 +35,10 @@ const ProjectItem = (props) => {
                 Update Project Info
               </li>
             </Link>
-            <Link to="#">
-              <li className="list-group-item list-group-item-action">
-                <i className="fa fa-minus-circle me-2"></i>
-                Delete Project
-              </li>
-            </Link>
+            <li className="list-group-item list-group-item-action" onClick={deleteProjectHandler}>
+              <i className="fa fa-minus-circle me-2"></i>
+              Delete Project
+            </li>
           </ul>
         </div>
       </div>
