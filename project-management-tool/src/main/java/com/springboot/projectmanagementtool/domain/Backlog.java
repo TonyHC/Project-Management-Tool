@@ -1,5 +1,6 @@
 package com.springboot.projectmanagementtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,4 +19,9 @@ public class Backlog {
     private Integer projectTaskSequence = 0;
 
     private String projectIdentifier;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id", nullable = false)
+    @JsonIgnore
+    private Project project;
 }
