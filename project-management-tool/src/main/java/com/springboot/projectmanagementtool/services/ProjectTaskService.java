@@ -6,6 +6,7 @@ import com.springboot.projectmanagementtool.repositories.BacklogRepository;
 import com.springboot.projectmanagementtool.repositories.ProjectTaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -39,5 +40,9 @@ public class ProjectTaskService {
         }
 
         return projectTaskRepository.save(projectTask);
+    }
+
+    public List<ProjectTask> findProjectTasksByIdentifier (String projectIdentifier) {
+        return projectTaskRepository.findAllByProjectIdentifierOrderByPriority(projectIdentifier);
     }
 }
