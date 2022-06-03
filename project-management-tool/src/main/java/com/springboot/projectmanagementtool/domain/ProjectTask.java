@@ -16,7 +16,7 @@ import java.util.Date;
 @Entity
 public class ProjectTask {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(updatable = false)
