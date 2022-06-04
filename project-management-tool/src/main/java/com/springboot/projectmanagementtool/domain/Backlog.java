@@ -1,25 +1,25 @@
 package com.springboot.projectmanagementtool.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @Entity
+@Table(name = "backlog")
+@Data
 public class Backlog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "project_task_sequence")
     private Integer projectTaskSequence = 0;
 
+    @Column(name = "project_identifier")
     private String projectIdentifier;
 
     @OneToOne(fetch = FetchType.EAGER)
