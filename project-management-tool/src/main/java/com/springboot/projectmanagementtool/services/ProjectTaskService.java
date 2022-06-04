@@ -4,6 +4,7 @@ import com.springboot.projectmanagementtool.domain.Backlog;
 import com.springboot.projectmanagementtool.domain.Project;
 import com.springboot.projectmanagementtool.domain.ProjectTask;
 import com.springboot.projectmanagementtool.exceptions.ProjectNotFoundException;
+import com.springboot.projectmanagementtool.exceptions.ProjectTaskNotFoundException;
 import com.springboot.projectmanagementtool.repositories.BacklogRepository;
 import com.springboot.projectmanagementtool.repositories.ProjectRepository;
 import com.springboot.projectmanagementtool.repositories.ProjectTaskRepository;
@@ -60,5 +61,11 @@ public class ProjectTaskService {
         }
 
         return projectTaskRepository.findAllByProjectIdentifierOrderByPriority(projectIdentifier);
+    }
+
+    public ProjectTask findProjectTaskByProjectSequence(String projectIdentifier, String projectSequence) {
+        ProjectTask projectTask = projectTaskRepository.findByProjectSequence(projectSequence);
+
+        return projectTask;
     }
 }
