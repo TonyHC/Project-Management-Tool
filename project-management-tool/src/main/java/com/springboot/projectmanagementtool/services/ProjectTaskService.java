@@ -82,4 +82,10 @@ public class ProjectTaskService {
             throw new ProjectNotFoundException("Project with id: " + projectIdentifier + " was not found.");
         }
     }
+
+    public ProjectTask updateProjectTaskByProjectSequence(String projectIdentifier, String projectSequence,
+                                                          ProjectTask projectTask) {
+        findProjectTaskByProjectSequence(projectIdentifier, projectSequence);
+        return projectTaskRepository.save(projectTask);
+    }
 }
