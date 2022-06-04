@@ -54,18 +54,32 @@ public class ProjectTaskService {
     }
 
     public List<ProjectTask> findAllProjectTasksByIdentifier(String projectIdentifier) {
-        Project project = projectRepository.findByProjectIdentifier(projectIdentifier);
-
-        if (project == null) {
-            throw new ProjectNotFoundException("Product with id: " + projectIdentifier + " was not found.");
-        }
-
+        projectExists(projectIdentifier);
         return projectTaskRepository.findAllByProjectIdentifierOrderByPriority(projectIdentifier);
     }
 
     public ProjectTask findProjectTaskByProjectSequence(String projectIdentifier, String projectSequence) {
+        projectExists(projectIdentifier);
+
         ProjectTask projectTask = projectTaskRepository.findByProjectSequence(projectSequence);
 
+        if (projectTask == null) {
+            throw new ProjectTaskNotFoundException("Project Task with id: " + projectSequence + " was not found.");
+        }
+
+        if (!projectTask.getProjectIdentifier().equals(projectIdentifier)) {
+            throw new ProjectTaskNotFoundException("Project Task with id: " + projectSequence +
+                    " does not exist on project: " + projectIdentifier);
+        }
+
         return projectTask;
+    }
+
+    private void projectExists(String projectIdentifier) {
+        Project project = projectRepository.findByProjectIdentifier(projectIdentifier);
+
+        if (project == null) {
+            throw new ProjectNotFoundException("Project with id: " + projectIdentifier + " was not found.");
+        }
     }
 }
