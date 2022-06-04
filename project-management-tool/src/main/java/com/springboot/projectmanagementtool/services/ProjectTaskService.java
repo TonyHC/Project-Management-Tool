@@ -1,8 +1,11 @@
 package com.springboot.projectmanagementtool.services;
 
 import com.springboot.projectmanagementtool.domain.Backlog;
+import com.springboot.projectmanagementtool.domain.Project;
 import com.springboot.projectmanagementtool.domain.ProjectTask;
+import com.springboot.projectmanagementtool.exceptions.ProjectNotFoundException;
 import com.springboot.projectmanagementtool.repositories.BacklogRepository;
+import com.springboot.projectmanagementtool.repositories.ProjectRepository;
 import com.springboot.projectmanagementtool.repositories.ProjectTaskRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,37 +15,50 @@ import java.util.Objects;
 @Service
 public class ProjectTaskService {
     private BacklogRepository backlogRepository;
+    private ProjectRepository projectRepository;
     private ProjectTaskRepository projectTaskRepository;
 
-    public ProjectTaskService(BacklogRepository backlogRepository, ProjectTaskRepository projectTaskRepository) {
+    public ProjectTaskService(BacklogRepository backlogRepository, ProjectRepository projectRepository,
+                              ProjectTaskRepository projectTaskRepository) {
         this.backlogRepository = backlogRepository;
+        this.projectRepository = projectRepository;
         this.projectTaskRepository = projectTaskRepository;
     }
 
     public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
-        Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
+        try {
+            Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
 
-        projectTask.setBacklog(backlog);
+            projectTask.setBacklog(backlog);
 
-        Integer backlogSequence = backlog.getProjectTaskSequence();
-        backlogSequence++;
-        backlog.setProjectTaskSequence(backlogSequence);
+            Integer backlogSequence = backlog.getProjectTaskSequence();
+            backlogSequence++;
+            backlog.setProjectTaskSequence(backlogSequence);
 
-        projectTask.setProjectSequence(projectIdentifier + "-" + backlogSequence);
-        projectTask.setProjectIdentifier(projectIdentifier);
+            projectTask.setProjectSequence(projectIdentifier + "-" + backlogSequence);
+            projectTask.setProjectIdentifier(projectIdentifier);
 
-        if (projectTask.getPriority() == null) {
-            projectTask.setPriority(0);
+            if (projectTask.getPriority() == null) {
+                projectTask.setPriority(1);
+            }
+
+            if (Objects.equals(projectTask.getStatus(), "") || projectTask.getStatus() == null) {
+                projectTask.setStatus("TO_DO");
+            }
+
+            return projectTaskRepository.save(projectTask);
+        } catch (Exception exception) {
+            throw new ProjectNotFoundException("Project not found.");
         }
-
-        if (Objects.equals(projectTask.getStatus(), "") || projectTask.getStatus() == null) {
-            projectTask.setStatus("TO_DO");
-        }
-
-        return projectTaskRepository.save(projectTask);
     }
 
-    public List<ProjectTask> findProjectTasksByIdentifier (String projectIdentifier) {
+    public List<ProjectTask> findAllProjectTasksByIdentifier(String projectIdentifier) {
+        Project project = projectRepository.findByProjectIdentifier(projectIdentifier);
+
+        if (project == null) {
+            throw new ProjectNotFoundException("Product with id: " + projectIdentifier + " was not found.");
+        }
+
         return projectTaskRepository.findAllByProjectIdentifierOrderByPriority(projectIdentifier);
     }
 }

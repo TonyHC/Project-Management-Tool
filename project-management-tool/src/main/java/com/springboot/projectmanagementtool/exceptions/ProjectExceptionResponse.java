@@ -1,17 +1,17 @@
 package com.springboot.projectmanagementtool.exceptions;
 
 public class ProjectExceptionResponse {
-    private String projectIdentifier;
+    private String exceptionResponse;
 
-    public ProjectExceptionResponse(String projectIdentifier) {
-        this.projectIdentifier = projectIdentifier;
+    public ProjectExceptionResponse(String exceptionResponse) {
+        this.exceptionResponse = exceptionResponse;
     }
 
-    public String getProjectIdentifier() {
-        return projectIdentifier;
+    public String getExceptionResponse() {
+        return exceptionResponse;
     }
 
-    public void setProjectIdentifier(String projectIdentifier) {
-        this.projectIdentifier = projectIdentifier;
+    public void setExceptionResponse(String exceptionResponse) {
+        this.exceptionResponse = exceptionResponse;
     }
-} 
+}

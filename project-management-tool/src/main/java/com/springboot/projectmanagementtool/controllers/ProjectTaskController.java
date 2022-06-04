@@ -37,7 +37,7 @@ public class ProjectTaskController {
 
     @GetMapping("/{backlogId}")
     public ResponseEntity<List<ProjectTask>> getAllProjectTasksFromBacklog(@PathVariable String backlogId) {
-        List<ProjectTask> projectTasks = projectTaskService.findProjectTasksByIdentifier(backlogId);
+        List<ProjectTask> projectTasks = projectTaskService.findAllProjectTasksByIdentifier(backlogId);
         return new ResponseEntity<List<ProjectTask>>(projectTasks, HttpStatus.OK);
     }
 }
