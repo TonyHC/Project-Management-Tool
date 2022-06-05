@@ -6,42 +6,43 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
-@Table(name = "project")
+@Table(name = "project_task")
 @Data
-public class Project {
+public class ProjectTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @NotBlank(message = "Project name is required")
-    @Column(name = "project_name")
-    private String projectName;
+    @Column(name = "project_sequence", updatable = false)
+    private String projectSequence;
 
-    @NotBlank(message = "Project identifier is required")
-    @Size(min = 4, max = 5, message = "Project identifier length must be between 4 to 5 characters")
-    @Column(name = "project_identifier", updatable = false, unique = true)
+    @Column(name = "project_identifier", updatable = false)
     private String projectIdentifier;
 
-    @NotBlank(message = "Project description is required")
-    @Column(name = "project_description")
-    private String projectDescription;
+    @NotBlank(message = "Please include a project summary")
+    @Column(name = "summary")
+    private String summary;
+
+    @Column(name = "acceptance_criteria")
+    private String acceptanceCriteria;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "priority")
+    private Integer priority;
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @Column(name = "start_date")
-    private Date startDate;
+    @Column(name = "due_date")
+    private Date dueDate;
 
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @Column(name = "end_date")
-    private Date endDate;
-
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "backlog_id", nullable = false, updatable = false)
     @JsonIgnore
     private Backlog backlog;
 

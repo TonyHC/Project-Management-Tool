@@ -1,9 +1,9 @@
 package com.springboot.projectmanagementtool.exceptions;
 
-public class ProjectExceptionResponse {
+public class ProjectTaskExceptionResponse {
     private String exceptionResponse;
 
-    public ProjectExceptionResponse(String exceptionResponse) {
+    public ProjectTaskExceptionResponse(String exceptionResponse) {
         this.exceptionResponse = exceptionResponse;
     }
 
