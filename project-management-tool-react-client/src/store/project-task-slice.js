@@ -17,9 +17,11 @@ const projectTaskSlice = createSlice({
     },
     [createProjectTask.fulfilled]: (state, action) => {
         state.status = "success";
+        state.errors = {};
     },
     [createProjectTask.rejected]: (state, action) => {
         state.status = "failed";
+        state.errors = action.payload;
     },
   },
 });

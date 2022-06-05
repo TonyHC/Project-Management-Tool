@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams, useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import classNames from "classnames";
+
 import { createProjectTask } from "../../../store/project-task-actions";
 
 const initialInputState = {
@@ -18,13 +20,14 @@ const ProjectTaskForm = () => {
   const history = useHistory();
   const params = useParams();
   const { projectId } = params;
+  const { errors } = useSelector((state) => state.projectTask);
 
   const userInputHandler = (event) => {
     const { name, value } = event.target;
     setInputState((prevInputState) => {
       return {
         ...prevInputState,
-        [name]: value,
+        [name]: value
       };
     });
   };
@@ -42,7 +45,7 @@ const ProjectTaskForm = () => {
       createProjectTask({
         projectId: projectId,
         projectTask: newProjectTask,
-        history: history
+        history: history,
       })
     );
   };
@@ -61,13 +64,18 @@ const ProjectTaskForm = () => {
           </label>
           <input
             type="text"
-            className="form-control"
+            className={classNames("form-control", {
+              "is-invalid": errors.summary,
+            })}
             name="summary"
             id="summary"
             placeholder="Project Task summary"
             value={inputState.summary}
             onChange={userInputHandler}
           />
+          {errors.summary && (
+            <div className="invalid-feedback">{errors.summary}</div>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="acceptanceCriteria" className="form-label">
