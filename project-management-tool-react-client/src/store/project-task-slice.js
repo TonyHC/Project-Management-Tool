@@ -33,7 +33,7 @@ const projectTaskSlice = createSlice({
     },
     [getProjectTasks.rejected]: (state, action) => {
       state.status = "failed";
-      state.errors = action.error;
+      state.errors = action.payload;
     },
   },
 });

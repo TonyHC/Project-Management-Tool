@@ -10,15 +10,65 @@ const ProjectBoard = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const { projectId } = params;
-  const { projectTasks } = useSelector(state => state.projectTask);
+  const { errors, projectTasks, status } = useSelector((state) => state.projectTask);
 
   useEffect(() => {
-    if (projectId) {
-      dispatch(getProjectTasks(projectId));
-    }
+    dispatch(getProjectTasks(projectId));
   }, [dispatch, projectId]);
 
-  console.log(projectTasks);
+  const loadProjectBoardContent = (projectTasks, errors) => {
+    if (status === "success") {
+      if (projectTasks.length === 0) {
+        return (
+          <div className="alert alert-warning alert-dismissible fade show" role="alert">
+            <i className="fas fa-exclamation-triangle mb-1 me-2"></i>
+            <strong>No Project Tasks were found!</strong>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+        );
+      } else {
+        return (
+          <div className="row">
+            <ProjectTaskList
+              title="To Do"
+              cardHeaderStyle="bg-danger"
+              projectTasks={projectTasks}
+            />
+            <ProjectTaskList
+              title="In Progress"
+              cardHeaderStyle="bg-primary"
+              projectTasks={projectTasks}
+            />
+            <ProjectTaskList
+              title="Done"
+              cardHeaderStyle="bg-success"
+              projectTasks={projectTasks}
+            />
+          </div>
+        );
+      }
+    } else if (status === "failed") {
+      return (
+        <div className="alert alert-danger alert-dismissible fade show" role="alert" >
+          <i className="fas fa-exclamation-triangle mb-1 me-2"></i>
+          <strong>{errors.projectNotFound}</strong>
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+      );
+    }
+  };
+
+  let content = loadProjectBoardContent(projectTasks, errors);
 
   return (
     <div>
@@ -27,11 +77,7 @@ const ProjectBoard = () => {
       </Link>
       <br />
       <hr />
-      <div className="row">
-        <ProjectTaskList title="To Do" headerStyle="bg-danger" projectTasks={projectTasks} />
-        <ProjectTaskList title="In Progress" headerStyle="bg-primary" projectTasks={projectTasks} />
-        <ProjectTaskList title="Done" headerStyle="bg-success" projectTasks={projectTasks} />
-      </div>
+      {content}
     </div>
   );
 };

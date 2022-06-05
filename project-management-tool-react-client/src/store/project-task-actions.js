@@ -18,8 +18,13 @@ export const createProjectTask = createAsyncThunk(
 
 export const getProjectTasks = createAsyncThunk(
   "projectTasks,getAllProjectTasks",
-  async (projectId) => {
-    const res = await axios.get(`${PROJECT_TASKS_API}/${projectId}`);
-    return res.data;
+  async (projectId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${PROJECT_TASKS_API}/${projectId}`);
+      console.log(res);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
   }
 );
