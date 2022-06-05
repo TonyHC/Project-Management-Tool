@@ -52,7 +52,7 @@ const ProjectTaskForm = () => {
 
   return (
     <div className="col-md-8 m-auto">
-      <Link to={`/projectBoard/${projectId}`}>
+      <Link to={`/project-board/${projectId}`}>
         <strong>Back to Project Board</strong>
       </Link>
       <h4 className="display-4 text-center mt-4">Add / Update Project Task</h4>
@@ -152,7 +152,7 @@ const ProjectTaskForm = () => {
           <div className="col-md-6">
             <div className="d-grid gap-2">
               <Link
-                to={`/projectBoard/${projectId}`}
+                to={`/project-board/${projectId}`}
                 className="btn btn-secondary"
               >
                 Back to Project Board

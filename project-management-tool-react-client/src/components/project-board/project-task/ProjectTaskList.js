@@ -11,9 +11,16 @@ const ProjectTaskList = (props) => {
         </div>
       </div>
 
-      {/* <!-- SAMPLE PROJECT TASK STARTS HERE --> */}
-      <ProjectTaskItem />
-      {/* <!-- SAMPLE PROJECT TASK ENDS HERE --> */}
+      {props.projectTasks &&
+        props.projectTasks.map((projectTask) => (
+          <ProjectTaskItem
+            key={projectTask.id}
+            projectSequence={projectTask.projectSequence}
+            summary={projectTask.summary}
+            acceptanceCriteria={projectTask.acceptanceCriteria}
+            priority={projectTask.priority}
+          />
+        ))}
     </div>
   );
 };
