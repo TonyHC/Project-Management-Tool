@@ -3,7 +3,7 @@ package com.springboot.projectmanagementtool.services;
 
 import com.springboot.projectmanagementtool.domain.Backlog;
 import com.springboot.projectmanagementtool.domain.Project;
-import com.springboot.projectmanagementtool.exceptions.ProjectIdException;
+import com.springboot.projectmanagementtool.exceptions.ProjectIdExistsException;
 import com.springboot.projectmanagementtool.exceptions.ProjectNotFoundException;
 import com.springboot.projectmanagementtool.repositories.BacklogRepository;
 import com.springboot.projectmanagementtool.repositories.ProjectRepository;
@@ -36,7 +36,7 @@ public class ProjectService {
 
             return projectRepository.save(project);
         } catch (Exception exception) {
-            throw new ProjectIdException("Project ID: " + project.getProjectIdentifier().toUpperCase() + " already exists.");
+            throw new ProjectIdExistsException("Project ID: " + project.getProjectIdentifier().toUpperCase() + " already exists.");
         }
     }
 
