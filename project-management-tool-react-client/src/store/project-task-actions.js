@@ -15,3 +15,11 @@ export const createProjectTask = createAsyncThunk(
     }
   }
 );
+
+export const getProjectTasks = createAsyncThunk(
+  "projectTasks,getAllProjectTasks",
+  async (projectId) => {
+    const res = await axios.get(`${PROJECT_TASKS_API}/${projectId}`);
+    return res.data;
+  }
+);
