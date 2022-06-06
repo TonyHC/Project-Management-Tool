@@ -1,7 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { deleteProjectTask } from "../../../store/project-task-actions";
 
 const ProjectTaskItem = (props) => {
+  const dispatch = useDispatch();
+
   let priority;
   let cardHeaderStyles;
 
@@ -16,6 +21,15 @@ const ProjectTaskItem = (props) => {
     cardHeaderStyles = "card-header bg-info";
   }
 
+  const deleteProjectTaskHandler = () => {
+    dispatch(
+      deleteProjectTask({
+        projectId: props.identifier,
+        projectTaskSequence: props.projectSequence
+      })
+    );
+  };
+
   return (
     <div className="card mb-1 bg-light">
       <div className={`d-flex justify-content-between ${cardHeaderStyles}`}>
@@ -25,14 +39,13 @@ const ProjectTaskItem = (props) => {
       <div className="card-body bg-light">
         <h5 className="card-title">{props.summary}</h5>
         <p className="card-text text-truncate ">{props.acceptanceCriteria}</p>
-        <Link
-          to={`/project-task-form/${props.identifier}/${props.projectSequence}`}
-          className="btn btn-primary"
-        >
+        <Link to={`/project-task-form/${props.identifier}/${props.projectSequence}`} className="btn btn-primary">
           View / Update
         </Link>
 
-        <button className="btn btn-danger ms-4">Delete</button>
+        <button className="btn btn-danger ms-4" onClick={deleteProjectTaskHandler}>
+          Delete Project Task
+        </button>
       </div>
     </div>
   );
