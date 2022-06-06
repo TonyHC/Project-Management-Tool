@@ -23,7 +23,7 @@ const ProjectItem = (props) => {
         </div>
         <div className="col-md-4">
           <ul className="list-group">
-            <Link to="#">
+            <Link to={`/project-board/${props.identifier}`}>
               <li className="list-group-item list-group-item-action">
                 <i className="fa fa-flag-checkered me-2"></i>
                 Project Board
