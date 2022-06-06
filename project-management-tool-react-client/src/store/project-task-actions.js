@@ -55,3 +55,15 @@ export const updateProjectTask = createAsyncThunk(
     }
   }
 );
+
+export const deleteProjectTask = createAsyncThunk(
+  "projectTasks/deleteProjectTask",
+  async (data) => {
+    if (window.confirm("Do you really want to delete this project task?")) {
+      const { projectId, projectTaskSequence } = data;
+      await axios.delete(`${PROJECT_TASKS_API}/${projectId}/${projectTaskSequence}`);
+    } else {
+      return "Cancel";
+    }
+  }
+);

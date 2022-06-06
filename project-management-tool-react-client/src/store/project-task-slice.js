@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { createProjectTask, getProjectTasks, getProjectTask, updateProjectTask } from "./project-task-actions";
+import {
+  createProjectTask,
+  getProjectTasks,
+  getProjectTask,
+  updateProjectTask,
+  deleteProjectTask,
+} from "./project-task-actions";
 
 const projectTaskSlice = createSlice({
   name: "projectTask",
@@ -8,20 +14,20 @@ const projectTaskSlice = createSlice({
     projectTasks: [],
     projectTask: {},
     errors: {},
-    status: null
+    status: null,
   },
   reducers: {},
   extraReducers: {
     [createProjectTask.pending]: (state, action) => {
-        state.status = "loading";
+      state.status = "loading";
     },
     [createProjectTask.fulfilled]: (state, action) => {
-        state.status = "success";
-        state.errors = {};
+      state.status = "success";
+      state.errors = {};
     },
     [createProjectTask.rejected]: (state, action) => {
-        state.status = "failed";
-        state.errors = action.payload;
+      state.status = "failed";
+      state.errors = action.payload;
     },
     [getProjectTasks.pending]: (state, action) => {
       state.status = "loading";
@@ -57,6 +63,24 @@ const projectTaskSlice = createSlice({
     [updateProjectTask.rejected]: (state, action) => {
       state.status = "failed";
       state.errors = action.payload;
+    },
+    [deleteProjectTask.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [deleteProjectTask.fulfilled]: (state, action) => {
+      state.status = "success";
+      if (action.payload !== "Cancel") {
+        console.log(action);
+        state.projectTasks = state.projectTasks.filter(
+          (projectTask) =>
+            projectTask.projectSequence !== action.meta.arg.projectTaskSequence
+        );
+      }
+      state.errors = {};
+    },
+    [deleteProjectTask.rejected]: (state, action) => {
+      state.status = "failed";
+      state.errors = action.error;
     },
   },
 });
