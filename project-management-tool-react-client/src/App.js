@@ -26,6 +26,9 @@ const App = () => {
         <Route path="/project-task-form/:projectId" exact>
           <ProjectTaskForm />
         </Route>
+        <Route path="/project-task-form/:projectId/:projectTaskSequence" exact>
+          <ProjectTaskForm />
+        </Route>
       </Switch>
     </Layout>
   );

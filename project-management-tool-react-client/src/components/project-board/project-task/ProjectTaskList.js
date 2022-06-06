@@ -22,11 +22,11 @@ const ProjectTaskList = (props) => {
         filteredProjectTasks.map((projectTask) => (
           <ProjectTaskItem
             key={projectTask.id}
+            identifier={projectTask.projectIdentifier}
             projectSequence={projectTask.projectSequence}
             summary={projectTask.summary}
             acceptanceCriteria={projectTask.acceptanceCriteria}
             priority={projectTask.priority}
-            status={projectTask.status}
           />
         ))}
     </div>

@@ -54,7 +54,7 @@ const ProjectBoard = () => {
       }
     } else if (status === "failed") {
       return (
-        <div className="alert alert-danger alert-dismissible fade show" role="alert" >
+        <div className="alert alert-danger alert-dismissible fade show" role="alert">
           <i className="fas fa-exclamation-triangle mb-1 me-2"></i>
           <strong>{errors.projectNotFound}</strong>
           <button
@@ -72,11 +72,13 @@ const ProjectBoard = () => {
 
   return (
     <div>
-      <Link to={`/project-task-form/${projectId}`} className="btn btn-primary mb-3">
-        <i className="fas fa-plus-circle"> Create Project Task</i>
-      </Link>
-      <br />
-      <hr />
+      {!errors.projectNotFound && (
+        <Link
+          to={`/project-task-form/${projectId}`}
+          className="btn btn-primary mb-3">
+          <i className="fas fa-plus-circle"> Create Project Task</i>
+        </Link>
+      )}
       {content}
     </div>
   );

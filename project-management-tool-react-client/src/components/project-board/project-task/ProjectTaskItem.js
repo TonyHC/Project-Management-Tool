@@ -26,7 +26,7 @@ const ProjectTaskItem = (props) => {
         <h5 className="card-title">{props.summary}</h5>
         <p className="card-text text-truncate ">{props.acceptanceCriteria}</p>
         <Link
-          to={`/projectBoard/${props.projectIdentifier}`}
+          to={`/project-task-form/${props.identifier}/${props.projectSequence}`}
           className="btn btn-primary"
         >
           View / Update

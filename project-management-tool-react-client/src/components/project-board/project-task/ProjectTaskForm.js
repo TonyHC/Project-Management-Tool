@@ -1,33 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useParams, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
-import { createProjectTask } from "../../../store/project-task-actions";
+import { createProjectTask, getProjectTask, updateProjectTask} from "../../../store/project-task-actions";
 
 const initialInputState = {
   summary: "",
   acceptanceCriteria: "",
   dueDate: "",
   priority: 0,
-  status: ""
+  status: "",
 };
 
 const ProjectTaskForm = () => {
   const [inputState, setInputState] = useState(initialInputState);
+  const [editMode, setEditMode] = useState(false);
+
   const dispatch = useDispatch();
   const history = useHistory();
   const params = useParams();
-  const { projectId } = params;
-  const { errors } = useSelector((state) => state.projectTask);
+  const { projectId, projectTaskSequence } = params;
+  const { errors, projectTask } = useSelector((state) => state.projectTask);
+
+  useEffect(() => {
+    if (projectId && projectTaskSequence) {
+      dispatch(
+        getProjectTask({
+          projectId: projectId,
+          projectTaskSequence: projectTaskSequence,
+          history: history
+        })
+      );
+      setEditMode(true);
+    }
+  }, [dispatch, projectId, projectTaskSequence, history]);
+
+  useEffect(() => {
+    let timer;
+
+    if (Object.keys(projectTask).length > 0 && editMode) {
+      timer = setTimeout(() => {
+        setInputState({
+          summary: projectTask.summary,
+          acceptanceCriteria: projectTask.acceptanceCriteria,
+          dueDate: projectTask.dueDate,
+          priority: projectTask.priority,
+          status: projectTask.status,
+        });
+      }, 200);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [projectTask, editMode]);
 
   const userInputHandler = (event) => {
     const { name, value } = event.target;
     setInputState((prevInputState) => {
       return {
         ...prevInputState,
-        [name]: value
+        [name]: value,
       };
     });
   };
@@ -35,19 +70,39 @@ const ProjectTaskForm = () => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    setInputState(initialInputState);
-    const newProjectTask = {
-      ...inputState,
-      projectIdentifier: projectId
-    };
+    if (!errors) {
+      setInputState(initialInputState);
+      setEditMode(false);
+    }
 
-    dispatch(
-      createProjectTask({
-        projectId: projectId,
-        projectTask: newProjectTask,
-        history: history,
-      })
-    );
+    if (editMode) {
+      const updatedProjectTask = {
+        ...inputState,
+        projectIdentifier: projectId,
+        id: projectTask.id,
+      };
+      dispatch(
+        updateProjectTask({
+          projectId: projectId,
+          projectTaskSequence: projectTaskSequence,
+          projectTask: updatedProjectTask,
+          history: history,
+        })
+      );
+    } else {
+      const newProjectTask = {
+        ...inputState,
+        projectIdentifier: projectId,
+      };
+
+      dispatch(
+        createProjectTask({
+          projectId: projectId,
+          projectTask: newProjectTask,
+          history: history,
+        })
+      );
+    }
   };
 
   return (
@@ -55,7 +110,9 @@ const ProjectTaskForm = () => {
       <Link to={`/project-board/${projectId}`}>
         <strong>Back to Project Board</strong>
       </Link>
-      <h4 className="display-4 text-center mt-4">Add / Update Project Task</h4>
+      <h4 className="display-4 text-center mt-4">
+        {editMode ? "Update" : "Create"} Project Task
+      </h4>
       <p className="lead text-center">Project Name + Project Code</p>
       <form onSubmit={submitHandler}>
         <div className="mb-3">
