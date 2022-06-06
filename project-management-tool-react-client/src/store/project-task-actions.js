@@ -17,14 +17,41 @@ export const createProjectTask = createAsyncThunk(
 );
 
 export const getProjectTasks = createAsyncThunk(
-  "projectTasks,getAllProjectTasks",
+  "projectTasks/getAllProjectTasks",
   async (projectId, { rejectWithValue }) => {
     try {
       const res = await axios.get(`${PROJECT_TASKS_API}/${projectId}`);
-      console.log(res);
       return res.data;
     } catch (err) {
-      return rejectWithValue(err.response.data)
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const getProjectTask = createAsyncThunk(
+  "projectTasks/getProjectTask",
+  async (data, { rejectWithValue }) => {
+    const { projectId, projectTaskSequence, history } = data;
+
+    try {
+      const res = await axios.get(`${PROJECT_TASKS_API}/${projectId}/${projectTaskSequence}`);
+      return res.data;
+    } catch (err) {
+      history.push(`/project-board/${projectId}`);
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const updateProjectTask = createAsyncThunk(
+  "projectTasks/updateProjectTask",
+  async (data, { rejectWithValue }) => {
+    try {
+      const { projectId, projectTaskSequence, projectTask, history } = data;
+      await axios.patch(`${PROJECT_TASKS_API}/${projectId}/${projectTaskSequence}`, projectTask);
+      history.push(`/project-board/${projectId}`);
+    } catch (err) {
+      return rejectWithValue(err.response.data);
     }
   }
 );

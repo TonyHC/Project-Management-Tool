@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { createProjectTask, getProjectTasks } from "./project-task-actions";
+import { createProjectTask, getProjectTasks, getProjectTask, updateProjectTask } from "./project-task-actions";
 
 const projectTaskSlice = createSlice({
   name: "projectTask",
@@ -32,6 +32,29 @@ const projectTaskSlice = createSlice({
       state.projectTasks = action.payload;
     },
     [getProjectTasks.rejected]: (state, action) => {
+      state.status = "failed";
+      state.errors = action.payload;
+    },
+    [getProjectTask.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [getProjectTask.fulfilled]: (state, action) => {
+      state.status = "success";
+      state.projectTask = action.payload;
+      state.errors = {};
+    },
+    [getProjectTask.rejected]: (state, action) => {
+      state.status = "failed";
+      state.errors = action.payload;
+    },
+    [updateProjectTask.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [updateProjectTask.fulfilled]: (state, action) => {
+      state.status = "success";
+      state.errors = {};
+    },
+    [updateProjectTask.rejected]: (state, action) => {
       state.status = "failed";
       state.errors = action.payload;
     },
