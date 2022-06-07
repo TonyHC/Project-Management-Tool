@@ -1,4 +1,3 @@
-
 package com.springboot.projectmanagementtool.services;
 
 import com.springboot.projectmanagementtool.domain.Backlog;
@@ -22,21 +21,23 @@ public class ProjectService {
     }
 
     public Project saveOrUpdateProject(Project project) {
+        String projectIdentifier = project.getProjectIdentifier().toUpperCase();
+
         try {
-            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            project.setProjectIdentifier(projectIdentifier);
 
             if (project.getId() == null) {
                 Backlog backlog = new Backlog();
                 project.setBacklog(backlog);
                 backlog.setProject(project);
-                backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+                backlog.setProjectIdentifier(projectIdentifier);
             } else {
-                project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
+                project.setBacklog(backlogRepository.findByProjectIdentifier(projectIdentifier));
             }
 
             return projectRepository.save(project);
         } catch (Exception exception) {
-            throw new ProjectIdExistsException("Project ID: " + project.getProjectIdentifier().toUpperCase() + " already exists.");
+            throw new ProjectIdExistsException("Project ID: " + projectIdentifier + " already exists.");
         }
     }
 
@@ -44,7 +45,7 @@ public class ProjectService {
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
 
         if (project == null) {
-            throw new ProjectNotFoundException("Project not found.");
+            throw new ProjectNotFoundException("Project with ID: " + projectId + " was not found.");
         }
 
         return project;
@@ -55,12 +56,7 @@ public class ProjectService {
     }
 
     public void deleteProjectByIdentifier(String projectId) {
-        Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
-
-        if (project == null) {
-            throw new ProjectNotFoundException("Cannot delete Project with ID: " + projectId);
-        }
-
+        Project project = findProjectByIdentifier(projectId.toUpperCase());
         projectRepository.delete(project);
     }
 } 
