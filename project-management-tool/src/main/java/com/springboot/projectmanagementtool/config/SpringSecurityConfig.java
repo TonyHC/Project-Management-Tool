@@ -52,6 +52,7 @@ public class SpringSecurityConfig {
                         "/**/*.css",
                         "/**/*.js"
                 ).permitAll()
+                .antMatchers("/api/users/**").permitAll()
                 .anyRequest().authenticated();
 
         return http.build();
