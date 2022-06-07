@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ProjectTaskList from "./project-task/ProjectTaskList";
 import { getProjectTasks } from "../../store/project-task-actions";
+import LoadingSpinner from "../../ui/LoadingSpinner";
 
 const ProjectBoard = () => {
   const dispatch = useDispatch();
@@ -65,6 +66,8 @@ const ProjectBoard = () => {
           ></button>
         </div>
       );
+    } else {
+      return <LoadingSpinner />;
     }
   };
 
@@ -82,6 +85,6 @@ const ProjectBoard = () => {
       {content}
     </div>
   );
-};
+}
 
 export default ProjectBoard;
