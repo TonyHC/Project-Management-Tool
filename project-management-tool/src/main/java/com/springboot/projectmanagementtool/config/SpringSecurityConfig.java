@@ -1,6 +1,7 @@
 package com.springboot.projectmanagementtool.config;
 
 import com.springboot.projectmanagementtool.security.JwtAuthenticationEntryPoint;
+import com.springboot.projectmanagementtool.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.springboot.projectmanagementtool.security.SecurityConstants.H2_URL;
 import static com.springboot.projectmanagementtool.security.SecurityConstants.SIGN_UP_URLS;
@@ -25,9 +27,11 @@ import static com.springboot.projectmanagementtool.security.SecurityConstants.SI
 )
 public class SpringSecurityConfig {
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SpringSecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler) {
+    public SpringSecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.unauthorizedHandler = unauthorizedHandler;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -65,6 +69,8 @@ public class SpringSecurityConfig {
                 .antMatchers(SIGN_UP_URLS).permitAll()
                 .antMatchers(H2_URL).permitAll()
                 .anyRequest().authenticated();
+
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
