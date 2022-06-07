@@ -20,14 +20,7 @@ const ProjectTaskList = (props) => {
 
       {filteredProjectTasks &&
         filteredProjectTasks.map((projectTask) => (
-          <ProjectTaskItem
-            key={projectTask.id}
-            identifier={projectTask.projectIdentifier}
-            projectSequence={projectTask.projectSequence}
-            summary={projectTask.summary}
-            acceptanceCriteria={projectTask.acceptanceCriteria}
-            priority={projectTask.priority}
-          />
+          <ProjectTaskItem key={projectTask.id} projectTask={projectTask} />
         ))}
     </div>
   );

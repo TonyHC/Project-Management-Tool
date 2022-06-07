@@ -5,7 +5,7 @@ import {
   getProjectTasks,
   getProjectTask,
   updateProjectTask,
-  deleteProjectTask,
+  deleteProjectTask
 } from "./project-task-actions";
 
 const projectTaskSlice = createSlice({
@@ -14,7 +14,7 @@ const projectTaskSlice = createSlice({
     projectTasks: [],
     projectTask: {},
     errors: {},
-    status: null,
+    status: null
   },
   reducers: {},
   extraReducers: {
@@ -70,7 +70,6 @@ const projectTaskSlice = createSlice({
     [deleteProjectTask.fulfilled]: (state, action) => {
       state.status = "success";
       if (action.payload !== "Cancel") {
-        console.log(action);
         state.projectTasks = state.projectTasks.filter(
           (projectTask) =>
             projectTask.projectSequence !== action.meta.arg.projectTaskSequence
@@ -81,8 +80,8 @@ const projectTaskSlice = createSlice({
     [deleteProjectTask.rejected]: (state, action) => {
       state.status = "failed";
       state.errors = action.error;
-    },
-  },
+    }
+  }
 });
 
 export default projectTaskSlice.reducer;

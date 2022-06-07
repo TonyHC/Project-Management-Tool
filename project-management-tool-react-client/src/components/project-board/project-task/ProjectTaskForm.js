@@ -11,7 +11,7 @@ const initialInputState = {
   acceptanceCriteria: "",
   dueDate: "",
   priority: 0,
-  status: "",
+  status: ""
 };
 
 const ProjectTaskForm = () => {
@@ -26,13 +26,7 @@ const ProjectTaskForm = () => {
 
   useEffect(() => {
     if (projectId && projectTaskSequence) {
-      dispatch(
-        getProjectTask({
-          projectId: projectId,
-          projectTaskSequence: projectTaskSequence,
-          history: history
-        })
-      );
+      dispatch(getProjectTask({ projectId, projectTaskSequence, history }));
       setEditMode(true);
     }
   }, [dispatch, projectId, projectTaskSequence, history]);
@@ -47,7 +41,7 @@ const ProjectTaskForm = () => {
           acceptanceCriteria: projectTask.acceptanceCriteria,
           dueDate: projectTask.dueDate,
           priority: projectTask.priority,
-          status: projectTask.status,
+          status: projectTask.status
         });
       }, 200);
     }
@@ -62,7 +56,7 @@ const ProjectTaskForm = () => {
     setInputState((prevInputState) => {
       return {
         ...prevInputState,
-        [name]: value,
+        [name]: value
       };
     });
   };
@@ -79,27 +73,27 @@ const ProjectTaskForm = () => {
       const updatedProjectTask = {
         ...inputState,
         projectIdentifier: projectId,
-        id: projectTask.id,
+        id: projectTask.id
       };
       dispatch(
         updateProjectTask({
-          projectId: projectId,
-          projectTaskSequence: projectTaskSequence,
+          projectId,
+          projectTaskSequence,
           projectTask: updatedProjectTask,
-          history: history,
+          history
         })
       );
     } else {
       const newProjectTask = {
         ...inputState,
-        projectIdentifier: projectId,
+        projectIdentifier: projectId
       };
 
       dispatch(
         createProjectTask({
-          projectId: projectId,
+          projectId,
           projectTask: newProjectTask,
-          history: history,
+          history
         })
       );
     }
@@ -110,10 +104,9 @@ const ProjectTaskForm = () => {
       <Link to={`/project-board/${projectId}`}>
         <strong>Back to Project Board</strong>
       </Link>
-      <h4 className="display-4 text-center mt-4">
+      <h4 className="display-4 text-center my-4">
         {editMode ? "Update" : "Create"} Project Task
       </h4>
-      <p className="lead text-center">Project Name + Project Code</p>
       <form onSubmit={submitHandler}>
         <div className="mb-3">
           <label htmlFor="summary" className="form-label">
@@ -122,7 +115,7 @@ const ProjectTaskForm = () => {
           <input
             type="text"
             className={classNames("form-control", {
-              "is-invalid": errors.summary,
+              "is-invalid": errors.summary
             })}
             name="summary"
             id="summary"
@@ -208,10 +201,7 @@ const ProjectTaskForm = () => {
           </div>
           <div className="col-md-6">
             <div className="d-grid gap-2">
-              <Link
-                to={`/project-board/${projectId}`}
-                className="btn btn-secondary"
-              >
+              <Link to={`/project-board/${projectId}`} className="btn btn-secondary">
                 Back to Project Board
               </Link>
             </div>

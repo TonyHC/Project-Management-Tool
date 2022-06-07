@@ -4,7 +4,7 @@ import {
   createProject,
   getProjects,
   getProjectById,
-  deleteProjectById,
+  deleteProjectById
 } from "./project-actions";
 
 const projectSlice = createSlice({
@@ -13,7 +13,7 @@ const projectSlice = createSlice({
     projects: [],
     project: {},
     status: null,
-    errors: {},
+    errors: {}
   },
   reducers: {},
   extraReducers: {
@@ -67,8 +67,8 @@ const projectSlice = createSlice({
     [deleteProjectById.rejected]: (state, action) => {
       state.status = "failed";
       state.errors = action.error;
-    },
-  },
+    }
+  }
 });
 
 export default projectSlice.reducer;
