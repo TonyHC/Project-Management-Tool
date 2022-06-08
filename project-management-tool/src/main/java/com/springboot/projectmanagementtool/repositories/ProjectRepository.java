@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends CrudRepository<Project, Long> {
     Project findByProjectIdentifier(String projectId);
-    List<Project> findAllBy();
+    List<Project> findAllByProjectOwner(String username);
 }
