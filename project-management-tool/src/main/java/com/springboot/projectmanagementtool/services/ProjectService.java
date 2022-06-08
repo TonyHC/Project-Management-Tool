@@ -26,6 +26,17 @@ public class ProjectService {
     }
 
     public Project saveOrUpdateProject(Project project, String username) {
+        if (project.getId() != null) {
+            Project existingProject = projectRepository.findByProjectIdentifier(project.getProjectIdentifier());
+
+            if (existingProject != null && !existingProject.getProjectOwner().equals(username)) {
+                throw new ProjectNotFoundException("Project not found in your account");
+            } else if (existingProject == null) {
+                throw new ProjectNotFoundException("Cannot update project with id: " + project.getProjectIdentifier()
+                        + " because project does not exist");
+            }
+        }
+
         String projectIdentifier = project.getProjectIdentifier().toUpperCase();
 
         try {
@@ -50,22 +61,26 @@ public class ProjectService {
         }
     }
 
-    public Project findProjectByIdentifier(String projectId) {
+    public Project findProjectByIdentifier(String projectId, String username) {
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
 
         if (project == null) {
             throw new ProjectNotFoundException("Project with ID: " + projectId + " was not found.");
         }
 
+        if(!project.getProjectOwner().equals(username)) {
+            throw new ProjectNotFoundException("Project not found in your account");
+        }
+
         return project;
     }
 
-    public List<Project> findAllProjects() {
-        return projectRepository.findAllBy();
+    public List<Project> findAllProjects(String username) {
+        return projectRepository.findAllByProjectOwner(username);
     }
 
-    public void deleteProjectByIdentifier(String projectId) {
-        Project project = findProjectByIdentifier(projectId.toUpperCase());
+    public void deleteProjectByIdentifier(String projectId, String username) {
+        Project project = findProjectByIdentifier(projectId.toUpperCase(), username);
         projectRepository.delete(project);
     }
 } 
