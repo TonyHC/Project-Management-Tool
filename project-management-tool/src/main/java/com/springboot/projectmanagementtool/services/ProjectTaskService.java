@@ -19,8 +19,8 @@ public class ProjectTaskService {
         this.projectService = projectService;
     }
 
-    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask, String username) {
-        Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier, username).getBacklog();
+    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
+        Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier).getBacklog();
         projectTask.setBacklog(backlog);
 
         Integer backlogSequence = backlog.getProjectTaskSequence();
@@ -41,13 +41,13 @@ public class ProjectTaskService {
         return projectTaskRepository.save(projectTask);
     }
 
-    public List<ProjectTask> findAllProjectTasksByIdentifier(String projectIdentifier, String username) {
-        projectService.findProjectByIdentifier(projectIdentifier, username);
+    public List<ProjectTask> findAllProjectTasksByIdentifier(String projectIdentifier) {
+        projectService.findProjectByIdentifier(projectIdentifier);
         return projectTaskRepository.findAllByProjectIdentifierOrderByPriority(projectIdentifier);
     }
 
-    public ProjectTask findProjectTaskByProjectSequence(String projectIdentifier, String projectSequence, String username) {
-        projectService.findProjectByIdentifier(projectIdentifier, username);
+    public ProjectTask findProjectTaskByProjectSequence(String projectIdentifier, String projectSequence) {
+        projectService.findProjectByIdentifier(projectIdentifier);
 
         ProjectTask projectTask = projectTaskRepository.findByProjectSequence(projectSequence);
 
@@ -64,13 +64,13 @@ public class ProjectTaskService {
     }
 
     public ProjectTask updateProjectTaskByProjectSequence(String projectIdentifier, String projectSequence,
-                                                          ProjectTask projectTask, String username) {
-        findProjectTaskByProjectSequence(projectIdentifier, projectSequence, username);
+                                                          ProjectTask projectTask) {
+        findProjectTaskByProjectSequence(projectIdentifier, projectSequence);
         return projectTaskRepository.save(projectTask);
     }
 
-    public void deleteProjectTaskByProjectSequence(String projectIdentifier, String projectSequence, String username) {
-        ProjectTask projectTask = findProjectTaskByProjectSequence(projectIdentifier, projectSequence, username);
+    public void deleteProjectTaskByProjectSequence(String projectIdentifier, String projectSequence) {
+        ProjectTask projectTask = findProjectTaskByProjectSequence(projectIdentifier, projectSequence);
         projectTaskRepository.delete(projectTask);
     }
 }
