@@ -34,12 +34,12 @@ const Header = () => {
 
           <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <NavLink activeClassName="active" className="nav-link" to="#">
+              <NavLink activeClassName="active" className="nav-link" to="/register">
                 Sign Up
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink activeClassName="active" className="nav-link" to="#">
+              <NavLink activeClassName="active" className="nav-link" to="/login">
                 Login
               </NavLink>
             </li>

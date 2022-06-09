@@ -5,13 +5,19 @@ import Dashboard from "./components/Dashboard";
 import ProjectForm from "./components/project/ProjectForm";
 import ProjectBoard from "./components/project-board/ProjectBoard";
 import ProjectTaskForm from "./components/project-board/project-task/ProjectTaskForm";
-import Layout from "./ui/Layout";
+import Layout from "./components/layout/Layout";
+import Landing from "./components/layout/Landing";
+import Login from "./components/user-management/Login";
+import Register from "./components/user-management/Register";
 
 const App = () => {
   return (
     <Layout>
       <Switch>
-        <Route path="/dashboard" exact>
+        <Route path="/" exact>
+          <Landing />
+        </Route>
+        <Route path="/dashboard" exact >
           <Dashboard />
         </Route>
         <Route path="/project-form" exact>
@@ -28,6 +34,12 @@ const App = () => {
         </Route>
         <Route path="/project-task-form/:projectId/:projectTaskSequence" exact>
           <ProjectTaskForm />
+        </Route>
+        <Route path="/register" exact>
+          <Register />
+        </Route>
+        <Route path="/login" exact>
+          <Login />
         </Route>
       </Switch>
     </Layout>
