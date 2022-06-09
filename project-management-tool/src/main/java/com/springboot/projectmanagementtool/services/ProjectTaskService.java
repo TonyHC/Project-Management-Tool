@@ -3,8 +3,6 @@ package com.springboot.projectmanagementtool.services;
 import com.springboot.projectmanagementtool.domain.Backlog;
 import com.springboot.projectmanagementtool.domain.ProjectTask;
 import com.springboot.projectmanagementtool.exceptions.ProjectTaskNotFoundException;
-import com.springboot.projectmanagementtool.repositories.BacklogRepository;
-import com.springboot.projectmanagementtool.repositories.ProjectRepository;
 import com.springboot.projectmanagementtool.repositories.ProjectTaskRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +11,10 @@ import java.util.Objects;
 
 @Service
 public class ProjectTaskService {
-    private BacklogRepository backlogRepository;
-    private ProjectRepository projectRepository;
-    private ProjectTaskRepository projectTaskRepository;
-    private ProjectService projectService;
+    private final ProjectTaskRepository projectTaskRepository;
+    private final ProjectService projectService;
 
-    public ProjectTaskService(BacklogRepository backlogRepository, ProjectRepository projectRepository,
-                              ProjectTaskRepository projectTaskRepository, ProjectService projectService) {
-        this.backlogRepository = backlogRepository;
-        this.projectRepository = projectRepository;
+    public ProjectTaskService(ProjectTaskRepository projectTaskRepository, ProjectService projectService) {
         this.projectTaskRepository = projectTaskRepository;
         this.projectService = projectService;
     }

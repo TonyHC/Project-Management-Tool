@@ -14,9 +14,9 @@ import java.util.List;
 
 @Service
 public class ProjectService {
-    private ProjectRepository projectRepository;
-    private BacklogRepository backlogRepository;
-    private UserRepository userRepository;
+    private final ProjectRepository projectRepository;
+    private final BacklogRepository backlogRepository;
+    private final UserRepository userRepository;
 
     public ProjectService(ProjectRepository projectRepository, BacklogRepository backlogRepository,
                           UserRepository userRepository) {

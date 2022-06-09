@@ -7,6 +7,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UsernameAlreadyExistsResponse {
-    private String username;
+public class ProjectIdExistsResponse {
+    private String projectIdExists;
 }
