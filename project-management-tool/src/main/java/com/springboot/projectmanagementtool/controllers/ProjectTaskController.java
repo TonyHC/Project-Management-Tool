@@ -15,8 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/project-tasks")
 public class ProjectTaskController {
-    private ProjectTaskService projectTaskService;
-    private MapValidationErrorService mapValidationErrorService;
+    private final ProjectTaskService projectTaskService;
+    private final MapValidationErrorService mapValidationErrorService;
 
     public ProjectTaskController(ProjectTaskService projectTaskService, MapValidationErrorService mapValidationErrorService) {
         this.projectTaskService = projectTaskService;
@@ -26,10 +26,8 @@ public class ProjectTaskController {
     @PostMapping("/{backlogId}")
     public ResponseEntity<?> addProjectTaskToBacklog(@PathVariable String backlogId, Principal principal,
                                                      @Valid @RequestBody ProjectTask projectTask, BindingResult result) {
-        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
-
-        if (errorMap != null) {
-            return errorMap;
+        if (result.hasErrors()) {
+            return mapValidationErrorService.mapValidationError(result);
         }
 
         ProjectTask newProjectTask = projectTaskService.addProjectTask(backlogId, projectTask, principal.getName());
@@ -57,10 +55,8 @@ public class ProjectTaskController {
                                                           Principal principal,
                                                           @Valid @RequestBody ProjectTask projectTask,
                                                           BindingResult result) {
-        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
-
-        if (errorMap != null) {
-            return errorMap;
+        if (result.hasErrors()) {
+            return mapValidationErrorService.mapValidationError(result);
         }
 
         ProjectTask existingProjectTask =

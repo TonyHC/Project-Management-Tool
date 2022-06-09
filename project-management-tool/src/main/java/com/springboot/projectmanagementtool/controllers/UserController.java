@@ -32,7 +32,9 @@ public class UserController {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
 
-    public UserController(MapValidationErrorService mapValidationErrorService, UserService userService, UserValidator userValidator, JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
+    public UserController(MapValidationErrorService mapValidationErrorService, UserService userService,
+                          UserValidator userValidator, JwtTokenProvider jwtTokenProvider,
+                          AuthenticationManager authenticationManager) {
         this.mapValidationErrorService = mapValidationErrorService;
         this.userService = userService;
         this.userValidator = userValidator;
@@ -44,10 +46,8 @@ public class UserController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) {
         userValidator.validate(user, result);
 
-        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
-
-        if (errorMap != null) {
-            return errorMap;
+        if (result.hasErrors()) {
+            return mapValidationErrorService.mapValidationError(result);
         }
 
         User newUser = userService.saveUser(user);
@@ -56,10 +56,8 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result) {
-        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationError(result);
-
-        if (errorMap != null) {
-            return errorMap;
+        if (result.hasErrors()) {
+            return mapValidationErrorService.mapValidationError(result);
         }
 
         Authentication authentication = authenticationManager.authenticate(
