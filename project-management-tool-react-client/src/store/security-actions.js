@@ -3,6 +3,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import { setJWTToken } from "../utils/setJWTToken";
+import persistor from "..";
 
 const USERS_API = "http://localhost:8080/api/users";
 
@@ -20,7 +21,7 @@ export const createNewUser = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  "security/authenticateUser",
+  "security/login",
   async (data, { rejectWithValue }) => {
     try {
       const { loginRequest, history } = data;
@@ -35,5 +36,15 @@ export const login = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err.response.data);
     }
+  }
+);
+
+export const logout = createAsyncThunk(
+  "security/logout",
+  async (history) => {
+    persistor.purge();
+    localStorage.removeItem("jwt");
+    setJWTToken(false);
+    history.replace("/login");
   }
 );
