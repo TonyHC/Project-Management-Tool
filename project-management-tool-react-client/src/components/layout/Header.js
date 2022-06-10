@@ -1,7 +1,60 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { Fragment } from "react";
+import { Link, NavLink, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import { logout } from "../../store/security-actions";
 
 const Header = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { isAuth, user } = useSelector((state) => state.security);
+
+  const logoutHandler = () => {
+    dispatch(logout(history));
+  };
+
+  const authenticatedHeaderLinks = (
+    <Fragment>
+      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+        <li className="nav-item">
+          <NavLink activeClassName="active" className="nav-link" to="/dashboard">
+            Dashboard
+          </NavLink>
+        </li>
+      </ul>
+      <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li className="nav-item">
+          <div className="nav-link">
+            <i class="fas fa-id-badge me-1"></i>
+            {user.firstName} {user.lastName}
+          </div>
+        </li>
+        <li className="nav-item logout" onClick={logoutHandler}>
+          <Link className="nav-link" to="/logout">
+            Logout
+          </Link>
+        </li>
+      </ul>
+    </Fragment>
+  );
+
+  const notAuthenticatedHeaderLinks = (
+    <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+      <li className="nav-item">
+        <NavLink activeClassName="active" className="nav-link" to="/register">
+          Sign Up
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink activeClassName="active" className="nav-link" to="/login">
+          Login
+        </NavLink>
+      </li>
+    </ul>
+  );
+
+  let headerLinks = isAuth ? authenticatedHeaderLinks : notAuthenticatedHeaderLinks;
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark mb-4">
       <div className="container">
@@ -20,30 +73,7 @@ const Header = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarText">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <NavLink
-                activeClassName="active"
-                className="nav-link"
-                to="/dashboard"
-              >
-                Dashboard
-              </NavLink>
-            </li>
-          </ul>
-
-          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <NavLink activeClassName="active" className="nav-link" to="/register">
-                Sign Up
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink activeClassName="active" className="nav-link" to="/login">
-                Login
-              </NavLink>
-            </li>
-          </ul>
+          {headerLinks}
         </div>
       </div>
     </nav>
