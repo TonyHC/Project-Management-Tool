@@ -1,43 +1,47 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PURGE } from "redux-persist";
 
 import { createNewUser, login } from "./security-actions";
 
+const initialState = {
+    user: {},
+    isAuth: false,
+    errors: {},
+    status: null
+}
+
 const securitySlice = createSlice({
     name: "security",
-    initialState: {
-        user: {},
-        isAuth: false,
-        errors: {},
-        status: null
-    },
-    reducers: {
-        
-    },
-    extraReducers: {
-        [createNewUser.pending]: (state, action) => {
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(createNewUser.pending, (state, action) => {
             state.status = "loading";
-        },
-        [createNewUser.fulfilled]: (state, action) => {
+        })
+        .addCase(createNewUser.fulfilled, (state, action) => {
             state.status = "success";
             state.errors = {};
-        },
-        [createNewUser.rejected]: (state, action) => {
+        })
+        .addCase(createNewUser.rejected, (state, action) => {
             state.status = "failed";
             state.errors = action.payload;
-        },
-        [login.pending]: (state, action) => {
+        })
+        .addCase(login.pending, (state, action) => {
             state.status = "loading";
-        },
-        [login.fulfilled]: (state, action) => {
+
+        })
+        .addCase(login.fulfilled, (state, action) => {
             state.status = "success";
             state.user = action.payload;
             state.isAuth = true;
             state.errors = {};
-        },
-        [login.rejected]: (state, action) => {
+
+        })
+        .addCase(login.rejected, (state, action) => {
             state.status = "failed";
             state.errors = action.payload;
-        }
+        })
+        .addCase(PURGE, () => initialState);
     }
 });
 
