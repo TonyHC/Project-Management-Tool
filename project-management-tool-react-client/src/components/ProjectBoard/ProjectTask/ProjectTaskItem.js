@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { deleteProjectTask } from "../../../store/project-task-actions";
+import { deleteProjectTask } from "../../../store/actions/project-task-actions";
 
 const ProjectTaskItem = (props) => {
   const dispatch = useDispatch();

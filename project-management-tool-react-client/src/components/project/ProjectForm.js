@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import classNames from "classnames";
 
-import { createProject } from "../../store/project-actions";
-import { getProjectById } from "../../store/project-actions";
+import { createProject } from "../../store/actions/project-actions";
+import { getProjectById } from "../../store/actions/project-actions";
 
 const initialInputState = {
   projectName: "",

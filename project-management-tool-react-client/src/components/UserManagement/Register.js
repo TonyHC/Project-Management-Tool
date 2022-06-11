@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
-import { createNewUser } from "../../store/security-actions";
+import { register } from "../../store/actions/security-actions";
 
 const Register = () => {
   const firstNameRef = useRef();
@@ -33,7 +33,7 @@ const Register = () => {
       confirmPassword: confirmPasswordRef.current.value,
     };
 
-    dispatch(createNewUser({ newUser, history }));
+    dispatch(register({ newUser, history }));
   };
 
   return (

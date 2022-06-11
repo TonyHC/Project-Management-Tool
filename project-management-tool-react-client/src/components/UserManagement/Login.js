@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
-import { login } from "../../store/security-actions";
+import { login } from "../../store/actions/security-actions";
 
 const Login = () => {
   const usernameRef = useRef();
@@ -18,6 +18,10 @@ const Login = () => {
       history.replace("/dashboard");
     }
   }, [isAuth, history]);
+
+  console.log(errors);
+
+  console.log(errors.type === "security/login/rejected");
 
   const submitHandler = (event) => {
     event.preventDefault();

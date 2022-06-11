@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Link, NavLink, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { logout } from "../../store/security-actions";
+import { logout } from "../../store/actions/security-actions";
 
 const Header = () => {
   const history = useHistory();

@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import ProjectTaskList from "./project-task/ProjectTaskList";
-import { getProjectTasks } from "../../store/project-task-actions";
-import LoadingSpinner from "../ui/LoadingSpinner";
+import ProjectTaskList from "./ProjectTask/ProjectTaskList";
+import { getProjectTasks } from "../../store/actions/project-task-actions";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const ProjectBoard = () => {
   const dispatch = useDispatch();

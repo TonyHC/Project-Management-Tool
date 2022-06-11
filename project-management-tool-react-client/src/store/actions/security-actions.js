@@ -2,13 +2,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-import { setJWTToken } from "../utils/setJWTToken";
-import persistor from "..";
+import { setJWTToken } from "../../utils/setJWTToken";
+import persistor from "../../index";
 
 const USERS_API = "http://localhost:8080/api/users";
 
-export const createNewUser = createAsyncThunk(
-  "security/createNewUser",
+export const register = createAsyncThunk(
+  "security/register",
   async (data, { rejectWithValue }) => {
     try {
       const { newUser, history } = data;

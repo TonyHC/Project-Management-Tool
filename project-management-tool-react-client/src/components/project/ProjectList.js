@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import ProjectItem from "./ProjectItem";
-import { getProjects } from "../../store/project-actions";
-import LoadingSpinner from "../ui/LoadingSpinner";
+import { getProjects } from "../../store/actions/project-actions";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const ProjectList = () => {
   const { projects, status } = useSelector((state) => state.project);

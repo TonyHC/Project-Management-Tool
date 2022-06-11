@@ -6,14 +6,14 @@ import {
   getProjectTasks,
   getProjectTask,
   updateProjectTask,
-  deleteProjectTask,
-} from "./project-task-actions";
+  deleteProjectTask
+} from "../actions/project-task-actions";
 
 const initialState = {
   projectTasks: [],
   projectTask: {},
   errors: {},
-  status: null,
+  status: null
 };
 
 const projectTaskSlice = createSlice({

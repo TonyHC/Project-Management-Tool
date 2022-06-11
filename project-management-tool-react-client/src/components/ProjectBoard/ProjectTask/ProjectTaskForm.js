@@ -4,7 +4,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
-import { createProjectTask, getProjectTask, updateProjectTask} from "../../../store/project-task-actions";
+import { createProjectTask, getProjectTask, updateProjectTask} from "../../../store/actions/project-task-actions";
 
 const initialInputState = {
   summary: "",

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PURGE } from "redux-persist";
 
-import { createNewUser, login } from "./security-actions";
+import { register, login } from "../actions/security-actions";
 
 const initialState = {
     user: {},
@@ -15,31 +15,30 @@ const securitySlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(createNewUser.pending, (state, action) => {
+        builder.addCase(register.pending, (state, action) => {
             state.status = "loading";
         })
-        .addCase(createNewUser.fulfilled, (state, action) => {
+        .addCase(register.fulfilled, (state, action) => {
             state.status = "success";
             state.errors = {};
         })
-        .addCase(createNewUser.rejected, (state, action) => {
+        .addCase(register.rejected, (state, action) => {
             state.status = "failed";
             state.errors = action.payload;
         })
         .addCase(login.pending, (state, action) => {
             state.status = "loading";
-
         })
         .addCase(login.fulfilled, (state, action) => {
             state.status = "success";
             state.user = action.payload;
             state.isAuth = true;
             state.errors = {};
-
         })
         .addCase(login.rejected, (state, action) => {
             state.status = "failed";
             state.errors = action.payload;
+            console.log(action);
         })
         .addCase(PURGE, () => initialState);
     }

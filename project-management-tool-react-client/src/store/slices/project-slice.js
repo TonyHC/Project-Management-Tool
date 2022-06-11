@@ -6,13 +6,13 @@ import {
   getProjects,
   getProjectById,
   deleteProjectById,
-} from "./project-actions";
+} from "../actions/project-actions";
 
 const initialState = {
   projects: [],
   project: {},
   status: null,
-  errors: {},
+  errors: {}
 };
 
 const projectSlice = createSlice({
@@ -73,7 +73,7 @@ const projectSlice = createSlice({
         state.errors = action.error;
       })
       .addCase(PURGE, () => initialState);
-  },
+  }
 });
 
 export default projectSlice.reducer;
