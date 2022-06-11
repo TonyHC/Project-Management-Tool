@@ -81,7 +81,7 @@ const Register = () => {
               <input
                 type="email"
                 className={classNames("form-control", {
-                  "is-invalid": errors.username,
+                  "is-invalid": errors.username && errors.type === "register",
                 })}
                 id="floatingInput"
                 placeholder="name@example.com"
@@ -89,7 +89,7 @@ const Register = () => {
               />
               <label htmlFor="floatingInput">Email address</label>
 
-              {errors.username && (
+              {errors.username && errors.type === "register" && (
                 <div className="invalid-feedback">{errors.username}</div>
               )}
             </div>
@@ -98,7 +98,7 @@ const Register = () => {
               <input
                 type="password"
                 className={classNames("form-control", {
-                  "is-invalid": errors.password,
+                  "is-invalid": errors.password && errors.type === "register",
                 })}
                 id="floatingInput"
                 placeholder="password"
@@ -106,7 +106,7 @@ const Register = () => {
               />
               <label htmlFor="floatingInput">Password</label>
 
-              {errors.password && (
+              {errors.password && errors.type === "register" && (
                 <div className="invalid-feedback">{errors.password}</div>
               )}
             </div>

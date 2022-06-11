@@ -19,10 +19,6 @@ const Login = () => {
     }
   }, [isAuth, history]);
 
-  console.log(errors);
-
-  console.log(errors.type === "security/login/rejected");
-
   const submitHandler = (event) => {
     event.preventDefault();
 
@@ -45,28 +41,28 @@ const Login = () => {
               <input
                 type="email"
                 className={classNames("form-control", {
-                  "is-invalid": errors.username
+                  "is-invalid": errors.username && errors.type === "login"
                 })}
                 id="floatingInput"
                 placeholder="name@example.com"
                 ref={usernameRef}
               />
               <label htmlFor="floatingInput">Username</label>
-              {errors.username && <div className="invalid-feedback">{errors.username}</div>}
+              {errors.username && errors.type === "login" && <div className="invalid-feedback">{errors.username}</div>}
             </div>
 
             <div className="form-floating">
               <input
                 type="password"
                 className={classNames("form-control", {
-                  "is-invalid": errors.password
+                  "is-invalid": errors.password && errors.type === "login"
                 })}
                 id="floatingPassword"
                 placeholder="Password"
                 ref={passwordRef}
               />
               <label htmlFor="floatingPassword">Password</label>
-              {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+              {errors.password && errors.type === "login" && <div className="invalid-feedback">{errors.password}</div>}
             </div>
 
             <div className="d-grid gap-2">
