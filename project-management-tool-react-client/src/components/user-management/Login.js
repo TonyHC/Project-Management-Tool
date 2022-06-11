@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
@@ -11,7 +11,13 @@ const Login = () => {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const { errors } = useSelector((state) => state.security);
+  const { errors, isAuth } = useSelector((state) => state.security);
+
+  useEffect(() => {
+    if (isAuth) {
+      history.replace("/dashboard");
+    }
+  }, [isAuth, history]);
 
   const submitHandler = (event) => {
     event.preventDefault();
