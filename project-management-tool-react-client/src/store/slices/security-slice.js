@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PURGE } from "redux-persist";
 
-import { register, login } from "../actions/security-actions";
-import { splitActionType } from "../../utils/splitActionType";
+import { register, login, getUserById } from "../actions/security-actions";
 
 const initialState = {
     user: {},
@@ -25,7 +24,7 @@ const securitySlice = createSlice({
         })
         .addCase(register.rejected, (state, action) => {
             state.status = "failed";
-            state.errors = { ...action.payload, type: splitActionType(action.type, "/")};
+            state.errors = { ...action.payload, type: action.type.split("/")[1]};
         })
         .addCase(login.pending, (state, action) => {
             state.status = "loading";
@@ -38,7 +37,19 @@ const securitySlice = createSlice({
         })
         .addCase(login.rejected, (state, action) => {
             state.status = "failed";
-            state.errors = { ...action.payload, type: splitActionType(action.type, "/")};
+            state.errors = { ...action.payload, type: action.type.split("/")[1]};
+        })
+        .addCase(getUserById.pending, (state, action) => {
+            state.status = "loading";
+        })
+        .addCase(getUserById.fulfilled, (state, action) => {
+            state.status = "success";
+            state.user = action.payload;
+            state.errors = {};
+        })
+        .addCase(getUserById.rejected, (state, action) => {
+            state.status = "failed";
+            state.errors = action.payload;
         })
         .addCase(PURGE, () => initialState);
     }

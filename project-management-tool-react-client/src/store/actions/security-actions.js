@@ -48,3 +48,15 @@ export const logout = createAsyncThunk(
     history.replace("/login");
   }
 );
+
+export const getUserById = createAsyncThunk(
+  "security/getUserById",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${USERS_API}/${userId}`);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
