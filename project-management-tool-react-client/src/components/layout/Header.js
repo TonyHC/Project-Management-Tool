@@ -25,7 +25,7 @@ const Header = () => {
       <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
         <li className="nav-item">
           <div className="nav-link">
-            <i class="fas fa-id-badge me-1"></i>
+            <i className="fas fa-id-badge me-1"></i>
             {user.firstName} {user.lastName}
           </div>
         </li>
