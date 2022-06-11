@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.springboot.projectmanagementtool.security.SecurityConstants.H2_URL;
-import static com.springboot.projectmanagementtool.security.SecurityConstants.SIGN_UP_URLS;
 
 @Configuration
 @EnableWebSecurity
@@ -66,7 +65,7 @@ public class SpringSecurityConfig {
                         "/**/*.css",
                         "/**/*.js"
                 ).permitAll()
-                .antMatchers(SIGN_UP_URLS).permitAll()
+                .antMatchers("/api/users/register", "/api/users/login").permitAll()
                 .antMatchers(H2_URL).permitAll()
                 .anyRequest().authenticated();
 
