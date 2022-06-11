@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import jwt_decode from "jwt-decode";
 
 import Dashboard from "./components/Dashboard";
@@ -13,19 +13,20 @@ import Login from "./components/user-management/Login";
 import Register from "./components/user-management/Register";
 import { setJWTToken } from "./utils/setJWTToken";
 import { logout } from "./store/security-actions";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 const jwt = localStorage.getItem("jwt");
 setJWTToken(jwt);
 
 const App = () => {
   const history = useHistory();
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (jwt) {
       const decoded = jwt_decode(jwt);
       const currentTime = Date.now() / 1000;
-      
+
       if (decoded.exp < currentTime) {
         dispatch(logout(history));
       }
@@ -34,36 +35,20 @@ const App = () => {
 
   return (
     <Layout>
-    <Switch>
-      <Route path="/" exact>
-        <Landing />
-      </Route>
-      <Route path="/dashboard" exact >
-        <Dashboard />
-      </Route>
-      <Route path="/project-form" exact>
-        <ProjectForm />
-      </Route>
-      <Route path="/project-form/:projectId" exact>
-        <ProjectForm />
-      </Route>
-      <Route path="/project-board/:projectId" exact>
-        <ProjectBoard />
-      </Route>
-      <Route path="/project-task-form/:projectId" exact>
-        <ProjectTaskForm />
-      </Route>
-      <Route path="/project-task-form/:projectId/:projectTaskSequence" exact>
-        <ProjectTaskForm />
-      </Route>
-      <Route path="/register" exact>
-        <Register />
-      </Route>
-      <Route path="/login" exact>
-        <Login />
-      </Route>
-    </Switch>
-  </Layout>
+      <Switch>
+        <Route path="/" component={Landing} exact />
+        <Route path="/register" component={Register} />
+        <Route path="/login" component={Login} />
+
+        <ProtectedRoute path="/dashboard" component={Dashboard} exact />
+        <ProtectedRoute path="/project-form" component={ProjectForm} exact />
+        <ProtectedRoute path="/project-form/:projectId" component={ProjectForm} exact />
+
+        <ProtectedRoute path="/project-board/:projectId" component={ProjectBoard} exact />
+        <ProtectedRoute path="/project-task-form/:projectId" component={ProjectTaskForm} exact />
+        <ProtectedRoute path="/project-task-form/:projectId/:projectTaskSequence" component={ProjectTaskForm} exact />
+      </Switch>
+    </Layout>
   );
 };
 
