@@ -7,9 +7,9 @@ export const createProjectTask = createAsyncThunk(
   "projectTasks/createProjectTask",
   async (data, { rejectWithValue }) => {
     try {
-      const { projectId, projectTask, history } = data;
+      const { projectId, projectTask, navigate } = data;
       await axios.post(`${PROJECT_TASKS_API}/${projectId}`, projectTask);
-      history.push(`/project-board/${projectId}`);
+      navigate(`/project-board/${projectId}`, { replace: true });
     } catch (err) {
       return rejectWithValue(err.response.data);
     }
@@ -31,13 +31,13 @@ export const getProjectTasks = createAsyncThunk(
 export const getProjectTask = createAsyncThunk(
   "projectTasks/getProjectTask",
   async (data, { rejectWithValue }) => {
-    const { projectId, projectTaskSequence, history } = data;
+    const { projectId, projectTaskSequence, navigate } = data;
 
     try {
       const res = await axios.get(`${PROJECT_TASKS_API}/${projectId}/${projectTaskSequence}`);
       return res.data;
     } catch (err) {
-      history.push(`/project-board/${projectId}`);
+      navigate(`/project-board/${projectId}`);
       return rejectWithValue(err.response.data);
     }
   }
@@ -47,9 +47,9 @@ export const updateProjectTask = createAsyncThunk(
   "projectTasks/updateProjectTask",
   async (data, { rejectWithValue }) => {
     try {
-      const { projectId, projectTaskSequence, projectTask, history } = data;
+      const { projectId, projectTaskSequence, projectTask, navigate } = data;
       await axios.patch(`${PROJECT_TASKS_API}/${projectId}/${projectTaskSequence}`, projectTask);
-      history.push(`/project-board/${projectId}`);
+      navigate(`/project-board/${projectId}`, { replace: true });
     } catch (err) {
       return rejectWithValue(err.response.data);
     }

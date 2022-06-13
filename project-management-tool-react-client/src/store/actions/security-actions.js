@@ -11,9 +11,9 @@ export const register = createAsyncThunk(
   "security/register",
   async (data, { rejectWithValue }) => {
     try {
-      const { newUser, history } = data;
+      const { newUser, navigate } = data;
       await axios.post(`${USERS_API}/register`, newUser);
-      history.push("/login");
+      navigate("/login", { replace: true });
     } catch (err) {
       return rejectWithValue(err.response.data);
     }
@@ -24,13 +24,15 @@ export const login = createAsyncThunk(
   "security/login",
   async (data, { rejectWithValue }) => {
     try {
-      const { loginRequest, history } = data;
+      const { loginRequest, navigate } = data;
       const res = await axios.post(`${USERS_API}/login`, loginRequest);
+
+      console.log("IN DA");
 
       const { token } = res.data;
       localStorage.setItem("jwt", token);
       setJWTToken(token);
-      history.push("/dashboard");
+      navigate("/dashboard", { replace: true });
 
       return jwt_decode(token);
     } catch (err) {
@@ -41,11 +43,11 @@ export const login = createAsyncThunk(
 
 export const logout = createAsyncThunk(
   "security/logout",
-  async (history) => {
+  async (navigate) => {
     persistor.purge();
     localStorage.removeItem("jwt");
     setJWTToken(false);
-    history.replace("/login");
+    navigate("/login", { replace: true });
   }
 );
 
@@ -65,9 +67,9 @@ export const resetPassword = createAsyncThunk(
   "security/resetPassword",
   async (data, { rejectWithValue }) => {
     try {
-      const { updatedUser, history } = data;
+      const { updatedUser, navigate } = data;
       await axios.patch(`${USERS_API}/reset-password`, updatedUser);
-      history.replace("/dashboard");
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       return rejectWithValue(err.response.data);
     }

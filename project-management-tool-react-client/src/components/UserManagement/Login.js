@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
@@ -9,15 +9,9 @@ const Login = () => {
   const usernameRef = useRef();
   const passwordRef = useRef();
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { errors, isAuth } = useSelector((state) => state.security);
-
-  useEffect(() => {
-    if (isAuth) {
-      history.replace("/dashboard");
-    }
-  }, [isAuth, history]);
+  const { errors } = useSelector((state) => state.security);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -27,7 +21,7 @@ const Login = () => {
       password: passwordRef.current.value
     }
 
-    dispatch(login({ loginRequest, history }));
+    dispatch(login({ loginRequest, navigate }));
   }
 
   return (
@@ -43,11 +37,11 @@ const Login = () => {
                 className={classNames("form-control", {
                   "is-invalid": errors.username && errors.type === "login"
                 })}
-                id="floatingInput"
+                id="floatingUsername"
                 placeholder="name@example.com"
                 ref={usernameRef}
               />
-              <label htmlFor="floatingInput">Username</label>
+              <label htmlFor="floatingUsername">Username</label>
               {errors.username && errors.type === "login" && <div className="invalid-feedback">{errors.username}</div>}
             </div>
 

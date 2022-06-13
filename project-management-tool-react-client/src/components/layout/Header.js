@@ -1,16 +1,16 @@
 import React, { Fragment } from "react";
-import { Link, NavLink, useHistory } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { logout } from "../../store/actions/security-actions";
 
 const Header = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuth, user } = useSelector((state) => state.security);
 
   const logoutHandler = () => {
-    dispatch(logout(history));
+    dispatch(logout(navigate));
   };
 
   const authenticatedHeaderLinks = (
@@ -18,7 +18,6 @@ const Header = () => {
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
           <NavLink
-            activeClassName="active"
             className="nav-link"
             to="/dashboard"
           >
@@ -65,12 +64,12 @@ const Header = () => {
   const notAuthenticatedHeaderLinks = (
     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
       <li className="nav-item">
-        <NavLink activeClassName="active" className="nav-link" to="/register">
+        <NavLink className="nav-link" to="/register">
           Sign Up
         </NavLink>
       </li>
       <li className="nav-item">
-        <NavLink activeClassName="active" className="nav-link" to="/login">
+        <NavLink className="nav-link" to="/login">
           Login
         </NavLink>
       </li>

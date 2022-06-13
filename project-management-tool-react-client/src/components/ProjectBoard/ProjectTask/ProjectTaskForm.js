@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
@@ -19,17 +19,17 @@ const ProjectTaskForm = () => {
   const [editMode, setEditMode] = useState(false);
 
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const params = useParams();
   const { projectId, projectTaskSequence } = params;
   const { errors, projectTask } = useSelector((state) => state.projectTask);
 
   useEffect(() => {
     if (projectId && projectTaskSequence) {
-      dispatch(getProjectTask({ projectId, projectTaskSequence, history }));
+      dispatch(getProjectTask({ projectId, projectTaskSequence, navigate }));
       setEditMode(true);
     }
-  }, [dispatch, projectId, projectTaskSequence, history]);
+  }, [dispatch, projectId, projectTaskSequence, navigate]);
 
   useEffect(() => {
     let timer;
@@ -80,7 +80,7 @@ const ProjectTaskForm = () => {
           projectId,
           projectTaskSequence,
           projectTask: updatedProjectTask,
-          history
+          navigate
         })
       );
     } else {
@@ -93,7 +93,7 @@ const ProjectTaskForm = () => {
         createProjectTask({
           projectId,
           projectTask: newProjectTask,
-          history
+          navigate
         })
       );
     }

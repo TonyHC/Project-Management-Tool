@@ -7,9 +7,9 @@ export const createProject = createAsyncThunk(
   "projects/createProject",
   async (data, { rejectWithValue }) => {
     try {
-      const { project, history } = data;
+      const { project, navigate } = data;
       await axios.post(PROJECTS_API, project);
-      history.push("/dashboard");
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       return rejectWithValue(err.response.data);
     }
@@ -27,13 +27,13 @@ export const getProjects = createAsyncThunk(
 export const getProjectById = createAsyncThunk(
   "projects/getProjectById",
   async (data, { rejectWithValue }) => {
-    const { projectId, history } = data;
+    const { projectId, navigate } = data;
 
     try {
       const res = await axios.get(`${PROJECTS_API}/${projectId}`);
       return res.data;
     } catch (err) {
-      history.push("/dashboard");
+      navigate("/dashboard");
       return rejectWithValue(err.response.data);
     }
   }

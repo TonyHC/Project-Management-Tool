@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
@@ -12,15 +12,9 @@ const Register = () => {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { errors, isAuth } = useSelector((state) => state.security);
-
-  useEffect(() => {
-    if (isAuth) {
-      history.replace("/dashboard");
-    }
-  }, [isAuth, history]);
+  const { errors } = useSelector((state) => state.security);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -33,7 +27,7 @@ const Register = () => {
       confirmPassword: confirmPasswordRef.current.value,
     };
 
-    dispatch(register({ newUser, history }));
+    dispatch(register({ newUser, navigate }));
   };
 
   return (
@@ -49,11 +43,11 @@ const Register = () => {
                 className={classNames("form-control", {
                   "is-invalid": errors.firstName,
                 })}
-                id="floatingInput"
-                placeholder="Tom"
+                id="floatingFirstName"
+                placeholder="Dummy"
                 ref={firstNameRef}
               />
-              <label htmlFor="floatingInput">First Name</label>
+              <label htmlFor="floatingFirstName">First Name</label>
 
               {errors.firstName && (
                 <div className="invalid-feedback">{errors.firstName}</div>
@@ -66,11 +60,11 @@ const Register = () => {
                 className={classNames("form-control", {
                   "is-invalid": errors.lastName,
                 })}
-                id="floatingInput"
-                placeholder="Saws"
+                id="floatingLastName"
+                placeholder="Testing"
                 ref={lastNameRef}
               />
-              <label htmlFor="floatingInput">Last Name</label>
+              <label htmlFor="floatingLastName">Last Name</label>
 
               {errors.lastName && (
                 <div className="invalid-feedback">{errors.lastName}</div>
@@ -83,11 +77,11 @@ const Register = () => {
                 className={classNames("form-control", {
                   "is-invalid": errors.username && errors.type === "register",
                 })}
-                id="floatingInput"
+                id="floatingEmail"
                 placeholder="name@example.com"
                 ref={usernameRef}
               />
-              <label htmlFor="floatingInput">Email address</label>
+              <label htmlFor="floatingEmail">Email address</label>
 
               {errors.username && errors.type === "register" && (
                 <div className="invalid-feedback">{errors.username}</div>
@@ -100,11 +94,11 @@ const Register = () => {
                 className={classNames("form-control", {
                   "is-invalid": errors.password && errors.type === "register",
                 })}
-                id="floatingInput"
+                id="floatingPassword"
                 placeholder="password"
                 ref={passwordRef}
               />
-              <label htmlFor="floatingInput">Password</label>
+              <label htmlFor="floatingPassword">Password</label>
 
               {errors.password && errors.type === "register" && (
                 <div className="invalid-feedback">{errors.password}</div>
@@ -117,11 +111,11 @@ const Register = () => {
                 className={classNames("form-control", {
                   "is-invalid": errors.confirmPassword,
                 })}
-                id="floatingInput"
+                id="floatingConfirmPassword"
                 placeholder="password"
                 ref={confirmPasswordRef}
               />
-              <label htmlFor="floatingInput">Confirm Password</label>
+              <label htmlFor="floatingConfirmPassword">Confirm Password</label>
 
               {errors.confirmPassword && (
                 <div className="invalid-feedback">{errors.confirmPassword}</div>

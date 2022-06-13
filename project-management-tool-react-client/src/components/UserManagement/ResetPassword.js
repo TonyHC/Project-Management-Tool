@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
@@ -9,7 +9,7 @@ const ResetPassword = () => {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
 
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { errors, user } = useSelector((state) => state.security);
 
@@ -25,7 +25,7 @@ const ResetPassword = () => {
       confirmPassword: confirmPasswordRef.current.value,
     };
 
-    dispatch(resetPassword({ updatedUser, history }));
+    dispatch(resetPassword({ updatedUser, navigate }));
   };
 
   return (

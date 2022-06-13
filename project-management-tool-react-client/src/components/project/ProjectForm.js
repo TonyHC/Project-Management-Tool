@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import classNames from "classnames";
 
 import { createProject } from "../../store/actions/project-actions";
@@ -19,17 +19,17 @@ const ProjectForm = () => {
   const [editMode, setEditMode] = useState(false);
 
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const params = useParams();
   const { errors, project } = useSelector((state) => state.project);
   const { projectId } = params;
 
   useEffect(() => {
     if (projectId) {
-      dispatch(getProjectById({ projectId: projectId, history: history }));
+      dispatch(getProjectById({ projectId, navigate }));
       setEditMode(true);
     }
-  }, [dispatch, projectId, history]);
+  }, [dispatch, projectId, navigate]);
 
   useEffect(() => {
     let timer;
@@ -76,9 +76,9 @@ const ProjectForm = () => {
         id: project.id,
         ...inputState
       };
-      dispatch(createProject({ project: updatedProject, history }));
+      dispatch(createProject({ project: updatedProject, navigate }));
     } else {
-      dispatch(createProject({ project: inputState, history }));
+      dispatch(createProject({ project: inputState, navigate }));
     }
   };
 

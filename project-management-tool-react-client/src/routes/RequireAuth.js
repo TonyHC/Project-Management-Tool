@@ -1,13 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-export const RequireAuth = () => {
-  const { isAuth } = useSelector((state) => state.security);
+export const RequireAuth = (props) => {
   let location = useLocation();
 
-  if (!isAuth) {
+  if (!props.isAuth) {
     /*
       Redirect them to the /login page, but save the current location they were
       trying to go to when they were redirected. This allows us to send them
