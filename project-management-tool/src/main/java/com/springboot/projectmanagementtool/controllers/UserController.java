@@ -72,7 +72,19 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable String userId) {
-        User foundUser = userService.getUserById(userId);
+        User foundUser = userService.getUserById(Long.parseLong(userId));
         return new ResponseEntity<>(foundUser, HttpStatus.OK);
+    }
+
+    @PatchMapping("/reset-password")
+    public ResponseEntity<?> resetUserPassword(@Valid @RequestBody User user, BindingResult result) {
+        userValidator.validate(user, result);
+
+        if (result.hasErrors()) {
+            return mapValidationErrorService.mapValidationError(result);
+        }
+
+        User updatedUser = userService.updateUserPassword(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 }

@@ -33,13 +33,20 @@ public class UserService {
         }
     }
 
-    public User getUserById(String userId) {
-        User user = customUserDetailsService.loadUserById(Long.parseLong(userId));
+    public User getUserById(Long userId) {
+        User user = customUserDetailsService.loadUserById(userId);
 
         if (!user.getUsername().equals(authenticationFacade.getAuthentication().getName())) {
             throw new UsernameNotFoundException("Username is invalid");
         }
 
         return user;
+    }
+
+    public User updateUserPassword(User updatedUser) {
+        getUserById(updatedUser.getId());
+        updatedUser.setPassword(passwordEncoder.encode((updatedUser.getPassword())));
+        updatedUser.setConfirmPassword("");
+        return userRepository.save(updatedUser);
     }
 }
