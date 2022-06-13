@@ -9,6 +9,7 @@ import ProjectForm from "../components/Project/ProjectForm";
 import ProjectBoard from "../components/ProjectBoard/ProjectBoard";
 import ProjectTaskForm from "../components/ProjectBoard/ProjectTask/ProjectTaskForm";
 import ProtectedRoute from "./ProtectedRoute";
+import ResetPassword from '../components/UserManagement/ResetPassword';
 
 export const createRoutes = (
     <Switch>
@@ -22,5 +23,6 @@ export const createRoutes = (
         <ProtectedRoute path="/project-board/:projectId" component={ProjectBoard} exact />
         <ProtectedRoute path="/project-task-form/:projectId" component={ProjectTaskForm} exact />
         <ProtectedRoute path="/project-task-form/:projectId/:projectTaskSequence" component={ProjectTaskForm} exact />
+        <ProtectedRoute path="/reset-password" component={ResetPassword} exact />
   </Switch>
 );
