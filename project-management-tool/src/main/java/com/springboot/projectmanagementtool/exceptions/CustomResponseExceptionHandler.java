@@ -29,7 +29,13 @@ public class CustomResponseExceptionHandler extends ResponseEntityExceptionHandl
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<Object> handleUsernameAlreadyExistsException(Exception exception, WebRequest webRequest) {
-        UsernameAlreadyExistsResponse existsResponse = new UsernameAlreadyExistsResponse(exception.getMessage());
-        return new ResponseEntity<>(existsResponse, HttpStatus.BAD_REQUEST);
+        UsernameAlreadyExistsResponse exceptionResponse = new UsernameAlreadyExistsResponse(exception.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidResetPasswordException.class)
+    public ResponseEntity<Object> handleInvalidResetPasswordException(Exception exception, WebRequest webRequest) {
+        InvalidResetPasswordResponse exceptionResponse = new InvalidResetPasswordResponse(exception.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

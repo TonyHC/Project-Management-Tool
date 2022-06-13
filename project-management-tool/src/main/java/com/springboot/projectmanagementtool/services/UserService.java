@@ -1,6 +1,7 @@
 package com.springboot.projectmanagementtool.services;
 
 import com.springboot.projectmanagementtool.domain.User;
+import com.springboot.projectmanagementtool.exceptions.InvalidResetPasswordException;
 import com.springboot.projectmanagementtool.exceptions.UsernameAlreadyExistsException;
 import com.springboot.projectmanagementtool.repositories.UserRepository;
 import com.springboot.projectmanagementtool.security.AuthenticationFacadeImpl;
@@ -44,9 +45,15 @@ public class UserService {
     }
 
     public User updateUserPassword(User updatedUser) {
-        getUserById(updatedUser.getId());
+        User existingUser = getUserById(updatedUser.getId());
+
+        if (passwordEncoder.matches(updatedUser.getPassword(), existingUser.getPassword())) {
+            throw new InvalidResetPasswordException("Password was used previously");
+        }
+
         updatedUser.setPassword(passwordEncoder.encode((updatedUser.getPassword())));
         updatedUser.setConfirmPassword("");
+
         return userRepository.save(updatedUser);
     }
 }
