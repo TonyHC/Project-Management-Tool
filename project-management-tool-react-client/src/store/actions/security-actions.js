@@ -27,8 +27,6 @@ export const login = createAsyncThunk(
       const { loginRequest, navigate } = data;
       const res = await axios.post(`${USERS_API}/login`, loginRequest);
 
-      console.log("IN DA");
-
       const { token } = res.data;
       localStorage.setItem("jwt", token);
       setJWTToken(token);

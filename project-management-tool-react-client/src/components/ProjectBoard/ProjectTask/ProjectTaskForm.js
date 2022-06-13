@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
-
-import { createProjectTask, getProjectTask, updateProjectTask} from "../../../store/actions/project-task-actions";
 
 const initialInputState = {
   summary: "",
@@ -14,34 +10,20 @@ const initialInputState = {
   status: ""
 };
 
-const ProjectTaskForm = () => {
+const ProjectTaskForm = (props) => {
   const [inputState, setInputState] = useState(initialInputState);
-  const [editMode, setEditMode] = useState(false);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const params = useParams();
-  const { projectId, projectTaskSequence } = params;
-  const { errors, projectTask } = useSelector((state) => state.projectTask);
-
-  useEffect(() => {
-    if (projectId && projectTaskSequence) {
-      dispatch(getProjectTask({ projectId, projectTaskSequence, navigate }));
-      setEditMode(true);
-    }
-  }, [dispatch, projectId, projectTaskSequence, navigate]);
 
   useEffect(() => {
     let timer;
 
-    if (Object.keys(projectTask).length > 0 && editMode) {
+    if (Object.keys(props.projectTask).length > 0 && props.editMode) {
       timer = setTimeout(() => {
         setInputState({
-          summary: projectTask.summary,
-          acceptanceCriteria: projectTask.acceptanceCriteria,
-          dueDate: projectTask.dueDate,
-          priority: projectTask.priority,
-          status: projectTask.status
+          summary: props.projectTask.summary,
+          acceptanceCriteria: props.projectTask.acceptanceCriteria,
+          dueDate: props.projectTask.dueDate,
+          priority: props.projectTask.priority,
+          status: props.projectTask.status
         });
       }, 200);
     }
@@ -49,7 +31,7 @@ const ProjectTaskForm = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [projectTask, editMode]);
+  }, [props.projectTask, props.editMode]);
 
   const userInputHandler = (event) => {
     const { name, value } = event.target;
@@ -64,48 +46,34 @@ const ProjectTaskForm = () => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    if (!errors) {
-      setInputState(initialInputState);
-      setEditMode(false);
-    }
-
-    if (editMode) {
+    if (props.editMode) {
       const updatedProjectTask = {
         ...inputState,
-        projectIdentifier: projectId,
-        id: projectTask.id
+        projectIdentifier: props.projectId,
+        id: props.projectTask.id
       };
-      dispatch(
-        updateProjectTask({
-          projectId,
-          projectTaskSequence,
-          projectTask: updatedProjectTask,
-          navigate
-        })
-      );
+      props.onUpdateProjectTask(updatedProjectTask);
     } else {
       const newProjectTask = {
         ...inputState,
-        projectIdentifier: projectId
+        projectIdentifier: props.projectId
       };
 
-      dispatch(
-        createProjectTask({
-          projectId,
-          projectTask: newProjectTask,
-          navigate
-        })
-      );
+      props.onCreateProjectTask(newProjectTask);
+    }
+
+    if (!props.errors) {
+      setInputState(initialInputState);
     }
   };
 
   return (
     <div className="col-md-8 m-auto">
-      <Link to={`/project-board/${projectId}`}>
+      <Link to={`/project-board/${props.projectId}`}>
         <strong>Back to Project Board</strong>
       </Link>
       <h4 className="display-4 text-center my-4">
-        {editMode ? "Update" : "Create"} Project Task
+        {props.editMode ? "Update" : "Create"} Project Task
       </h4>
       <form onSubmit={submitHandler}>
         <div className="mb-3">
@@ -115,7 +83,7 @@ const ProjectTaskForm = () => {
           <input
             type="text"
             className={classNames("form-control", {
-              "is-invalid": errors.summary
+              "is-invalid": props.errors.summary
             })}
             name="summary"
             id="summary"
@@ -123,8 +91,8 @@ const ProjectTaskForm = () => {
             value={inputState.summary}
             onChange={userInputHandler}
           />
-          {errors.summary && (
-            <div className="invalid-feedback">{errors.summary}</div>
+          {props.errors.summary && (
+            <div className="invalid-feedback">{props.errors.summary}</div>
           )}
         </div>
         <div className="mb-3">
@@ -201,7 +169,7 @@ const ProjectTaskForm = () => {
           </div>
           <div className="col-md-6">
             <div className="d-grid gap-2">
-              <Link to={`/project-board/${projectId}`} className="btn btn-secondary">
+              <Link to={`/project-board/${props.projectId}`} className="btn btn-secondary">
                 Back to Project Board
               </Link>
             </div>

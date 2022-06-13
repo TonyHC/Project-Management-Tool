@@ -1,9 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 
-const Landing = () => {
-  const { isAuth } = useSelector((state) => state.security);
+const Landing = (props) => {
 
   return (
     <div className="px-4 py-5 my-5 text-center">
@@ -12,7 +10,7 @@ const Landing = () => {
         <p className="lead mb-4">
           Create your account to join active projects or start your own
         </p>
-        {!isAuth && (
+        {!props.isAuth && (
           <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
             <Link to="/register" className="btn btn-primary btn-lg px-4 gap-3">
               Sign Up
@@ -22,7 +20,7 @@ const Landing = () => {
             </Link>
           </div>
         )}
-        {isAuth && (
+        {props.isAuth && (
           <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
             <Link to="/dashboard" className="btn btn-primary btn-lg px-4 gap-3">
               Dashboard

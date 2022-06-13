@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
 import classNames from "classnames";
-
-import { createProject } from "../../store/actions/project-actions";
-import { getProjectById } from "../../store/actions/project-actions";
 
 const initialInputState = {
   projectName: "",
@@ -14,34 +9,20 @@ const initialInputState = {
   endDate: ""
 };
 
-const ProjectForm = () => {
+const ProjectForm = (props) => {
   const [inputState, setInputState] = useState(initialInputState);
-  const [editMode, setEditMode] = useState(false);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const params = useParams();
-  const { errors, project } = useSelector((state) => state.project);
-  const { projectId } = params;
-
-  useEffect(() => {
-    if (projectId) {
-      dispatch(getProjectById({ projectId, navigate }));
-      setEditMode(true);
-    }
-  }, [dispatch, projectId, navigate]);
 
   useEffect(() => {
     let timer;
 
-    if (Object.keys(project).length > 0 && editMode) {
+    if (Object.keys(props.project).length > 0 && props.editMode) {
       timer = setTimeout(() => {
         setInputState({
-          projectName: project.projectName,
-          projectIdentifier: project.projectIdentifier,
-          projectDescription: project.projectDescription,
-          startDate: project.startDate,
-          endDate: project.endDate
+          projectName: props.project.projectName,
+          projectIdentifier: props.project.projectIdentifier,
+          projectDescription: props.project.projectDescription,
+          startDate: props.project.startDate,
+          endDate: props.project.endDate
         });
       }, 200);
     }
@@ -51,7 +32,7 @@ const ProjectForm = () => {
         clearTimeout(timer);
       }
     };
-  }, [project, editMode]);
+  }, [props.project, props.editMode]);
 
   const userInputHandler = (event) => {
     const { name, value } = event.target;
@@ -66,26 +47,25 @@ const ProjectForm = () => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    if (!errors) {
-      setInputState(initialInputState);
-      setEditMode(false);
-    }
-
-    if (editMode) {
+    if (props.editMode) {
       const updatedProject = {
-        id: project.id,
+        id: props.project.id,
         ...inputState
       };
-      dispatch(createProject({ project: updatedProject, navigate }));
+      props.onCreateProject(updatedProject);
     } else {
-      dispatch(createProject({ project: inputState, navigate }));
+      props.onCreateProject(inputState);
+    }
+
+    if (!props.errors) {
+      setInputState(initialInputState);
     }
   };
 
   return (
     <section className="col-md-8 m-auto">
       <h6 className="display-6 text-center">
-        {editMode ? "Edit" : "Create"} Project Form
+        {props.editMode ? "Edit" : "Create"} Project Form
       </h6>
       <form onSubmit={submitHandler}>
         <div className="mb-3">
@@ -95,7 +75,7 @@ const ProjectForm = () => {
           <input
             type="text"
             className={classNames("form-control", {
-              "is-invalid": errors.projectName
+              "is-invalid": props.errors.projectName
             })}
             placeholder="Project Name"
             name="projectName"
@@ -103,8 +83,8 @@ const ProjectForm = () => {
             value={inputState.projectName}
             onChange={userInputHandler}
           />
-          {errors.projectName && (
-            <div className="invalid-feedback">{errors.projectName}</div>
+          {props.errors.projectName && (
+            <div className="invalid-feedback">{props.errors.projectName}</div>
           )}
         </div>
         <div className="mb-3">
@@ -114,17 +94,17 @@ const ProjectForm = () => {
           <input
             type="text"
             className={classNames("form-control", {
-              "is-invalid": errors.projectIdentifier
+              "is-invalid": props.errors.projectIdentifier
             })}
             placeholder="Unique Project ID"
             name="projectIdentifier"
             id="projectIdentifier"
             value={inputState.projectIdentifier}
             onChange={userInputHandler}
-            disabled={editMode}
+            disabled={props.editMode}
           />
-          {errors.projectIdentifier && (
-            <div className="invalid-feedback">{errors.projectIdentifier}</div>
+          {props.errors.projectIdentifier && (
+            <div className="invalid-feedback">{props.errors.projectIdentifier}</div>
           )}
         </div>
         <div className="mb-3">
@@ -133,7 +113,7 @@ const ProjectForm = () => {
           </label>
           <textarea
             className={classNames("form-control", {
-              "is-invalid": errors.projectDescription
+              "is-invalid": props.errors.projectDescription
             })}
             placeholder="Project Description"
             rows="3"
@@ -142,8 +122,8 @@ const ProjectForm = () => {
             value={inputState.projectDescription}
             onChange={userInputHandler}
           ></textarea>
-          {errors.projectDescription && (
-            <div className="invalid-feedback">{errors.projectDescription}</div>
+          {props.errors.projectDescription && (
+            <div className="invalid-feedback">{props.errors.projectDescription}</div>
           )}
         </div>
         <div className="row mb-3">

@@ -1,31 +1,23 @@
 import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
-import { resetPassword } from "../../store/actions/security-actions";
-
-const ResetPassword = () => {
+const ResetPassword = (props) => {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { errors, user } = useSelector((state) => state.security);
 
   const submitHandler = (event) => {
     event.preventDefault();
 
     const updatedUser = {
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
+      id: props.user.id,
+      firstName: props.user.firstName,
+      lastName: props.user.lastName,
+      username: props.user.username,
       password: passwordRef.current.value,
       confirmPassword: confirmPasswordRef.current.value,
     };
 
-    dispatch(resetPassword({ updatedUser, navigate }));
+    props.onResetPassword(updatedUser);
   };
 
   return (
@@ -41,15 +33,15 @@ const ResetPassword = () => {
               <input
                 type="password"
                 className={classNames("form-control", {
-                  "is-invalid": errors.password,
+                  "is-invalid": props.errors.password,
                 })}
                 id="floatingInput"
                 placeholder="Password"
                 ref={passwordRef}
               />
               <label htmlFor="floatingInput">Password</label>
-              {errors.password && (
-                <div className="invalid-feedback">{errors.password}</div>
+              {props.errors.password && (
+                <div className="invalid-feedback">{props.errors.password}</div>
               )}
             </div>
 
@@ -57,15 +49,15 @@ const ResetPassword = () => {
               <input
                 type="password"
                 className={classNames("form-control", {
-                  "is-invalid": errors.confirmPassword,
+                  "is-invalid": props.errors.confirmPassword,
                 })}
                 id="floatingPassword"
                 placeholder="Password"
                 ref={confirmPasswordRef}
               />
               <label htmlFor="floatingPassword">Confirm Password</label>
-              {errors.confirmPassword && (
-                <div className="invalid-feedback">{errors.confirmPassword}</div>
+              {props.errors.confirmPassword && (
+                <div className="invalid-feedback">{props.errors.confirmPassword}</div>
               )}
             </div>
 

@@ -1,24 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
 import ProjectTaskList from "./ProjectTask/ProjectTaskList";
-import { getProjectTasks } from "../../store/actions/project-task-actions";
 import LoadingSpinner from "../UI/LoadingSpinner";
 
-const ProjectBoard = () => {
-  const dispatch = useDispatch();
-  const params = useParams();
-  const { projectId } = params;
-  const { errors, projectTasks, status } = useSelector((state) => state.projectTask);
-
-  useEffect(() => {
-    dispatch(getProjectTasks(projectId));
-  }, [dispatch, projectId]);
-
+const ProjectBoard = (props) => {
   const loadProjectBoardContent = (projectTasks, errors) => {
-    if (status === "success") {
+    if (props.status === "success") {
       if (projectTasks.length === 0) {
         return (
           <div className="alert alert-warning alert-dismissible fade show" role="alert">
@@ -53,7 +41,7 @@ const ProjectBoard = () => {
           </div>
         );
       }
-    } else if (status === "failed") {
+    } else if (props.status === "failed") {
       return (
         <div className="alert alert-danger alert-dismissible fade show" role="alert">
           <i className="fas fa-exclamation-triangle mb-1 me-2"></i>
@@ -71,13 +59,13 @@ const ProjectBoard = () => {
     }
   };
 
-  let content = loadProjectBoardContent(projectTasks, errors);
+  let content = loadProjectBoardContent(props.projectTasks, props.errors);
 
   return (
     <div>
-      {!errors.projectNotFound && (
+      {!props.errors.projectNotFound && (
         <Link
-          to={`/project-task-form/${projectId}`}
+          to={`/project-task-form/${props.projectId}`}
           className="btn btn-primary mb-3">
           <i className="fas fa-plus-circle"> Create Project Task</i>
         </Link>

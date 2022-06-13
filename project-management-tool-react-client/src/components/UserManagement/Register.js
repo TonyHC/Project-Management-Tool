@@ -1,20 +1,12 @@
 import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
-import { register } from "../../store/actions/security-actions";
-
-const Register = () => {
+const Register = (props) => {
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const usernameRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { errors } = useSelector((state) => state.security);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -27,7 +19,7 @@ const Register = () => {
       confirmPassword: confirmPasswordRef.current.value,
     };
 
-    dispatch(register({ newUser, navigate }));
+    props.onRegister(newUser);
   };
 
   return (
@@ -41,7 +33,7 @@ const Register = () => {
               <input
                 type="text"
                 className={classNames("form-control", {
-                  "is-invalid": errors.firstName,
+                  "is-invalid": props.errors.firstName,
                 })}
                 id="floatingFirstName"
                 placeholder="Dummy"
@@ -49,8 +41,8 @@ const Register = () => {
               />
               <label htmlFor="floatingFirstName">First Name</label>
 
-              {errors.firstName && (
-                <div className="invalid-feedback">{errors.firstName}</div>
+              {props.errors.firstName && (
+                <div className="invalid-feedback">{props.errors.firstName}</div>
               )}
             </div>
 
@@ -58,7 +50,7 @@ const Register = () => {
               <input
                 type="text"
                 className={classNames("form-control", {
-                  "is-invalid": errors.lastName,
+                  "is-invalid": props.errors.lastName,
                 })}
                 id="floatingLastName"
                 placeholder="Testing"
@@ -66,8 +58,8 @@ const Register = () => {
               />
               <label htmlFor="floatingLastName">Last Name</label>
 
-              {errors.lastName && (
-                <div className="invalid-feedback">{errors.lastName}</div>
+              {props.errors.lastName && (
+                <div className="invalid-feedback">{props.errors.lastName}</div>
               )}
             </div>
 
@@ -75,7 +67,7 @@ const Register = () => {
               <input
                 type="email"
                 className={classNames("form-control", {
-                  "is-invalid": errors.username && errors.type === "register",
+                  "is-invalid": props.errors.username && props.errors.type === "register",
                 })}
                 id="floatingEmail"
                 placeholder="name@example.com"
@@ -83,8 +75,8 @@ const Register = () => {
               />
               <label htmlFor="floatingEmail">Email address</label>
 
-              {errors.username && errors.type === "register" && (
-                <div className="invalid-feedback">{errors.username}</div>
+              {props.errors.username && props.errors.type === "register" && (
+                <div className="invalid-feedback">{props.errors.username}</div>
               )}
             </div>
 
@@ -92,7 +84,7 @@ const Register = () => {
               <input
                 type="password"
                 className={classNames("form-control", {
-                  "is-invalid": errors.password && errors.type === "register",
+                  "is-invalid": props.errors.password && props.errors.type === "register",
                 })}
                 id="floatingPassword"
                 placeholder="password"
@@ -100,8 +92,8 @@ const Register = () => {
               />
               <label htmlFor="floatingPassword">Password</label>
 
-              {errors.password && errors.type === "register" && (
-                <div className="invalid-feedback">{errors.password}</div>
+              {props.errors.password && props.errors.type === "register" && (
+                <div className="invalid-feedback">{props.errors.password}</div>
               )}
             </div>
 
@@ -109,7 +101,7 @@ const Register = () => {
               <input
                 type="password"
                 className={classNames("form-control", {
-                  "is-invalid": errors.confirmPassword,
+                  "is-invalid": props.errors.confirmPassword,
                 })}
                 id="floatingConfirmPassword"
                 placeholder="password"
@@ -117,8 +109,8 @@ const Register = () => {
               />
               <label htmlFor="floatingConfirmPassword">Confirm Password</label>
 
-              {errors.confirmPassword && (
-                <div className="invalid-feedback">{errors.confirmPassword}</div>
+              {props.errors.confirmPassword && (
+                <div className="invalid-feedback">{props.errors.confirmPassword}</div>
               )}
             </div>
 

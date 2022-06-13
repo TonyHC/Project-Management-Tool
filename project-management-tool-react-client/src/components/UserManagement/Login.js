@@ -1,17 +1,9 @@
 import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 
-import { login } from "../../store/actions/security-actions";
-
-const Login = () => {
+const Login = (props) => {
   const usernameRef = useRef();
   const passwordRef = useRef();
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { errors } = useSelector((state) => state.security);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -19,9 +11,9 @@ const Login = () => {
     const loginRequest = {
       username: usernameRef.current.value,
       password: passwordRef.current.value
-    }
+    };
 
-    dispatch(login({ loginRequest, navigate }));
+    props.onLogin(loginRequest);
   }
 
   return (
@@ -35,28 +27,28 @@ const Login = () => {
               <input
                 type="email"
                 className={classNames("form-control", {
-                  "is-invalid": errors.username && errors.type === "login"
+                  "is-invalid": props.errors.username && props.errors.type === "login"
                 })}
                 id="floatingUsername"
                 placeholder="name@example.com"
                 ref={usernameRef}
               />
               <label htmlFor="floatingUsername">Username</label>
-              {errors.username && errors.type === "login" && <div className="invalid-feedback">{errors.username}</div>}
+              {props.errors.username && props.errors.type === "login" && <div className="invalid-feedback">{props.errors.username}</div>}
             </div>
 
             <div className="form-floating">
               <input
                 type="password"
                 className={classNames("form-control", {
-                  "is-invalid": errors.password && errors.type === "login"
+                  "is-invalid": props.errors.password && props.errors.type === "login"
                 })}
                 id="floatingPassword"
                 placeholder="Password"
                 ref={passwordRef}
               />
               <label htmlFor="floatingPassword">Password</label>
-              {errors.password && errors.type === "login" && <div className="invalid-feedback">{errors.password}</div>}
+              {props.errors.password && props.errors.type === "login" && <div className="invalid-feedback">{props.errors.password}</div>}
             </div>
 
             <div className="d-grid gap-2">
