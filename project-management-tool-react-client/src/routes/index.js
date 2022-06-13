@@ -9,6 +9,7 @@ import ProjectFormPage from "../pages/private/ProjectFormPage";
 import ProjectBoardPage from "../pages/private/ProjectBoardPage";
 import ProjectTaskFormPage from "../pages/private/ProjectTaskFormPage";
 import ResetPasswordPage from "../pages/private/ResetPasswordPage";
+import NotFoundPage from "../pages/public/NotFoundPage";
 
 const ReactRoutes = () => {
   const { isAuth } = useSelector((state) => state.security);
@@ -31,6 +32,7 @@ const ReactRoutes = () => {
 
         <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Route>
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };
