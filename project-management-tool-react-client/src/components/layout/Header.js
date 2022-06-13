@@ -17,24 +17,48 @@ const Header = () => {
     <Fragment>
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
-          <NavLink activeClassName="active" className="nav-link" to="/dashboard">
+          <NavLink
+            activeClassName="active"
+            className="nav-link"
+            to="/dashboard"
+          >
             Dashboard
           </NavLink>
         </li>
       </ul>
-      <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li className="nav-item">
-          <div className="nav-link">
-            <i className="fas fa-id-badge me-1"></i>
-            {user.firstName} {user.lastName}
-          </div>
-        </li>
-        <li className="nav-item logout" onClick={logoutHandler}>
-          <Link className="nav-link" to="/logout">
-            Logout
-          </Link>
-        </li>
-      </ul>
+      <div className="dropdown ms-auto mb-2 mb-lg-0">
+        <button
+          className="btn btn-outline-light dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i className="fas fa-id-badge me-1"></i>
+          {user.firstName} {user.lastName}
+        </button>
+
+        <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li>
+              <h6 className="dropdown-header">{user.username}</h6>
+          </li>
+          <li>
+            <hr className="dropdown-divider" />
+          </li>
+          <li className="dropdown-item dropdown-menu-dark">
+            <Link to="/reset-password">
+              <i className="fas fa-key me-1"></i> Reset Password
+            </Link>
+          </li>
+          <li>
+            <hr className="dropdown-divider" />
+          </li>
+          <li className="dropdown-item" onClick={logoutHandler}>
+            <Link to="/logout">
+              <i className="fas fa-sign-out-alt me-1"></i> Logout
+            </Link>
+          </li>
+        </ul>
+      </div>
     </Fragment>
   );
 
@@ -53,7 +77,9 @@ const Header = () => {
     </ul>
   );
 
-  let headerLinks = isAuth ? authenticatedHeaderLinks : notAuthenticatedHeaderLinks;
+  let headerLinks = isAuth
+    ? authenticatedHeaderLinks
+    : notAuthenticatedHeaderLinks;
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark mb-4">
