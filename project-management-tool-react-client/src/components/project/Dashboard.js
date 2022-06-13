@@ -3,16 +3,16 @@ import { Link } from "react-router-dom";
 
 import ProjectList from "./ProjectList";
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   return (
     <div>
       <h1 className="text-center mb-4">Projects</h1>
       <Link to="/project-form" className="btn btn-primary mb-3">
         Create a Project
       </Link>
-      <ProjectList />
+      <ProjectList projects={props.projects} status={props.status} />
     </div>
   );
 };
 
-export default Dashboard;
+export default React.memo(Dashboard);

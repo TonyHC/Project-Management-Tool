@@ -75,4 +75,4 @@ const ProjectBoard = (props) => {
   );
 }
 
-export default ProjectBoard;
+export default React.memo(ProjectBoard);

@@ -73,4 +73,4 @@ const ResetPassword = (props) => {
   );
 };
 
-export default ResetPassword;
+export default React.memo(ResetPassword);

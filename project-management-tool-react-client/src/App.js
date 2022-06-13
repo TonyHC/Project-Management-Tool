@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import jwt_decode from "jwt-decode";
@@ -7,6 +7,7 @@ import { setJWTToken } from "./utils/setJWTToken";
 import { logout } from "./store/actions/security-actions";
 import Layout from "./components/Layout/Layout";
 import ReactRoutes from "./routes";
+import LoadingSpinner from "./components/UI/LoadingSpinner";
 
 const jwt = localStorage.getItem("jwt");
 setJWTToken(jwt);
@@ -28,7 +29,9 @@ const App = () => {
 
   return (
     <Layout>
-      <ReactRoutes />
+      <Suspense fallback={<LoadingSpinner />}>
+        <ReactRoutes />
+      </Suspense>
     </Layout>
   );
 };

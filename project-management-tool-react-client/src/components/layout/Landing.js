@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Landing = (props) => {
-
   return (
     <div className="px-4 py-5 my-5 text-center">
       <h1 className="display-5 fw-bold">Project Management Tool</h1>
@@ -32,4 +31,4 @@ const Landing = (props) => {
   );
 };
 
-export default Landing;
+export default React.memo(Landing);

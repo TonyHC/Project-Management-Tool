@@ -1,15 +1,18 @@
+import React from "react";
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
+
 import { RequireAuth } from "./RequireAuth";
-import LoginPage from "../pages/public/LoginPage";
-import RegisterPage from "../pages/public/RegisterPage";
-import LandingPage from "../pages/public/LandingPage";
-import DashboardPage from "../pages/private/DashboardPage";
-import ProjectFormPage from "../pages/private/ProjectFormPage";
-import ProjectBoardPage from "../pages/private/ProjectBoardPage";
-import ProjectTaskFormPage from "../pages/private/ProjectTaskFormPage";
-import ResetPasswordPage from "../pages/private/ResetPasswordPage";
-import NotFoundPage from "../pages/public/NotFoundPage";
+
+const LoginPage = React.lazy(() => import("../pages/public/LoginPage"));
+const RegisterPage = React.lazy(() => import("../pages/public/RegisterPage"))
+const LandingPage = React.lazy(() => import("../pages/public/LandingPage"));
+const DashboardPage = React.lazy(() => import("../pages/private/DashboardPage"));
+const ProjectFormPage = React.lazy(() => import("../pages/private/ProjectFormPage"));
+const ProjectBoardPage = React.lazy(() => import("../pages/private/ProjectBoardPage"));
+const ProjectTaskFormPage = React.lazy(() => import("../pages/private/ProjectTaskFormPage"));
+const ResetPasswordPage = React.lazy(() => import("../pages/private/ResetPasswordPage"));
+const NotFoundPage = React.lazy(() => import("../pages/public/NotFoundPage"));
 
 const ReactRoutes = () => {
   const { isAuth } = useSelector((state) => state.security);

@@ -1,23 +1,14 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
 
 import ProjectItem from "./ProjectItem";
-import { getProjects } from "../../store/actions/project-actions";
 import LoadingSpinner from "../UI/LoadingSpinner";
 
-const ProjectList = () => {
-  const { projects, status } = useSelector((state) => state.project);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getProjects());
-  }, [dispatch]);
-
+const ProjectList = (props) => {
   return (
     <div>
-      {status === "loading" && <LoadingSpinner />}
-      {projects &&
-        projects.map((project) => (
+      {props.status === "loading" && <LoadingSpinner />}
+      {props.projects &&
+        props.projects.map((project) => (
           <ProjectItem key={project.id} project={project} />
         ))}
     </div>
