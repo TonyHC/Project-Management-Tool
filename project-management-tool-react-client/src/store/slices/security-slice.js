@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PURGE } from "redux-persist";
 
-import { register, login, getUserById } from "../actions/security-actions";
+import { register, login, getUserById, resetPassword } from "../actions/security-actions";
 
 const initialState = {
     user: {},
@@ -48,6 +48,17 @@ const securitySlice = createSlice({
             state.errors = {};
         })
         .addCase(getUserById.rejected, (state, action) => {
+            state.status = "failed";
+            state.errors = action.payload;
+        })
+        .addCase(resetPassword.pending, (state, action) => {
+            state.status = "loading";
+        })
+        .addCase(resetPassword.fulfilled, (state, action) => {
+            state.status = "success";
+            state.errors = {};
+        })
+        .addCase(resetPassword.rejected, (state, action) => {
             state.status = "failed";
             state.errors = action.payload;
         })

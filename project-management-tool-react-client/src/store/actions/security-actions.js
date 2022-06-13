@@ -60,3 +60,16 @@ export const getUserById = createAsyncThunk(
     }
   }
 );
+
+export const resetPassword = createAsyncThunk(
+  "security/resetPassword",
+  async (data, { rejectWithValue }) => {
+    try {
+      const { updatedUser, history } = data;
+      await axios.patch(`${USERS_API}/reset-password`, updatedUser);
+      history.replace("/dashboard");
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
