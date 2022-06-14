@@ -41,7 +41,7 @@ const ProjectBoard = (props) => {
           </div>
         );
       }
-    } else if (props.status === "failed") {
+    } else if (props.status === "failed" && errors.projectNotFound) {
       return (
         <div className="alert alert-danger alert-dismissible fade show" role="alert">
           <i className="fas fa-exclamation-triangle mb-1 me-2"></i>

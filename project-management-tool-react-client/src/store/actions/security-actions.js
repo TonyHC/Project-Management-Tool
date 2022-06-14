@@ -42,7 +42,7 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk(
   "security/logout",
   async (navigate) => {
-    persistor.purge();
+    await persistor.purge();
     localStorage.removeItem("jwt");
     setJWTToken(false);
     navigate("/login", { replace: true });

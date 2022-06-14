@@ -9,23 +9,31 @@ import Layout from "./components/Layout/Layout";
 import ReactRoutes from "./routes";
 import LoadingSpinner from "./components/UI/LoadingSpinner";
 
-const jwt = localStorage.getItem("jwt");
-setJWTToken(jwt);
-
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (jwt) {
-      const decoded = jwt_decode(jwt);
-      const currentTime = Date.now() / 1000;
+  const jwt = localStorage.getItem("jwt");
+  setJWTToken(jwt);
 
-      if (decoded.exp < currentTime) {
-        dispatch(logout(navigate));
+  useEffect(() => {
+    let timer;
+
+    timer = setTimeout(() => {
+      if (jwt && Object.keys(jwt).length > 0) {
+        const decoded = jwt_decode(jwt);
+        const currentTime = Date.now() / 1000;
+  
+        if (decoded.exp < currentTime) {
+          dispatch(logout(navigate));
+        }
       }
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
     }
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, jwt]);
 
   return (
     <Layout>
