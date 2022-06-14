@@ -10,6 +10,21 @@ const Dashboard = (props) => {
       <Link to="/project-form" className="btn btn-primary mb-3">
         Create a Project
       </Link>
+      {props.projects.length === 0 && (
+        <div
+          className="alert alert-warning alert-dismissible fade show"
+          role="alert"
+        >
+          <i className="fas fa-exclamation-triangle mb-1 me-2"></i>
+          <strong>No Projects exist!</strong>
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+      )}
       <ProjectList projects={props.projects} status={props.status} />
     </div>
   );
