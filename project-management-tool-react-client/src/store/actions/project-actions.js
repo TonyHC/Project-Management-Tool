@@ -1,14 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const PROJECTS_API = "http://localhost:8080/api/projects";
-
 export const createProject = createAsyncThunk(
   "projects/createProject",
   async (data, { rejectWithValue }) => {
     try {
       const { project, navigate } = data;
-      await axios.post(PROJECTS_API, project);
+      await axios.post("/api/projects", project);
       navigate("/dashboard", { replace: true });
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -19,7 +17,7 @@ export const createProject = createAsyncThunk(
 export const getProjects = createAsyncThunk(
   "projects/getProjects",
   async () => {
-    const res = await axios.get(PROJECTS_API);
+    const res = await axios.get("/api/projects");
     return res.data;
   }
 );
@@ -30,7 +28,7 @@ export const getProjectById = createAsyncThunk(
     const { projectId, navigate } = data;
 
     try {
-      const res = await axios.get(`${PROJECTS_API}/${projectId}`);
+      const res = await axios.get(`/api/projects/${projectId}`);
       return res.data;
     } catch (err) {
       navigate("/dashboard");
@@ -43,7 +41,7 @@ export const deleteProjectById = createAsyncThunk(
   "projects/deleteProjectById",
   async (projectId) => {
     if (window.confirm("Do you really want to delete this project?")) {
-      await axios.delete(`${PROJECTS_API}/${projectId}`);
+      await axios.delete(`/api/projects/${projectId}`);
     } else {
       return "Cancel";
     }

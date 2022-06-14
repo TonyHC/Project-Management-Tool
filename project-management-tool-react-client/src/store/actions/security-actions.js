@@ -5,14 +5,12 @@ import jwt_decode from "jwt-decode";
 import { setJWTToken } from "../../utils/setJWTToken";
 import persistor from "../../index";
 
-const USERS_API = "http://localhost:8080/api/users";
-
 export const register = createAsyncThunk(
   "security/register",
   async (data, { rejectWithValue }) => {
     try {
       const { newUser, navigate } = data;
-      await axios.post(`${USERS_API}/register`, newUser);
+      await axios.post(`/api/users/register`, newUser);
       navigate("/login", { replace: true });
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -25,7 +23,7 @@ export const login = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const { loginRequest, navigate } = data;
-      const res = await axios.post(`${USERS_API}/login`, loginRequest);
+      const res = await axios.post(`/api/users/login`, loginRequest);
 
       const { token } = res.data;
       localStorage.setItem("jwt", token);
@@ -53,7 +51,7 @@ export const getUserById = createAsyncThunk(
   "security/getUserById",
   async (userId, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${USERS_API}/${userId}`);
+      const res = await axios.get(`/api/users/${userId}`);
       return res.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -66,7 +64,7 @@ export const resetPassword = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const { updatedUser, navigate } = data;
-      await axios.patch(`${USERS_API}/reset-password`, updatedUser);
+      await axios.patch(`/api/users/reset-password`, updatedUser);
       navigate("/dashboard", { replace: true });
     } catch (err) {
       return rejectWithValue(err.response.data);
