@@ -81,7 +81,7 @@ const Header = () => {
     : notAuthenticatedHeaderLinks;
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark mb-4">
+    <nav className="navbar navbar-expand-lg navbar-dark mb-5">
       <div className="container">
         <Link className="navbar-brand" to="/">
           Project Management Tool

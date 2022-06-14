@@ -23,7 +23,7 @@ const ProjectTaskForm = (props) => {
           acceptanceCriteria: props.projectTask.acceptanceCriteria,
           dueDate: props.projectTask.dueDate,
           priority: props.projectTask.priority,
-          status: props.projectTask.status
+          status: props.projectTask.status,
         });
       }, 200);
     }
@@ -38,7 +38,7 @@ const ProjectTaskForm = (props) => {
     setInputState((prevInputState) => {
       return {
         ...prevInputState,
-        [name]: value
+        [name]: value,
       };
     });
   };
@@ -50,13 +50,13 @@ const ProjectTaskForm = (props) => {
       const updatedProjectTask = {
         ...inputState,
         projectIdentifier: props.projectId,
-        id: props.projectTask.id
+        id: props.projectTask.id,
       };
       props.onUpdateProjectTask(updatedProjectTask);
     } else {
       const newProjectTask = {
         ...inputState,
-        projectIdentifier: props.projectId
+        projectIdentifier: props.projectId,
       };
 
       props.onCreateProjectTask(newProjectTask);
@@ -67,13 +67,18 @@ const ProjectTaskForm = (props) => {
     }
   };
 
+  const resetFormHandler = (event) => {
+    event.preventDefault();
+    setInputState(initialInputState);
+  };
+
   return (
     <div className="col-md-8 m-auto">
       <Link to={`/project-board/${props.projectId}`}>
         <strong>Back to Project Board</strong>
       </Link>
-      <h4 className="display-4 text-center my-4">
-        {props.editMode ? "Update" : "Create"} Project Task
+      <h4 className="display-6 text-center my-4">
+        {props.editMode ? "Edit" : "Create"} Project Task
       </h4>
       <form onSubmit={submitHandler}>
         <div className="mb-3">
@@ -83,7 +88,7 @@ const ProjectTaskForm = (props) => {
           <input
             type="text"
             className={classNames("form-control", {
-              "is-invalid": props.errors.summary
+              "is-invalid": props.errors.summary,
             })}
             name="summary"
             id="summary"
@@ -160,20 +165,22 @@ const ProjectTaskForm = (props) => {
         </div>
 
         <div className="row mt-4">
-          <div className="col-md-6">
+          <div className={props.editMode ? "col-md-12" : "col-md-6"}>
             <div className="d-grid gap-2">
               <button type="submit" className="btn btn-primary">
                 Submit
               </button>
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="d-grid gap-2">
-              <Link to={`/project-board/${props.projectId}`} className="btn btn-secondary">
-                Back to Project Board
-              </Link>
+          {!props.editMode && (
+            <div className="col-md-6">
+              <div className="d-grid gap-2">
+                <button type="submit" className="btn btn-secondary" onClick={resetFormHandler}>
+                  Reset
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </form>
     </div>

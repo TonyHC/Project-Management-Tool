@@ -17,6 +17,10 @@ a {
   color: black;
 }
 
+.card, .navbar {
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+}
+
 .centered {
   margin: 3rem auto;
   text-align: center;
@@ -43,7 +47,6 @@ a {
 
 .navbar {
   background-color: rgb(96, 124, 235);
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
 }
 
 .li .active {

@@ -22,9 +22,9 @@ const ProjectForm = (props) => {
           projectIdentifier: props.project.projectIdentifier,
           projectDescription: props.project.projectDescription,
           startDate: props.project.startDate,
-          endDate: props.project.endDate
+          endDate: props.project.endDate,
         });
-      }, 200);
+      }, 100);
     }
 
     return () => {
@@ -39,7 +39,7 @@ const ProjectForm = (props) => {
     setInputState((prevInputState) => {
       return {
         ...prevInputState,
-        [name]: value
+        [name]: value,
       };
     });
   };
@@ -50,7 +50,7 @@ const ProjectForm = (props) => {
     if (props.editMode) {
       const updatedProject = {
         id: props.project.id,
-        ...inputState
+        ...inputState,
       };
       props.onCreateProject(updatedProject);
     } else {
@@ -62,58 +62,68 @@ const ProjectForm = (props) => {
     }
   };
 
+  const resetFormHandler = (event) => {
+    event.preventDefault();
+    setInputState(initialInputState);
+  }
+
   return (
     <section className="col-md-8 m-auto">
       <h6 className="display-6 text-center">
         {props.editMode ? "Edit" : "Create"} Project Form
       </h6>
       <form onSubmit={submitHandler}>
-        <div className="mb-3">
-          <label htmlFor="projectName" className="form-label">
-            Project Name
-          </label>
-          <input
-            type="text"
-            className={classNames("form-control", {
-              "is-invalid": props.errors.projectName
-            })}
-            placeholder="Project Name"
-            name="projectName"
-            id="projectName"
-            value={inputState.projectName}
-            onChange={userInputHandler}
-          />
-          {props.errors.projectName && (
-            <div className="invalid-feedback">{props.errors.projectName}</div>
-          )}
+        <div className="row mt-4 mb-3">
+          <div className="col-md-6">
+            <label htmlFor="projectName" className="form-label">
+              Project Name
+            </label>
+            <input
+              type="text"
+              className={classNames("form-control", {
+                "is-invalid": props.errors.projectName,
+              })}
+              placeholder="Project Name"
+              name="projectName"
+              id="projectName"
+              value={inputState.projectName}
+              onChange={userInputHandler}
+            />
+            {props.errors.projectName && (
+              <div className="invalid-feedback">{props.errors.projectName}</div>
+            )}
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="projectIdentifier" className="form-label">
+              Project ID
+            </label>
+            <input
+              type="text"
+              className={classNames("form-control", {
+                "is-invalid": props.errors.projectIdentifier,
+              })}
+              placeholder="Unique Project ID"
+              name="projectIdentifier"
+              id="projectIdentifier"
+              value={inputState.projectIdentifier}
+              onChange={userInputHandler}
+              disabled={props.editMode}
+            />
+            {props.errors.projectIdentifier && (
+              <div className="invalid-feedback">
+                {props.errors.projectIdentifier}
+              </div>
+            )}
+          </div>
         </div>
-        <div className="mb-3">
-          <label htmlFor="projectIdentifier" className="form-label">
-            Project ID
-          </label>
-          <input
-            type="text"
-            className={classNames("form-control", {
-              "is-invalid": props.errors.projectIdentifier
-            })}
-            placeholder="Unique Project ID"
-            name="projectIdentifier"
-            id="projectIdentifier"
-            value={inputState.projectIdentifier}
-            onChange={userInputHandler}
-            disabled={props.editMode}
-          />
-          {props.errors.projectIdentifier && (
-            <div className="invalid-feedback">{props.errors.projectIdentifier}</div>
-          )}
-        </div>
+
         <div className="mb-3">
           <label htmlFor="projectDescription" className="form-label">
             Project Description
           </label>
           <textarea
             className={classNames("form-control", {
-              "is-invalid": props.errors.projectDescription
+              "is-invalid": props.errors.projectDescription,
             })}
             placeholder="Project Description"
             rows="3"
@@ -123,41 +133,57 @@ const ProjectForm = (props) => {
             onChange={userInputHandler}
           ></textarea>
           {props.errors.projectDescription && (
-            <div className="invalid-feedback">{props.errors.projectDescription}</div>
+            <div className="invalid-feedback">
+              {props.errors.projectDescription}
+            </div>
           )}
         </div>
         <div className="row mb-3">
           <div className="col-md-6">
-          <label htmlFor="startDate" className="form-label">
-            Start Date
-          </label>
-          <input
-            type="date"
-            className="form-control"
-            name="startDate"
-            id="startDate"
-            value={inputState.startDate}
-            onChange={userInputHandler}
-          />
+            <label htmlFor="startDate" className="form-label">
+              Start Date
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              name="startDate"
+              id="startDate"
+              value={inputState.startDate}
+              onChange={userInputHandler}
+            />
           </div>
           <div className="col-md-6">
-          <label htmlFor="endDate" className="form-label">
-            End Date
-          </label>
-          <input
-            type="date"
-            className="form-control"
-            name="endDate"
-            id="endDate"
-            value={inputState.endDate}
-            onChange={userInputHandler}
-          />
+            <label htmlFor="endDate" className="form-label">
+              End Date
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              name="endDate"
+              id="endDate"
+              value={inputState.endDate}
+              onChange={userInputHandler}
+            />
           </div>
         </div>
-        <div className="d-grid gap-2">
-          <button type="submit" className="btn btn-primary btn-block mt-2">
-            Submit
-          </button>
+
+        <div className="row mt-4">
+          <div className={props.editMode ? "col-md-12" : "col-md-6"}>
+            <div className="d-grid gap-2">
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </div>
+          </div>
+          {!props.editMode && (
+            <div className="col-md-6">
+              <div className="d-grid gap-2">
+                <button type="submit" className="btn btn-secondary" onClick={resetFormHandler}>
+                  Reset
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </form>
     </section>
