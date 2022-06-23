@@ -36,10 +36,10 @@ public class ProjectTaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created a new project task",
                     content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ProjectTask.class))),
+                            schema = @Schema(implementation = ProjectTask.class))),
             @ApiResponse(responseCode = "404", description = "Project does not exist",
                     content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ProjectNotFoundResponse.class)))
+                            schema = @Schema(implementation = ProjectNotFoundResponse.class)))
     })
     @PostMapping("/{backlogId}")
     public ResponseEntity<?> addProjectTaskToBacklog(@PathVariable String backlogId,
@@ -57,15 +57,15 @@ public class ProjectTaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found a list of project tasks",
                     content = @Content(mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = ProjectTask.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = ProjectTask.class)))),
             @ApiResponse(responseCode = "404", description = "Project does not exist",
                     content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ProjectNotFoundResponse.class)))
+                            schema = @Schema(implementation = ProjectNotFoundResponse.class)))
     })
     @GetMapping("/{backlogId}")
     public ResponseEntity<List<ProjectTask>> getAllProjectTasksFromBacklog(@PathVariable String backlogId) {
         List<ProjectTask> projectTasks = projectTaskService.findAllProjectTasksByIdentifier(backlogId);
-        return new ResponseEntity<List<ProjectTask>>(projectTasks, HttpStatus.OK);
+        return new ResponseEntity<>(projectTasks, HttpStatus.OK);
     }
 
     @Operation(summary = "Get a project by projectIdentifier and projectSequence",
@@ -76,17 +76,17 @@ public class ProjectTaskController {
                             array = @ArraySchema(schema = @Schema(implementation = ProjectTask.class)))),
             @ApiResponse(responseCode = "404", description = "Project / Project Task does not exist",
                     content = @Content(mediaType = "application/json",
-                    schema = @Schema(oneOf = {
-                            ProjectNotFoundResponse.class,
-                            ProjectTaskNotFoundResponse.class
-                    })))
+                            schema = @Schema(oneOf = {
+                                    ProjectNotFoundResponse.class,
+                                    ProjectTaskNotFoundResponse.class
+                            })))
     })
     @GetMapping("/{backlogId}/{projectTaskId}")
     public ResponseEntity<ProjectTask> getProjectTaskFromBacklog(@PathVariable String backlogId,
                                                                  @PathVariable String projectTaskId) {
         ProjectTask projectTask =
                 projectTaskService.findProjectTaskByProjectSequence(backlogId, projectTaskId);
-        return new ResponseEntity<ProjectTask>(projectTask, HttpStatus.OK);
+        return new ResponseEntity<>(projectTask, HttpStatus.OK);
     }
 
     @Operation(summary = "Update an existing project task associated with a project",
@@ -97,7 +97,7 @@ public class ProjectTaskController {
                             array = @ArraySchema(schema = @Schema(implementation = ProjectTask.class)))),
             @ApiResponse(responseCode = "404", description = "Project does not exist",
                     content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ProjectNotFoundResponse.class)))
+                            schema = @Schema(implementation = ProjectNotFoundResponse.class)))
     })
     @PatchMapping("/{backlogId}/{projectTaskId}")
     public ResponseEntity<?> updateProjectTaskFromBacklog(@PathVariable String backlogId,
@@ -110,7 +110,7 @@ public class ProjectTaskController {
 
         ProjectTask existingProjectTask =
                 projectTaskService.updateProjectTaskByProjectSequence(backlogId, projectTaskId, projectTask);
-        return new ResponseEntity<ProjectTask>(existingProjectTask, HttpStatus.OK);
+        return new ResponseEntity<>(existingProjectTask, HttpStatus.OK);
     }
 
     @Operation(summary = "Delete an existing project task associated with a project",
@@ -118,16 +118,16 @@ public class ProjectTaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully deleted an existing project task",
                     content = @Content(mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = ProjectTask.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = ProjectTask.class)))),
             @ApiResponse(responseCode = "404", description = "Project does not exist",
                     content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ProjectNotFoundResponse.class)))
+                            schema = @Schema(implementation = ProjectNotFoundResponse.class)))
     })
     @DeleteMapping("/{backlogId}/{projectTaskId}")
     public ResponseEntity<String> deleteProjectTaskFromBacklog(@PathVariable String backlogId,
                                                                @PathVariable String projectTaskId) {
         projectTaskService.deleteProjectTaskByProjectSequence(backlogId, projectTaskId);
-        return new ResponseEntity<String>("Project Task ID: " + projectTaskId
+        return new ResponseEntity<>("Project Task ID: " + projectTaskId
                 + " associated with project: " + backlogId + " was deleted.", HttpStatus.OK);
     }
 }

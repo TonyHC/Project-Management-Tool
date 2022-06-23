@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_account")
 @Data
 public class User implements UserDetails {
     @Id
@@ -25,7 +25,7 @@ public class User implements UserDetails {
 
     @Email(message = "Username must be a email")
     @NotBlank(message = "Username is required")
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @NotBlank(message = "Password is required")

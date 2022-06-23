@@ -46,7 +46,7 @@ public class Project {
     private Backlog backlog;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_account_id", nullable = false)
     @JsonIgnore
     private User user;
 

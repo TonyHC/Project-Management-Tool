@@ -45,7 +45,7 @@ public class ProjectController {
                     schema = @Schema(implementation = ProjectNotFoundResponse.class)))
     })
     @PostMapping("")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
+    public ResponseEntity<?> createOrUpdateProject(@Valid @RequestBody Project project, BindingResult result) {
         if (result.hasErrors()) {
             return mapValidationErrorService.mapValidationError(result);
         }

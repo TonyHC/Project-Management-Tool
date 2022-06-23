@@ -17,7 +17,7 @@ public class ProjectTask {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "project_sequence", updatable = false)
+    @Column(name = "project_sequence", updatable = false, unique = true)
     private String projectSequence;
 
     @Column(name = "project_identifier", updatable = false)
