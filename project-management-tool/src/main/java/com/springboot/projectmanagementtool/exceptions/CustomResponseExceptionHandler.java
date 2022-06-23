@@ -33,6 +33,12 @@ public class CustomResponseExceptionHandler extends ResponseEntityExceptionHandl
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> handleUserNotFoundException(Exception exception, WebRequest webRequest) {
+        UserNotFoundResponse exceptionResponse = new UserNotFoundResponse(exception.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(InvalidResetPasswordException.class)
     public ResponseEntity<Object> handleInvalidResetPasswordException(Exception exception, WebRequest webRequest) {
         InvalidResetPasswordResponse exceptionResponse = new InvalidResetPasswordResponse(exception.getMessage());

@@ -1,6 +1,7 @@
 package com.springboot.projectmanagementtool.services;
 
 import com.springboot.projectmanagementtool.domain.User;
+import com.springboot.projectmanagementtool.exceptions.UserNotFoundException;
 import com.springboot.projectmanagementtool.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,19 +23,19 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException("User not found.");
+            throw new UsernameNotFoundException("Invalid username");
         }
 
         return user;
     }
 
     public User loadUserById(Long id) {
-       Optional<User> user = userRepository.findById(id);
+        Optional<User> user = userRepository.findById(id);
 
-       if (user.isEmpty()) {
-           throw new UsernameNotFoundException("User not found.");
-       }
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("User was not found");
+        }
 
-       return user.get();
+        return user.get();
     }
 }
