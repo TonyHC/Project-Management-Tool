@@ -4,7 +4,7 @@ import com.springboot.projectmanagementtool.domain.User;
 import com.springboot.projectmanagementtool.exceptions.InvalidResetPasswordException;
 import com.springboot.projectmanagementtool.exceptions.UsernameAlreadyExistsException;
 import com.springboot.projectmanagementtool.repositories.UserRepository;
-import com.springboot.projectmanagementtool.security.AuthenticationFacadeImpl;
+import com.springboot.projectmanagementtool.security.SecurityUtils;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,14 +14,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomUserDetailsService customUserDetailsService;
-    private final AuthenticationFacadeImpl authenticationFacade;
+    private final SecurityUtils securityUtils;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                       CustomUserDetailsService customUserDetailsService, AuthenticationFacadeImpl authenticationFacade) {
+                       CustomUserDetailsService customUserDetailsService, SecurityUtils securityUtils) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.customUserDetailsService = customUserDetailsService;
-        this.authenticationFacade = authenticationFacade;
+        this.securityUtils = securityUtils;
     }
 
     public User saveUser(User newUser) {
@@ -37,7 +37,7 @@ public class UserService {
     public User getUserById(Long userId) {
         User user = customUserDetailsService.loadUserById(userId);
 
-        if (!user.getUsername().equals(authenticationFacade.getAuthentication().getName())) {
+        if (!user.getUsername().equals(securityUtils.getAuthenticationUsername())) {
             throw new UsernameNotFoundException("Username is invalid");
         }
 

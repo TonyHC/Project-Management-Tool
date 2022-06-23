@@ -8,7 +8,7 @@ import com.springboot.projectmanagementtool.exceptions.ProjectNotFoundException;
 import com.springboot.projectmanagementtool.repositories.BacklogRepository;
 import com.springboot.projectmanagementtool.repositories.ProjectRepository;
 import com.springboot.projectmanagementtool.repositories.UserRepository;
-import com.springboot.projectmanagementtool.security.AuthenticationFacadeImpl;
+import com.springboot.projectmanagementtool.security.SecurityUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,18 +18,18 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final BacklogRepository backlogRepository;
     private final UserRepository userRepository;
-    private final AuthenticationFacadeImpl authenticationFacade;
+    private final SecurityUtils securityUtils;
 
     public ProjectService(ProjectRepository projectRepository, BacklogRepository backlogRepository,
-                          UserRepository userRepository, AuthenticationFacadeImpl authenticationFacade) {
+                          UserRepository userRepository, SecurityUtils securityUtils) {
         this.projectRepository = projectRepository;
         this.backlogRepository = backlogRepository;
         this.userRepository = userRepository;
-        this.authenticationFacade = authenticationFacade;
+        this.securityUtils = securityUtils;
     }
 
     public Project saveOrUpdateProject(Project project) {
-        String authenticatedUsername = authenticationFacade.getAuthentication().getName();
+        String authenticatedUsername = securityUtils.getAuthenticationUsername();
         String projectIdentifier = project.getProjectIdentifier().toUpperCase();
 
         if (project.getId() != null) {
@@ -72,7 +72,7 @@ public class ProjectService {
             throw new ProjectNotFoundException("Project with ID: " + projectId + " was not found.");
         }
 
-        if(!project.getProjectOwner().equals(authenticationFacade.getAuthentication().getName())) {
+        if (!project.getProjectOwner().equals(securityUtils.getAuthenticationUsername())) {
             throw new ProjectNotFoundException("Project not found in your account");
         }
 
@@ -80,7 +80,7 @@ public class ProjectService {
     }
 
     public List<Project> findAllProjects() {
-        return projectRepository.findAllByProjectOwner(authenticationFacade.getAuthentication().getName());
+        return projectRepository.findAllByProjectOwner(securityUtils.getAuthenticationUsername());
     }
 
     public void deleteProjectByIdentifier(String projectId) {
