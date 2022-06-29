@@ -29,6 +29,7 @@ public class ProjectTaskService {
 
         projectTask.setProjectSequence(projectIdentifier + "-" + backlogSequence);
         projectTask.setProjectIdentifier(projectIdentifier);
+        projectTask.setPosition(backlog.getProjectTaskSequence());
 
         if (projectTask.getPriority() == null || projectTask.getPriority() == 0 ) {
             projectTask.setPriority(3);
@@ -43,7 +44,7 @@ public class ProjectTaskService {
 
     public List<ProjectTask> findAllProjectTasksByIdentifier(String projectIdentifier) {
         projectService.findProjectByIdentifier(projectIdentifier);
-        return projectTaskRepository.findAllByProjectIdentifierOrderByPriority(projectIdentifier);
+        return projectTaskRepository.findAllByProjectIdentifierOrderByPosition(projectIdentifier);
     }
 
     public ProjectTask findProjectTaskByProjectSequence(String projectIdentifier, String projectSequence) {
@@ -67,6 +68,11 @@ public class ProjectTaskService {
                                                           ProjectTask projectTask) {
         findProjectTaskByProjectSequence(projectIdentifier, projectSequence);
         return projectTaskRepository.save(projectTask);
+    }
+
+    public List<ProjectTask> updateProjectTasksOrder(String projectIdentifier, List<ProjectTask> projectTasks) {
+        projectService.findProjectByIdentifier(projectIdentifier);
+        return (List<ProjectTask>) projectTaskRepository.saveAll(projectTasks);
     }
 
     public void deleteProjectTaskByProjectSequence(String projectIdentifier, String projectSequence) {
