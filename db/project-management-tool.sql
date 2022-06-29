@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS project_task (
 	acceptance_criteria VARCHAR(100) DEFAULT NULL,
     status VARCHAR(20) NOT NULL, 
     priority TINYINT UNSIGNED DEFAULT 0,
+    position INT UNSIGNED NOT NULL,
     due_date DATE DEFAULT NULL,
     backlog_id INT UNSIGNED NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
