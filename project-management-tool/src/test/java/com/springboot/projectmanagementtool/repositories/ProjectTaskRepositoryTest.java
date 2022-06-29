@@ -67,16 +67,16 @@ class ProjectTaskRepositoryTest {
         projectTaskRepository.save(projectTask);
 
         // When
-        List<ProjectTask> foundProjectTasks = projectTaskRepository.findAllByProjectIdentifierOrderByPriority(PROJECT_IDENTIFIER);
+        List<ProjectTask> foundProjectTasks = projectTaskRepository.findAllByProjectIdentifierOrderByPosition(PROJECT_IDENTIFIER);
 
         // Then
         assertThat(foundProjectTasks).hasSize(1).isNotEmpty();
     }
 
     @Test
-    void findAllByProjectIdentifierOrderByPriority_RetrieveEmptyListOfProjectTasks_WhenProjectIdentifierIsInvalid() {
+    void findAllByProjectIdentifierOrderByPosition_RetrieveEmptyListOfProjectTasks_WhenProjectIdentifierIsInvalid() {
         // When
-        List<ProjectTask> foundProjectTasks = projectTaskRepository.findAllByProjectIdentifierOrderByPriority(PROJECT_IDENTIFIER);
+        List<ProjectTask> foundProjectTasks = projectTaskRepository.findAllByProjectIdentifierOrderByPosition(PROJECT_IDENTIFIER);
 
         // Then
         assertThat(foundProjectTasks).isEmpty();

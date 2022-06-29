@@ -22,6 +22,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -123,6 +124,20 @@ class ProjectTaskControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(projectTask)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser
+    void updateProjectTasksOrder_UpdatesExistingProjectTasks_WhenProjectTasksRequestBodyIsValid() throws Exception {
+        List<ProjectTask> projectTasks = List.of(projectTask);
+
+        given(projectTaskService.updateProjectTasksOrder(anyString(), anyList())).willReturn(projectTasks);
+
+        mockMvc.perform(patch("/api/project-tasks/" + PROJECT_IDENTIFIER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(projectTasks)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test

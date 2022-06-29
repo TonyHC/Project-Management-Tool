@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -31,6 +32,9 @@ class ProjectTaskServiceTest {
 
     @Mock
     private ProjectService projectService;
+
+    @Captor
+    private ArgumentCaptor<List<ProjectTask>> listArgumentCaptor;
 
     private ProjectTaskService projectTaskService;
 
@@ -92,7 +96,7 @@ class ProjectTaskServiceTest {
     void findAllProjectTasksByIdentifier_RetrieveListOfProjectTasks_WhenProjectTasksExistForProject() {
         // Given
         given(projectService.findProjectByIdentifier(PROJECT_IDENTIFIER)).willReturn(project);
-        given(projectTaskRepository.findAllByProjectIdentifierOrderByPriority(PROJECT_IDENTIFIER))
+        given(projectTaskRepository.findAllByProjectIdentifierOrderByPosition(PROJECT_IDENTIFIER))
                 .willReturn(List.of(projectTask));
 
         // When
@@ -185,6 +189,23 @@ class ProjectTaskServiceTest {
         verify(projectTaskRepository).save(projectTaskArgumentCaptor.capture());
         ProjectTask capturedProjectTask = projectTaskArgumentCaptor.getValue();
         assertThat(capturedProjectTask).isEqualTo(projectTask);
+    }
+
+    @Test
+    void updateProjectTasksOrder_UpdatesExistingProjectTasks_WhenProjectTasksExist() {
+        // Given
+        List<ProjectTask> projectTasks = List.of(projectTask, projectTask);
+
+        given(projectService.findProjectByIdentifier(PROJECT_IDENTIFIER)).willReturn(project);
+        given(projectTaskRepository.saveAll(projectTasks)).willReturn(projectTasks);
+
+        // When
+        projectTaskService.updateProjectTasksOrder(PROJECT_IDENTIFIER, projectTasks);
+
+        // Then
+        verify(projectTaskRepository).saveAll(listArgumentCaptor.capture());
+        List<ProjectTask> capturedProjectTasks = listArgumentCaptor.getValue();
+        assertThat(capturedProjectTasks).isNotEmpty().hasSize(2).isEqualTo(projectTasks);
     }
 
     @Test
