@@ -109,7 +109,7 @@ const ProjectTaskForm = (props) => {
             placeholder="Acceptance Criteria"
             name="acceptanceCriteria"
             id="acceptanceCriteria"
-            value={inputState.acceptanceCriteria}
+            value={inputState.acceptanceCriteria || ""}
             onChange={userInputHandler}
           ></textarea>
         </div>
@@ -124,7 +124,7 @@ const ProjectTaskForm = (props) => {
               className="form-control"
               name="dueDate"
               id="dueDate"
-              value={inputState.dueDate}
+              value={inputState.dueDate || ""}
               onChange={userInputHandler}
             />
           </div>
