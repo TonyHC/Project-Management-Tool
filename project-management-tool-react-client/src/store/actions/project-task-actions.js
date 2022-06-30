@@ -54,6 +54,18 @@ export const updateProjectTask = createAsyncThunk(
   }
 );
 
+export const updateProjectTasksOrder = createAsyncThunk(
+  "projectTasks/updateProjectTasksOrder",
+  async (data, { rejectWithValue }) => {
+    try {
+      const { projectId, projectTasks } = data;
+      await axios.patch(`/api/project-tasks/${projectId}`, projectTasks);
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const deleteProjectTask = createAsyncThunk(
   "projectTasks/deleteProjectTask",
   async (data) => {
