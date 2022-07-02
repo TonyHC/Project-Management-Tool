@@ -36,6 +36,9 @@ public class ProjectTask {
     @Column(name = "priority")
     private Integer priority;
 
+    @Column(name = "position")
+    private Integer position;
+
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "due_date")

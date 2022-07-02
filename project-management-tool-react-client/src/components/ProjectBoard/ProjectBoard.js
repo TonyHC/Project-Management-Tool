@@ -2,14 +2,25 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import ProjectTaskList from "./ProjectTask/ProjectTaskList";
-import LoadingSpinner from "../UI/LoadingSpinner";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { projectTaskStatus } from "../../utils/projectTaskStatus";
 
 const ProjectBoard = (props) => {
+  const getListStyle = (isDraggingOver) => ({
+    background: isDraggingOver ? "#D6E5FA" : "#F3F8FF",
+    padding: "16px",
+    overflowY: "hidden",
+    scrollbarWidth: "thin",
+    minHeight: "85%"
+  });
+
   const loadProjectBoardContent = (projectTasks, errors) => {
     if (props.status === "success") {
       if (projectTasks.length === 0) {
         return (
-          <div className="alert alert-warning alert-dismissible fade show" role="alert">
+          <div
+            className="alert alert-warning alert-dismissible fade show"
+            role="alert">
             <i className="fas fa-exclamation-triangle mb-1 me-2"></i>
             <strong>No Project Tasks were found!</strong>
             <button
@@ -22,28 +33,36 @@ const ProjectBoard = (props) => {
         );
       } else {
         return (
-          <div className="row">
-            <ProjectTaskList
-              title="To Do"
-              cardHeaderStyle="bg-danger"
-              projectTasks={projectTasks}
-            />
-            <ProjectTaskList
-              title="In Progress"
-              cardHeaderStyle="bg-primary"
-              projectTasks={projectTasks}
-            />
-            <ProjectTaskList
-              title="Done"
-              cardHeaderStyle="bg-success"
-              projectTasks={projectTasks}
-            />
+          <div className="d-flex drag-and-drop mb-5">
+            <div className="row mx-auto">
+              <DragDropContext onDragEnd={props.onDragEnd}>
+                {props.filteredProjectTasks.map((el, ind) => (
+                  <Droppable key={ind} droppableId={`${ind}`}>
+                    {(provided, snapshot) => (
+                      <div className="d-flex flex-column project-tasks-list list-border">
+                        <h5 className="fw-bold text-center capitalize p-1 mt-3">
+                            {projectTaskStatus(ind).replace("_", " ").toLowerCase()}
+                        </h5>
+                        <div
+                          ref={provided.innerRef}
+                          style={getListStyle(snapshot.isDraggingOver)}
+                          {...provided.droppableProps}>
+                          <ProjectTaskList el={el} />
+                        </div>
+                      </div>
+                    )}
+                  </Droppable>
+                ))}
+              </DragDropContext>
+            </div>
           </div>
         );
       }
     } else if (props.status === "failed" && errors.projectNotFound) {
       return (
-        <div className="alert alert-danger alert-dismissible fade show" role="alert">
+        <div
+          className="alert alert-danger alert-dismissible fade show"
+          role="alert">
           <i className="fas fa-exclamation-triangle mb-1 me-2"></i>
           <strong>{errors.projectNotFound}</strong>
           <button
@@ -54,8 +73,6 @@ const ProjectBoard = (props) => {
           ></button>
         </div>
       );
-    } else {
-      return <LoadingSpinner />;
     }
   };
 
@@ -73,6 +90,6 @@ const ProjectBoard = (props) => {
       {content}
     </div>
   );
-}
+};
 
 export default React.memo(ProjectBoard);

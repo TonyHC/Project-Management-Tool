@@ -8,13 +8,12 @@ const Dashboard = (props) => {
     <div className="col-md-10 m-auto">
       <h1 className="text-center mb-4">Projects</h1>
       <Link to="/project-form" className="btn btn-primary mb-3">
-        Create a Project
+       <i className="fas fa-plus-circle"> Create Project</i>
       </Link>
       {props.projects.length === 0 && (
         <div
           className="alert alert-warning alert-dismissible fade show"
-          role="alert"
-        >
+          role="alert">
           <i className="fas fa-exclamation-triangle mb-1 me-2"></i>
           <strong>No Projects exist!</strong>
           <button

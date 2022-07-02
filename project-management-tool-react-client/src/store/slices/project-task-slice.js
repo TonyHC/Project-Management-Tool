@@ -6,6 +6,7 @@ import {
   getProjectTasks,
   getProjectTask,
   updateProjectTask,
+  updateProjectTasksOrder,
   deleteProjectTask
 } from "../actions/project-task-actions";
 
@@ -85,6 +86,17 @@ const projectTaskSlice = createSlice({
       .addCase(deleteProjectTask.rejected, (state, action) => {
         state.status = "failed";
         state.errors = action.error;
+      })
+      .addCase(updateProjectTasksOrder.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(updateProjectTasksOrder.fulfilled, (state, action) => {
+        state.status = "success";
+        state.errors = {};
+      })
+      .addCase(updateProjectTasksOrder.rejected, (state, action) => {
+        state.status = "failed";
+        state.errors = action.payload;
       })
       .addCase(PURGE, () => initialState);
   },

@@ -148,7 +148,7 @@ const ProjectForm = (props) => {
               className="form-control"
               name="startDate"
               id="startDate"
-              value={inputState.startDate}
+              value={inputState.startDate || ""}
               onChange={userInputHandler}
             />
           </div>
@@ -161,7 +161,7 @@ const ProjectForm = (props) => {
               className="form-control"
               name="endDate"
               id="endDate"
-              value={inputState.endDate}
+              value={inputState.endDate || ""}
               onChange={userInputHandler}
             />
           </div>

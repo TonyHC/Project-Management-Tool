@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Dashboard from "../../components/Project/Dashboard";
 
+import Dashboard from "../../components/Project/Dashboard";
 import { getUserById } from "../../store/actions/security-actions";
 import { getProjects } from "../../store/actions/project-actions"; 
 

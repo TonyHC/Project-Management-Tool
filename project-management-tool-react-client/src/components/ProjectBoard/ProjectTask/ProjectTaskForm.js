@@ -29,7 +29,9 @@ const ProjectTaskForm = (props) => {
     }
 
     return () => {
-      clearTimeout(timer);
+      if (timer) {
+        clearTimeout(timer);
+      }
     };
   }, [props.projectTask, props.editMode]);
 
@@ -38,7 +40,7 @@ const ProjectTaskForm = (props) => {
     setInputState((prevInputState) => {
       return {
         ...prevInputState,
-        [name]: value,
+        [name]: value
       };
     });
   };
@@ -51,6 +53,7 @@ const ProjectTaskForm = (props) => {
         ...inputState,
         projectIdentifier: props.projectId,
         id: props.projectTask.id,
+        position: props.projectTask.position
       };
       props.onUpdateProjectTask(updatedProjectTask);
     } else {
@@ -58,7 +61,6 @@ const ProjectTaskForm = (props) => {
         ...inputState,
         projectIdentifier: props.projectId,
       };
-
       props.onCreateProjectTask(newProjectTask);
     }
 
@@ -109,7 +111,7 @@ const ProjectTaskForm = (props) => {
             placeholder="Acceptance Criteria"
             name="acceptanceCriteria"
             id="acceptanceCriteria"
-            value={inputState.acceptanceCriteria}
+            value={inputState.acceptanceCriteria || ""}
             onChange={userInputHandler}
           ></textarea>
         </div>
@@ -124,7 +126,7 @@ const ProjectTaskForm = (props) => {
               className="form-control"
               name="dueDate"
               id="dueDate"
-              value={inputState.dueDate}
+              value={inputState.dueDate || ""}
               onChange={userInputHandler}
             />
           </div>
