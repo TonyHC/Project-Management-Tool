@@ -31,8 +31,9 @@ import static com.springboot.projectmanagementtool.security.SecurityConstants.TO
 
 @Tag(name = "Users", description = "Users API")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping(UserController.USER_BASE_URL)
 public class UserController {
+    public static final String USER_BASE_URL = "/api/users";
     private final MapValidationErrorService mapValidationErrorService;
     private final UserService userService;
     private final UserValidator userValidator;

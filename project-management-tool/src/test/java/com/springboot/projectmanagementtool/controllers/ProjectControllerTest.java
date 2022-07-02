@@ -69,7 +69,7 @@ class ProjectControllerTest {
     void createOrUpdateProject_CreatesNewProjectOrUpdatesExistingProject_WhenProjectRequestBodyIsValid() throws Exception {
         given(projectService.saveOrUpdateProject(project)).willReturn(project);
 
-        mockMvc.perform(post("/api/projects")
+        mockMvc.perform(post(ProjectController.PROJECT_BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(project)))
                 .andExpect(status().isCreated());
@@ -80,7 +80,7 @@ class ProjectControllerTest {
     void getProjectByIdentifier_RetrievesProject_WhenProjectIdentifierIsValid() throws Exception {
         given(projectService.findProjectByIdentifier(project.getProjectIdentifier())).willReturn(project);
 
-        mockMvc.perform(get("/api/projects/" + project.getId())
+        mockMvc.perform(get(ProjectController.PROJECT_BASE_URL + "/" + project.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -90,7 +90,7 @@ class ProjectControllerTest {
     void getAllProjects_RetrieveListOfProjects_WhenProjectsExistForAssociatedUser() throws Exception {
         given(projectService.findAllProjects()).willReturn(List.of(project, project));
 
-        mockMvc.perform(get("/api/projects")
+        mockMvc.perform(get(ProjectController.PROJECT_BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
@@ -99,7 +99,8 @@ class ProjectControllerTest {
     @Test
     @WithMockUser
     void deleteProjectByIdentifier_DeletesExistingProject_WhenProjectIdentifierIsValid() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(delete("/api/projects/" + project.getProjectIdentifier())
+        MvcResult mvcResult = mockMvc.perform(delete(ProjectController.PROJECT_BASE_URL + "/"
+                        + project.getProjectIdentifier())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

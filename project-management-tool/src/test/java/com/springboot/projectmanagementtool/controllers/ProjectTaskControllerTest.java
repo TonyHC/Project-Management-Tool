@@ -22,7 +22,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -86,7 +87,7 @@ class ProjectTaskControllerTest {
     void addProjectTaskToBacklog_CreatesNewProjectTask_WhenProjectTaskRequestBodyIsValid() throws Exception {
         given(projectTaskService.addProjectTask(PROJECT_IDENTIFIER, projectTask)).willReturn(projectTask);
 
-        mockMvc.perform(post("/api/project-tasks/" + PROJECT_IDENTIFIER)
+        mockMvc.perform(post(ProjectTaskController.PROJECT_TASK_BASE_URL + "/" + PROJECT_IDENTIFIER)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(projectTask)))
                 .andExpect(status().isCreated());
@@ -97,7 +98,7 @@ class ProjectTaskControllerTest {
     void getAllProjectTasksFromBacklog_RetrieveListOfProjectTasks_WhenProjectTasksExist() throws Exception {
         given(projectTaskService.findAllProjectTasksByIdentifier(PROJECT_IDENTIFIER)).willReturn(List.of(projectTask));
 
-        mockMvc.perform(get("/api/project-tasks/" + PROJECT_IDENTIFIER)
+        mockMvc.perform(get(ProjectTaskController.PROJECT_TASK_BASE_URL + "/" + PROJECT_IDENTIFIER)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
@@ -109,7 +110,8 @@ class ProjectTaskControllerTest {
         given(projectTaskService.findProjectTaskByProjectSequence(PROJECT_IDENTIFIER, projectTask.getProjectSequence()))
                 .willReturn(projectTask);
 
-        mockMvc.perform(get("/api/project-tasks/" + PROJECT_IDENTIFIER + "/" + projectTask.getProjectSequence())
+        mockMvc.perform(get(ProjectTaskController.PROJECT_TASK_BASE_URL + "/" + PROJECT_IDENTIFIER +
+                        "/" + projectTask.getProjectSequence())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -120,7 +122,8 @@ class ProjectTaskControllerTest {
         given(projectTaskService.updateProjectTaskByProjectSequence(PROJECT_IDENTIFIER,
                 projectTask.getProjectSequence(), projectTask)).willReturn(projectTask);
 
-        mockMvc.perform(patch("/api/project-tasks/" + PROJECT_IDENTIFIER + "/" + projectTask.getProjectSequence())
+        mockMvc.perform(patch(ProjectTaskController.PROJECT_TASK_BASE_URL + "/" + PROJECT_IDENTIFIER +
+                        "/" + projectTask.getProjectSequence())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(projectTask)))
                 .andExpect(status().isOk());
@@ -133,7 +136,7 @@ class ProjectTaskControllerTest {
 
         given(projectTaskService.updateProjectTasksOrder(anyString(), anyList())).willReturn(projectTasks);
 
-        mockMvc.perform(patch("/api/project-tasks/" + PROJECT_IDENTIFIER)
+        mockMvc.perform(patch(ProjectTaskController.PROJECT_TASK_BASE_URL + "/" + PROJECT_IDENTIFIER)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(projectTasks)))
                 .andExpect(status().isOk())
@@ -143,8 +146,8 @@ class ProjectTaskControllerTest {
     @Test
     @WithMockUser
     void deleteProjectTaskFromBacklog_DeletesProjectTask_WhenProjectIdentifierAndProjectSequenceIsValid() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(delete("/api/project-tasks/" + PROJECT_IDENTIFIER + "/"
-                        + projectTask.getProjectSequence())
+        MvcResult mvcResult = mockMvc.perform(delete(ProjectTaskController.PROJECT_TASK_BASE_URL + "/" +
+                        PROJECT_IDENTIFIER + "/" + projectTask.getProjectSequence())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

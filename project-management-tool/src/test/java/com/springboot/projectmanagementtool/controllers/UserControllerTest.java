@@ -17,7 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -56,7 +56,7 @@ class UserControllerTest {
 
         given(userService.saveUser(user)).willReturn(user);
 
-        mockMvc.perform(post("/api/users/register")
+        mockMvc.perform(post(UserController.USER_BASE_URL + "/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isCreated())
@@ -67,7 +67,7 @@ class UserControllerTest {
     void authenticateUser_LogsTheUserIn_WhenLoginRequestIsValid() throws Exception {
         LoginRequest loginRequest = new LoginRequest("testusers@mail.com", "Password");
 
-        mockMvc.perform(post("/api/users/login")
+        mockMvc.perform(post(UserController.USER_BASE_URL + "/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isOk());
@@ -88,7 +88,7 @@ class UserControllerTest {
 
         given(userService.getUserById(id)).willReturn(user);
 
-        mockMvc.perform(get("/api/users/" + id)
+        mockMvc.perform(get(UserController.USER_BASE_URL + "/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isOk())
@@ -108,7 +108,7 @@ class UserControllerTest {
 
         given(userService.updateUserPassword(user)).willReturn(user);
 
-        mockMvc.perform(patch("/api/users/reset-password")
+        mockMvc.perform(patch(UserController.USER_BASE_URL + "/reset-password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isOk());

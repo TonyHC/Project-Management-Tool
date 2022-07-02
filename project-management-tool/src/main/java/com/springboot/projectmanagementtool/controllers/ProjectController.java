@@ -22,8 +22,9 @@ import java.util.List;
 
 @Tag(name = "Projects", description = "Projects API")
 @RestController
-@RequestMapping("/api/projects")
+@RequestMapping(ProjectController.PROJECT_BASE_URL)
 public class ProjectController {
+    public static final String PROJECT_BASE_URL = "/api/projects";
     private final ProjectService projectService;
     private final MapValidationErrorService mapValidationErrorService;
 
