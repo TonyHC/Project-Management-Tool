@@ -15,7 +15,7 @@ const ProjectTaskItem = (props) => {
     cardHeaderStyles = "bg-danger";
   } else if (props.projectTask.priority === 2) {
     priority = "MEDIUM";
-    cardHeaderStyles = "bg-warning";
+    cardHeaderStyles = "bg-success";
   } else if (props.projectTask.priority === 3) {
     priority = "LOW";
     cardHeaderStyles = "bg-info";

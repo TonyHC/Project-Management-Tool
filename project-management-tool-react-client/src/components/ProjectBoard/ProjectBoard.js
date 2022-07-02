@@ -6,9 +6,11 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { projectTaskStatus } from "../../utils/projectTaskStatus";
 
 const ProjectBoard = (props) => {
+  const grid = 8;
+
   const getListStyle = (isDraggingOver) => ({
     background: isDraggingOver ? "#D6E5FA" : "#F3F8FF",
-    padding: "16px",
+    padding: grid * 2,
     overflowY: "hidden",
     scrollbarWidth: "thin",
     minHeight: "85%"
@@ -47,7 +49,7 @@ const ProjectBoard = (props) => {
                           ref={provided.innerRef}
                           style={getListStyle(snapshot.isDraggingOver)}
                           {...provided.droppableProps}>
-                          <ProjectTaskList el={el} />
+                          <ProjectTaskList el={el} grid={grid}/>
                         </div>
                       </div>
                     )}

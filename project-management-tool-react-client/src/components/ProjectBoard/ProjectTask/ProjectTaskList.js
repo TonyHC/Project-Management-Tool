@@ -7,11 +7,11 @@ const ProjectTaskList = (props) => {
   const getItemStyle = (isDragging, draggableStyle) => ({
     // Some basic styles to make the items look a bit nicer
     userSelect: "none",
-    padding: `8px 0`,
-    margin: `0 0 24px 0`,
+    padding: `${props.grid} 0`,
+    margin: `0 0 ${props.grid * 3}px 0`,
 
     // Change background colour if dragging
-    background: isDragging ? "#D6E5FA" : "#F3F8FF",
+    background: isDragging ? "rgba(rgb(214, 229, 250, 0.1)" : "rgba(243, 248, 255, 0.1)",
 
     // Styles we need to apply on draggables
     ...draggableStyle
