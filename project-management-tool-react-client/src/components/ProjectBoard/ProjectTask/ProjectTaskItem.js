@@ -18,7 +18,7 @@ const ProjectTaskItem = (props) => {
     cardHeaderStyles = "bg-warning";
   } else if (props.projectTask.priority === 3) {
     priority = "LOW";
-    cardHeaderStyles = "bg-primary";
+    cardHeaderStyles = "bg-info";
   }
 
   const deleteProjectTaskHandler = () => {
@@ -31,36 +31,37 @@ const ProjectTaskItem = (props) => {
   };
 
   return (
-    <div className="card mb-3 bg-light">
-      <div className={`card-header d-flex justify-content-between ${cardHeaderStyles} text-white`}>
-        <span>ID: {props.projectTask.projectSequence}</span>
-        <span>Priority: {priority}</span>
+    <div className="card">
+      <div
+        className={`card-header d-flex justify-content-between ${cardHeaderStyles} text-white`}>
+        <h6 className="card-sub-title">
+          ID: {props.projectTask.projectSequence}
+        </h6>
+
+        <h6 className="card-title">Priority: {priority}</h6>
       </div>
       <div className="card-body bg-light">
-        <div className={"d-flex justify-content-between"}>
-          <h5 className="card-title">{props.projectTask.summary}</h5>
-          {props.projectTask.dueDate && (
-            <p className="card-text">
-              <strong>Due Date:</strong>
+        <h6 className="card-title">{props.projectTask.summary}</h6>
+
+        <p className="card-text text-muted text-truncate ">
+          {props.projectTask.acceptanceCriteria}
+        </p>
+
+        {props.projectTask.dueDate && (
+          <div className="d-flex justify-content-start">
+            <p className="card-text me-2">
+              <strong>Due Date:</strong> {props.projectTask.dueDate}
             </p>
-          )}
-        </div>
-        <div className={"d-flex justify-content-between"}>
-          <p className="card-text text-truncate ">
-            {props.projectTask.acceptanceCriteria}
-          </p>
-          <p className="card-text">{props.projectTask.dueDate}</p>
-        </div>
-        <div className={"d-flex justify-content-between"}>
+          </div>
+        )}
+
+        <div className="d-flex justify-content-end">
           <Link
-            to={`/project-task-form/${props.projectTask.projectIdentifier}/${props.projectTask.projectSequence}`}
-            className="btn btn-info text-white">
-            Update Project Task
+            to={`/project-task-form/${props.projectTask.projectIdentifier}/${props.projectTask.projectSequence}`}>
+            <i className="fas fa-pencil-alt fa-lg me-3"></i>
           </Link>
 
-          <button className="btn btn-danger ms-4" onClick={deleteProjectTaskHandler}>
-            Delete Project Task
-          </button>
+          <i className="fas fa-trash-alt fa-lg mt-1" onClick={deleteProjectTaskHandler}></i>
         </div>
       </div>
     </div>

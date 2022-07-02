@@ -1,27 +1,40 @@
 import React from "react";
+import { Draggable } from "react-beautiful-dnd";
 
 import ProjectTaskItem from "./ProjectTaskItem";
 
 const ProjectTaskList = (props) => {
-  const updateProjectTaskTitleForFiltering = props.title
-    .replace(" ", "_")
-    .toUpperCase();
-  const filteredProjectTasks = props.projectTasks.filter(
-    (projectTask) => projectTask.status === updateProjectTaskTitleForFiltering
-  );
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // Some basic styles to make the items look a bit nicer
+    userSelect: "none",
+    padding: `8px 0`,
+    margin: `0 0 24px 0`,
+
+    // Change background colour if dragging
+    background: isDragging ? "#D6E5FA" : "#F3F8FF",
+
+    // Styles we need to apply on draggables
+    ...draggableStyle
+  });
 
   return (
-    <div className="col-md-4">
-      <div className={`card text-center mb-2 ${props.cardHeaderStyle}`}>
-        <div className="card-header text-white">
-          <h3>{props.title}</h3>
-        </div>
-      </div>
-
-      {filteredProjectTasks &&
-        filteredProjectTasks.map((projectTask) => (
-          <ProjectTaskItem key={projectTask.id} projectTask={projectTask} />
-        ))}
+    <div>
+      {props.el.map((item, index) => (
+        <Draggable key={item.id} draggableId={item.id.toString()} index={index}>
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              style={getItemStyle(
+                snapshot.isDragging,
+                provided.draggableProps.style
+              )}>
+              <ProjectTaskItem projectTask={item} />
+            </div>
+          )}
+        </Draggable>
+      ))}
     </div>
   );
 };

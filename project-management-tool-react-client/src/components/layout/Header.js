@@ -51,7 +51,7 @@ const Header = () => {
           <li>
             <hr className="dropdown-divider" />
           </li>
-          <li className="dropdown-item" onClick={logoutHandler}>
+          <li className="dropdown-item  dropdown-menu-dark" onClick={logoutHandler}>
             <Link to="/logout">
               <i className="fas fa-sign-out-alt me-1"></i> Logout
             </Link>

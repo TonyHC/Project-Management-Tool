@@ -1,12 +1,15 @@
-import React, { Fragment } from "react";
+import React from "react";
+
 import Header from "./Header";
+import Footer from "./Footer";
 
 const Layout = (props) => {
   return (
-    <Fragment>
+    <div className="flex-wrapper">
       <Header />
       <main className="container">{props.children}</main>
-    </Fragment>
+      <Footer />
+    </div>
   );
 };
 
