@@ -1,12 +1,14 @@
 # Project-Management-Tool
 
-Full stack web application using React 18 and Spring Boot 2
+Full stack web application using React 17 and Spring Boot 2
 
 - React along with HTML, CSS, JS and Bootstrap 5 are used for the frontend
 
 - Create a REST API using Spring Boot that communicates with MySQL as the backend
 
 - Utilize Spring Security + JWT to secure both the frontend and backend
+
+- Implement drag and drop functionality for lists using [react-beautiful-dnd](https://www.npmjs.com/package/react-beautiful-dnd) and [react-usestateref](https://www.npmjs.com/package/react-usestateref) packages
 
 ## How to visit web application hosted by Heroku
 - Head to https://user-project-management-tool.herokuapp.com
@@ -30,10 +32,14 @@ Full stack web application using React 18 and Spring Boot 2
   - Attempting to access these pages will redirected user back to the Dashboard page
 
 - A authenticated user can stay logged in for a maximum of 1 hour
-  - After 1 hour passes, the auto logout features triggers forcing the user to log off and redirected back to Login page 
+  - After 1 hour passes, the auto logout feature triggers forcing user to log off and redirect back to Login page 
 
 - A user can perform CRUD operations associated with a project on Dashboard page
   - In addition, can perform CRUD operations for a task associated with a project on ProjectBoard page
+
+- Drag and drop a project task in the ProjectBoard page for the following cases where each list is <br> filtered by status and sorted by position in ascending order:
+  - Reordering within the same list 
+  - Moving to another list 
 
 - Optionally, a user can reset their password by accessing the ResetPassword page
   - When resetting your password, a user cannot use their previous password as their new password
@@ -65,6 +71,7 @@ Project Tasks API (all endpoints are private)
   - GET /project-tasks
   - GET /project-tasks/{projectTaskId}/{projectTaskSequence}
   - POST /project-tasks/{projectTaskId}
+  - PATCH /project-tasks/{projectTaskId}
   - PATCH /project-tasks/{projectTaskId}/{projectTaskSequence}
   - DELETE /project-tasks/{projectTaskId}/{projectTaskSequence}
 
