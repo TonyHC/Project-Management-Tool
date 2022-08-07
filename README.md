@@ -1,8 +1,8 @@
 # Project-Management-Tool
 
-Full stack web application using React 17 and Spring Boot 2
+Full stack web application using React 17, and Spring Boot 2
 
-- React along with HTML, CSS, JS and Bootstrap 5 are used for the frontend
+- React with HTML, CSS, JS, and Bootstrap 5 used for the frontend
 
 - Create a REST API using Spring Boot that communicates with MySQL as the backend
 
@@ -10,34 +10,34 @@ Full stack web application using React 17 and Spring Boot 2
 
 - Implement drag and drop functionality for lists using [react-beautiful-dnd](https://www.npmjs.com/package/react-beautiful-dnd) and [react-usestateref](https://www.npmjs.com/package/react-usestateref) packages
 
-## How to visit web application hosted by Heroku
+## How to visit the web application hosted by Heroku
 - Head to https://user-project-management-tool.herokuapp.com
 
-- Project Management Tool web application is hosted on [Heroku](https://devcenter.heroku.com/) with the [ClearDB MySQL](https://devcenter.heroku.com/articles/cleardb) addon 
+- Project Management Tool is hosted on [Heroku](https://devcenter.heroku.com/) with the [ClearDB MySQL](https://devcenter.heroku.com/articles/cleardb) addon 
 
 ## Features
 
 **Non-Registered User**
-- Only have access to the Landing, Login or Register page
-  - Accessing a url not part of the web app shows a NotFound page 
+- Only have access to the Landing, Login, or Register page
+  - Accessing a URL not part of the web app shows a NotFound page 
 
 - All other pages are protected routes
-  - User tries to access a private route, the user is redirected back to the Login page   
+  - When a user tries to access a private page; the web application redirects the user back to the Login page
   
 - When registering a new user, the username needs to be unique
 
 <br>**Registered User**
 
-- Cannot access the Login or Register page
-  - Attempting to access these pages will redirected user back to the Dashboard page
+- Restricted access to the Login or Register page
+  - Attempting to access these pages will redirect the user back to the Dashboard page
 
-- A authenticated user can stay logged in for a maximum of 1 hour
-  - After 1 hour passes, the auto logout feature triggers forcing user to log off and redirect back to Login page 
+- An authenticated user can stay logged in for a maximum of 1 hour
+  - After 1 hour passes, the auto-logout feature triggers, forcing the user to log off and redirect back to the Login page
 
-- A user can perform CRUD operations associated with a project on Dashboard page
-  - In addition, can perform CRUD operations for a task associated with a project on ProjectBoard page
+- A user can perform CRUD operations associated with a project on the Dashboard page
+  - A user can also perform CRUD operations for a task associated with a project on the ProjectBoard page
 
-- Drag and drop a project task in the ProjectBoard page for the following cases where each list is <br> filtered by status and sorted by position in ascending order:
+- Drag and drop a project task on the ProjectBoard page for the following cases where each list is  <br> filtered by status and sorted by position in ascending order:
   - Reordering within the same list 
   - Moving to another list 
 
@@ -45,8 +45,8 @@ Full stack web application using React 17 and Spring Boot 2
   - When resetting your password, a user cannot use their previous password as their new password
 
 - Warning alert message appears for the following situations:
-  - No projects exists
-  - No project tasks assoicated for a project
+  - No projects exist
+  - No project tasks associated with a project
   - Attempting to access a project that doesn't exist 
 
 - An error alert message appears if a user attempts to access a project belonging to another user
