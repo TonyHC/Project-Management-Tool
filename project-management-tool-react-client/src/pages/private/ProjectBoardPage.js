@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getProjectTasks, updateProjectTasksOrder } from "../../store/actions/project-task-actions";
 import ProjectBoard from "../../components/ProjectBoard/ProjectBoard";
-import Titles from "../../components/ProjectBoard/ProjectTask/ProjectTaskTitle";
-import { projectTaskStatus } from "../../utils/projectTaskStatus";
+import Status from "../../constants/projectTaskStatus";
+import { setProjectTaskStatus } from "../../utils/setProjectTaskStatus";
 
 const ProjectBoardPage = () => {
   const [filteredProjectTasks, setFilteredProjectTasks, filteredProjectTasksRef] = useState([]);
@@ -19,14 +19,13 @@ const ProjectBoardPage = () => {
     dispatch(getProjectTasks(projectId));
   }, [dispatch, projectId]);
 
-
   useEffect(() => {
     if (projectTasks) {
       setFilteredProjectTasks(
         [
-          projectTasks.filter((pT) => pT.status === Titles.To_Do),
-          projectTasks.filter((pT) => pT.status === Titles.In_Progress),
-          projectTasks.filter((pT) => pT.status === Titles.Done)
+          projectTasks.filter((pT) => pT.status === Status.To_Do),
+          projectTasks.filter((pT) => pT.status === Status.In_Progress),
+          projectTasks.filter((pT) => pT.status === Status.Done)
         ]
       )
     }
@@ -63,7 +62,7 @@ const ProjectBoardPage = () => {
     const [removed] = sourceClone.splice(droppableSource.index, 1);
     const updatedProjectTask = {
       ...removed,
-      status: projectTaskStatus(+droppableDestination.droppableId),
+      status: setProjectTaskStatus(+droppableDestination.droppableId),
     };
 
     destClone.splice(droppableDestination.index, 0, updatedProjectTask);

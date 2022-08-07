@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import ProjectTaskList from "./ProjectTask/ProjectTaskList";
+import Alert from "../UI/Alert";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { projectTaskStatus } from "../../utils/projectTaskStatus";
+import { setProjectTaskStatus } from "../../utils/setProjectTaskStatus";
 
 const ProjectBoard = (props) => {
   const grid = 8;
@@ -13,25 +14,14 @@ const ProjectBoard = (props) => {
     padding: grid * 2,
     overflowY: "hidden",
     scrollbarWidth: "thin",
-    minHeight: "85%"
+    minHeight: "85%",
   });
 
   const loadProjectBoardContent = (projectTasks, errors) => {
     if (props.status === "success") {
       if (projectTasks.length === 0) {
         return (
-          <div
-            className="alert alert-warning alert-dismissible fade show"
-            role="alert">
-            <i className="fas fa-exclamation-triangle mb-1 me-2"></i>
-            <strong>No Project Tasks were found!</strong>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-            ></button>
-          </div>
+          <Alert message="No Project Tasks were found!" variant="warning" />
         );
       } else {
         return (
@@ -43,13 +33,16 @@ const ProjectBoard = (props) => {
                     {(provided, snapshot) => (
                       <div className="d-flex flex-column project-tasks-list list-border">
                         <h5 className="fw-bold text-center capitalize p-1 mt-3">
-                            {projectTaskStatus(ind).replace("_", " ").toLowerCase()}
+                          {setProjectTaskStatus(ind)
+                            .replace("_", " ")
+                            .toLowerCase()}
                         </h5>
                         <div
                           ref={provided.innerRef}
                           style={getListStyle(snapshot.isDraggingOver)}
-                          {...provided.droppableProps}>
-                          <ProjectTaskList el={el} grid={grid}/>
+                          {...provided.droppableProps}
+                        >
+                          <ProjectTaskList el={el} grid={grid} />
                         </div>
                       </div>
                     )}
@@ -62,18 +55,7 @@ const ProjectBoard = (props) => {
       }
     } else if (props.status === "failed" && errors.projectNotFound) {
       return (
-        <div
-          className="alert alert-danger alert-dismissible fade show"
-          role="alert">
-          <i className="fas fa-exclamation-triangle mb-1 me-2"></i>
-          <strong>{errors.projectNotFound}</strong>
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-        </div>
+        <Alert message={errors.projectNotFound} variant="danger" />
       );
     }
   };
