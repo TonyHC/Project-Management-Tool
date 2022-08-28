@@ -1,0 +1,49 @@
+services:
+  mysql:
+    image: mysql/mysql-server:latest
+    container_name: mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: project_management_tool
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    expose:
+      - 3308
+    networks:
+      - mysql
+    restart: always
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    ports:
+      - "8081:80"
+    networks:
+      - mysql
+    depends_on:
+      - mysql
+    restart: always
+  project-management-tool:
+    image: tchao98/project-management-tool:latest
+    container_name: project-management-tool
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8080:8080"
+    networks:
+      - mysql
+    depends_on:
+      - mysql
+
+networks:
+  mysql:
+    driver: bridge
+
+volumes:
+  mysql:
