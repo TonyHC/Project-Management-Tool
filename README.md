@@ -1,6 +1,6 @@
 # Project-Management-Tool
 
-Full stack web application using React 17, and Spring Boot 2
+Full stack web application using React 17 and Spring Boot 2
 
 - React with HTML, CSS, JS, and Bootstrap 5 used for the frontend
 
@@ -9,6 +9,24 @@ Full stack web application using React 17, and Spring Boot 2
 - Utilize Spring Security + JWT to secure both the frontend and backend
 
 - Implement drag and drop functionality for lists using [react-beautiful-dnd](https://www.npmjs.com/package/react-beautiful-dnd) and [react-usestateref](https://www.npmjs.com/package/react-usestateref) packages
+
+## How to run this web application and its required services on Docker
+
+**Prerequisites**
+- Clone or download this project through your preferred method
+
+- Make sure you have Docker or Docker Desktop installed for your machine
+
+- Open your preferred terminal and change to the directory containing the docker-compose.yml
+  - Enter the following Docker command `docker compose up -d` to create the required containers
+  - Wait for the containers to be built and finish running
+
+<br>**Docker containers are up and running**
+- Visit [Project Management Tool](http://localhost:8080) to access the web application
+
+- Head to [phpMyAdmin](http://localhost:8081) to access the GUI for MySQL and log in with the following credentials:
+  - `Username: root`
+  - `Password: password`
 
 ## How to visit the web application hosted by Heroku
 - Head to https://user-project-management-tool.herokuapp.com
