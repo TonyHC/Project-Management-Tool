@@ -5,9 +5,8 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: project_management_tool
     volumes:
-      - mysql:/var/lib/mysql
+      - ./docker/database:/docker-entrypoint-initdb.d
     ports:
       - "3308:3306"
     expose:
@@ -40,10 +39,8 @@ services:
       - mysql
     depends_on:
       - mysql
+    restart: unless-stopped
 
 networks:
   mysql:
     driver: bridge
-
-volumes:
-  mysql:
