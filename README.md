@@ -17,7 +17,7 @@ Full stack web application using React 17 and Spring Boot 2
 
 - Make sure you have Docker or Docker Desktop installed for your machine
 
-- Open your preferred terminal and change to the directory containing the docker-compose.yml
+- Open a terminal and change to the **project-management-tool** directory containing the *docker-compose.yml*
   - Enter the following Docker command `docker compose up -d` to create the required containers
   - Wait for the containers to be built and finish running
 
@@ -28,11 +28,6 @@ Full stack web application using React 17 and Spring Boot 2
   - `Username: root`
   - `Password: password`
 
-## How to visit the web application hosted by Heroku
-- Head to https://user-project-management-tool.herokuapp.com
-
-- Project Management Tool is hosted on [Heroku](https://devcenter.heroku.com/) with the [ClearDB MySQL](https://devcenter.heroku.com/articles/cleardb) addon 
-
 ## Features
 
 **Non-Registered User**
@@ -40,7 +35,7 @@ Full stack web application using React 17 and Spring Boot 2
   - Accessing a URL not part of the web app shows a NotFound page 
 
 - All other pages are protected routes
-  - When a user tries to access a private page; the web application redirects the user back to the Login page
+  - When a user tries to access a private page, the user is redirected back to the Login page
   
 - When registering a new user, the username needs to be unique
 
@@ -49,15 +44,21 @@ Full stack web application using React 17 and Spring Boot 2
 - Restricted access to the Login or Register page
   - Attempting to access these pages will redirect the user back to the Dashboard page
 
-- An authenticated user can stay logged in for a maximum of 1 hour
-  - After 1 hour passes, the auto-logout feature triggers, forcing the user to log off and redirect back to the Login page
+- An authenticated user can stay logged in for a maximum of one hour
+  - The auto-logout feature logs the user off and redirects back to the Login page after one hour passes
 
-- A user can perform CRUD operations associated with a project on the Dashboard page
-  - A user can also perform CRUD operations for a task associated with a project on the ProjectBoard page
+- A user can perform CRUD operations for the following cases:
+  - Projects associated with the registered user on the Dashboard page
+  - Tasks associated with a project on the ProjectBoard page
 
-- Drag and drop a project task on the ProjectBoard page for the following cases where each list is  <br> filtered by status and sorted by position in ascending order:
-  - Reordering within the same list 
-  - Moving to another list 
+- A user can perform CRUD operations for the following cases:
+  - Projects associated with the registered user on the Dashboard page
+  - Tasks associated with a project on the ProjectBoard page
+
+- Drag and drop a project task on the ProjectBoard page 
+  - Each list of project tasks is filtered by status and sorted by position in ascending order
+  - Reorder a project task within the same list 
+  - Move a project task from one list to another list 
 
 - Optionally, a user can reset their password by accessing the ResetPassword page
   - When resetting your password, a user cannot use their previous password as their new password
@@ -65,17 +66,9 @@ Full stack web application using React 17 and Spring Boot 2
 - Warning alert message appears for the following situations:
   - No projects exist
   - No project tasks associated with a project
-  - Attempting to access a project that doesn't exist 
+  - Attempting to access a project that does not exist 
 
 - An error alert message appears if a user attempts to access a project belonging to another user
-
-## How to login to the web application
-
-- Either use an existing account or create a new account through the registration page
-
-- A dummy account for testing with projects and project tasks already created: 
-  - `Username: user@gmail.com`
-  - `Password: password`
 
 ## REST APIs
 ```
