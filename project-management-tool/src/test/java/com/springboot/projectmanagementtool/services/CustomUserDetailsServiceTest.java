@@ -6,10 +6,12 @@ import com.springboot.projectmanagementtool.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.Optional;
 
@@ -20,17 +22,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@TestPropertySource(
+        locations = "classpath:application.properties"
+)
 @ExtendWith(MockitoExtension.class)
 class CustomUserDetailsServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @InjectMocks
     private CustomUserDetailsService customUserDetailsService;
-
-    @BeforeEach
-    void setUp() {
-        customUserDetailsService = new CustomUserDetailsService(userRepository);
-    }
 
     @Test
     void loadUserByUsername_RetrievesValidUser_WhenUsernameExists() {

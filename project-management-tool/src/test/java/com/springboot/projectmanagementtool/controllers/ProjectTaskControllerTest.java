@@ -40,6 +40,11 @@ class ProjectTaskControllerTest {
     private static final String PROJECT_IDENTIFIER = "OI1(a";
     private static final String USERNAME = "Tom@gmail.com";
 
+    private User user;
+    private Project project;
+    private Backlog backlog;
+    private ProjectTask projectTask;
+
     @Autowired
     MockMvc mockMvc;
 
@@ -48,11 +53,6 @@ class ProjectTaskControllerTest {
 
     @MockBean
     ProjectTaskService projectTaskService;
-
-    User user;
-    Project project;
-    Backlog backlog;
-    ProjectTask projectTask;
 
     @BeforeEach
     void setUp() {

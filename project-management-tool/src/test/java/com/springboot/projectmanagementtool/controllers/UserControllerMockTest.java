@@ -4,22 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.projectmanagementtool.domain.User;
 import com.springboot.projectmanagementtool.exceptions.UsernameAlreadyExistsException;
 import com.springboot.projectmanagementtool.payload.LoginRequest;
-import com.springboot.projectmanagementtool.repositories.UserRepository;
 import com.springboot.projectmanagementtool.services.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,66 +28,58 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(
         locations = "classpath:application-it.properties"
 )
-class UserControllerTest {
-    private static final String USERNAME = "testusers@mail.com";
-    private static final String PASSWORD = "Password";
-
+class UserControllerMockTest {
+    private User user;
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
     ObjectMapper objectMapper;
 
-    @Autowired
+    @MockBean
     UserService userService;
 
-    @Autowired
-    UserRepository userRepository;
+    @BeforeEach
+    void setUp() {
+        user = new User();
+
+        user.setId(1L);
+        user.setUsername("testusers@mail.com");
+        user.setFirstName("Test");
+        user.setLastName("User");
+        user.setPassword("Password");
+        user.setConfirmPassword("Password");
+    }
 
     @Test
     @Transactional
     void registerUser_CreatesNewUser_WhenUserRequestBodyIsValid() throws Exception {
-        User user = new User();
-
-        user.setUsername(USERNAME + "ing");
-        user.setFirstName("Test");
-        user.setLastName("User");
-        user.setPassword(PASSWORD);
-        user.setConfirmPassword(PASSWORD);
+        given(userService.saveUser(user)).willReturn(user);
 
         mockMvc.perform(post(UserController.USER_BASE_URL + "/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.username", containsString(user.getUsername())))
-                .andExpect(jsonPath("$.firstName", containsString(user.getFirstName())))
-                .andExpect(jsonPath("$.lastName", containsString(user.getLastName())));
+                .andExpect(jsonPath("$.firstName", containsString(user.getFirstName())));
     }
 
     @Test
     @Transactional
     void registerUser_FailsToCreateNewUser_WhenUserAlreadyExists() throws Exception {
-        User user = new User();
+        UsernameAlreadyExistsException usernameAlreadyExistsException =
+                new UsernameAlreadyExistsException("Username already exists.");
 
-        user.setUsername(USERNAME);
-        user.setFirstName("Test");
-        user.setLastName("Users");
-        user.setPassword(PASSWORD);
-        user.setConfirmPassword(PASSWORD);
+        given(userService.saveUser(user)).willThrow(usernameAlreadyExistsException);
 
         mockMvc.perform(post(UserController.USER_BASE_URL + "/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isBadRequest());
-
-        assertThatThrownBy(() -> userService.saveUser(user))
-                .isInstanceOf(UsernameAlreadyExistsException.class)
-                .hasMessageContaining("Username already exists.");
     }
 
     @Test
     void authenticateUser_LogsTheUserIn_WhenLoginRequestIsValid() throws Exception {
-        LoginRequest loginRequest = new LoginRequest(USERNAME, PASSWORD);
+        LoginRequest loginRequest = new LoginRequest(user.getUsername(), user.getPassword());
 
         mockMvc.perform(post(UserController.USER_BASE_URL + "/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -97,29 +88,24 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = USERNAME, password = PASSWORD)
+    @WithMockUser
     void getUserById_RetrievesExistingUser_WhenUserIdExists() throws Exception {
-        mockMvc.perform(get(UserController.USER_BASE_URL + "/" + 1)
+        given(userService.getUserById(user.getId())).willReturn(user);
+
+        mockMvc.perform(get(UserController.USER_BASE_URL + "/" + user.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", aMapWithSize(9)));
+                .andExpect(jsonPath("$.username", containsString(user.getUsername())));
     }
 
     @Test
-    @WithMockUser(username = USERNAME, password = PASSWORD)
-    @Transactional
+    @WithMockUser
     void resetUserPassword_ResetsExistingUserPassword_WhenUserRequestBodyIsValid() throws Exception {
-        User updatedUser = userRepository.findByUsername(USERNAME);
-
-        updatedUser.setPassword("Testing");
-        updatedUser.setConfirmPassword(updatedUser.getPassword());
+        given(userService.updateUserPassword(user)).willReturn(user);
 
         mockMvc.perform(patch(UserController.USER_BASE_URL + "/reset-password")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updatedUser)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        assertThat(updatedUser).isEqualTo(userRepository.findByUsername(USERNAME));
+                        .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isOk());
     }
 }

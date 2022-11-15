@@ -12,8 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
@@ -23,9 +25,19 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@TestPropertySource(
+        locations = "classpath:application.properties"
+)
 @ExtendWith(MockitoExtension.class)
 class ProjectTaskServiceTest {
     private static final String PROJECT_IDENTIFIER = "OI1(a";
+
+    private Project project;
+    private Backlog backlog;
+    private ProjectTask projectTask;
+
+    @Captor
+    private ArgumentCaptor<List<ProjectTask>> listArgumentCaptor;
 
     @Mock
     private ProjectTaskRepository projectTaskRepository;
@@ -33,20 +45,13 @@ class ProjectTaskServiceTest {
     @Mock
     private ProjectService projectService;
 
-    @Captor
-    private ArgumentCaptor<List<ProjectTask>> listArgumentCaptor;
-
+    @InjectMocks
     private ProjectTaskService projectTaskService;
-
-    private Project project;
-    private Backlog backlog;
-    private ProjectTask projectTask;
 
     @BeforeEach
     void setUp() {
-        projectTaskService = new ProjectTaskService(projectTaskRepository, projectService);
-
         User user = new User();
+
         user.setUsername("Tom@gmail.com");
         user.setPassword("password");
         user.setConfirmPassword("password");
@@ -54,6 +59,7 @@ class ProjectTaskServiceTest {
         user.setLastName("Paoes");
 
         project = new Project();
+
         project.setProjectName("Dashboard UI");
         project.setProjectIdentifier(PROJECT_IDENTIFIER);
         project.setProjectDescription("Create the Dashboard UI using React");
@@ -61,12 +67,14 @@ class ProjectTaskServiceTest {
         project.setUser(user);
 
         backlog = new Backlog();
+
         backlog.setProjectIdentifier(PROJECT_IDENTIFIER);
         backlog.setProjectTaskSequence(0);
         backlog.setProject(project);
         project.setBacklog(backlog);
 
         projectTask = new ProjectTask();
+
         projectTask.setSummary("Create the Dashboard and associated components");
         projectTask.setProjectIdentifier(PROJECT_IDENTIFIER);
         projectTask.setProjectSequence(PROJECT_IDENTIFIER + "-" + backlog.getProjectTaskSequence());

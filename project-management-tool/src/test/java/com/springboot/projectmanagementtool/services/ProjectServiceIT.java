@@ -3,11 +3,6 @@ package com.springboot.projectmanagementtool.services;
 import com.springboot.projectmanagementtool.domain.Project;
 import com.springboot.projectmanagementtool.domain.User;
 import com.springboot.projectmanagementtool.exceptions.ProjectIdExistsException;
-import com.springboot.projectmanagementtool.repositories.BacklogRepository;
-import com.springboot.projectmanagementtool.repositories.ProjectRepository;
-import com.springboot.projectmanagementtool.repositories.UserRepository;
-import com.springboot.projectmanagementtool.security.SecurityUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,19 +16,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
         locations = "classpath:application-it.properties"
 )
 public class ProjectServiceIT {
-    BacklogRepository backlogRepository;
-    ProjectRepository projectRepository;
-    UserRepository userRepository;
-
     @Autowired
-    private SecurityUtils securityUtils;
-
     private ProjectService projectService;
-
-    @BeforeEach
-    void setUp() {
-        projectService = new ProjectService(projectRepository, backlogRepository, userRepository, securityUtils);
-    }
 
     @Test
     @WithMockUser

@@ -12,8 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
@@ -24,10 +26,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@TestPropertySource(
+        locations = "classpath:application.properties"
+)
 @ExtendWith(MockitoExtension.class)
 class ProjectServiceTest {
     private static final String PROJECT_IDENTIFIER = "DASUI";
     private static final String USERNAME = "Tom@gmail.com";
+
+    private User user;
+    private Project project;
 
     @Mock
     private BacklogRepository backlogRepository;
@@ -41,22 +49,20 @@ class ProjectServiceTest {
     @Mock
     private SecurityUtils securityUtils;
 
+    @InjectMocks
     private ProjectService projectService;
-
-    User user;
-    Project project;
 
     @BeforeEach
     void setUp() {
-        projectService = new ProjectService(projectRepository, backlogRepository, userRepository, securityUtils);
-
         user = new User();
+
         user.setUsername(USERNAME);
         user.setPassword("password");
         user.setFirstName("Tom");
         user.setLastName("Paoes");
 
         project = new Project();
+
         project.setProjectName("Dashboard UI");
         project.setProjectIdentifier(PROJECT_IDENTIFIER);
         project.setProjectDescription("Create the Dashboard UI using React");

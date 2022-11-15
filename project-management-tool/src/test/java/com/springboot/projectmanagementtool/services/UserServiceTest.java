@@ -8,19 +8,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+@TestPropertySource(
+        locations = "classpath:application.properties"
+)
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
     private static final Long ID = 1L;
+
+    private User user;
 
     @Mock
     private UserRepository userRepository;
@@ -34,15 +41,13 @@ class UserServiceTest {
     @Mock
     private SecurityUtils securityUtils;
 
+    @InjectMocks
     private UserService userService;
-
-    User user;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository, passwordEncoder, customUserDetailsService, securityUtils);
-
         user = new User();
+
         user.setId(ID);
         user.setUsername("Tom@gmail.com");
         user.setPassword("password");
